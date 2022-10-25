@@ -10,6 +10,9 @@
     {# META #}
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 
+    {# ICONE #}
+    <link rel="shortcut icon" href="{{ asset('img/logo/favicon-sortircom.png') }}" />
+
     {# CSS WEBPACK #}
     {% block stylesheets %}{{ encore_entry_link_tags('app') }}{% endblock %}
 
@@ -22,9 +25,10 @@
 <header>{% block header %}{% endblock %}</header>
 
 {# CORPS DE PAGE #}
-<body>{% block body %}{% endblock %}</body>
+<body style="min-height: 100%; min-width: 100%;">{% block body %}{% endblock %}</body>
+
 
 {# BAS DE PAGE #}
-<footer>{% block footer %}{% endblock %}</footer>
+<footer class="footer">{% block footer %}{% endblock %}</footer>
 
 </html>

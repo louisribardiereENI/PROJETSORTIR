@@ -1,6 +1,14 @@
 @import "custom";
 @import "~bootstrap/scss/bootstrap";
 
-$theme-colors: (
-        primary: rgba(20,74,127,255)
-);
+.footer {
+  position: absolute;
+  bottom: 0;
+}
+
+.centrer {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 25px
+}
