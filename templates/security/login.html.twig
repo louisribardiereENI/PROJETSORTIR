@@ -109,67 +109,33 @@
 
                     <div class="card bg-glass">
                         <div class="card-body px-4 py-5 px-md-5">
-                            <form>
-                                <!-- 2 column grid layout with text inputs for the first and last names -->
-                                <div class="row">
-                                    <div class="col-md-6 mb-4">
-                                        <div class="form-outline">
-                                            <input type="text" id="form3Example1" class="form-control" />
-                                            <label class="form-label" for="form3Example1">First name</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <div class="form-outline">
-                                            <input type="text" id="form3Example2" class="form-control" />
-                                            <label class="form-label" for="form3Example2">Last name</label>
-                                        </div>
-                                    </div>
-                                </div>
+                            <form method="post">
+                                {% if error %}
+                                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                {% endif %}
 
-                                <!-- Email input -->
-                                <div class="form-outline mb-4">
-                                    <input type="email" id="form3Example3" class="form-control" />
-                                    <label class="form-label" for="form3Example3">Email address</label>
-                                </div>
+                                <img src="{{ asset('img/logo/logo-sortircom.png') }}" alt="logo-sortir.com">
 
-                                <!-- Password input -->
-                                <div class="form-outline mb-4">
-                                    <input type="password" id="form3Example4" class="form-control" />
-                                    <label class="form-label" for="form3Example4">Password</label>
-                                </div>
+                                <label class="form-label" for="inputEmail">Email :</label>
+                                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control"
+                                       autocomplete="email" required autofocus>
+                                <label class="form-label" for="inputPassword">Mot de passe :</label>
+                                <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password"
+                                       required>
 
-                                <!-- Checkbox -->
-                                <div class="form-check d-flex justify-content-center mb-4">
-                                    <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
-                                    <label class="form-check-label" for="form2Example33">
-                                        Subscribe to our newsletter
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+
+                                <div class="checkbox mb-3">
+                                    <label>
+                                        <input type="checkbox" name="_remember_me" checked/>
+                                        Se souvenir de moi
                                     </label>
                                 </div>
 
-                                <!-- Submit button -->
-                                <button type="submit" class="btn btn-primary btn-block mb-4">
-                                    Sign up
+                                <button class="btn btn-primary btn-block mb-4" type="submit">
+                                    Connexion
                                 </button>
-
-                                <!-- Register buttons -->
-                                <div class="text-center">
-                                    <p>or sign up with:</p>
-                                    <button type="button" class="btn btn-link btn-floating mx-1">
-                                        <i class="fab fa-facebook-f"></i>
-                                    </button>
-
-                                    <button type="button" class="btn btn-link btn-floating mx-1">
-                                        <i class="fab fa-google"></i>
-                                    </button>
-
-                                    <button type="button" class="btn btn-link btn-floating mx-1">
-                                        <i class="fab fa-twitter"></i>
-                                    </button>
-
-                                    <button type="button" class="btn btn-link btn-floating mx-1">
-                                        <i class="fab fa-github"></i>
-                                    </button>
-                                </div>
                             </form>
                         </div>
                     </div>
