@@ -53,6 +53,9 @@ class Sortie
     #[ORM\ManyToMany(targetEntity: Participant::class, inversedBy: 'inscrits')]
     private Collection $idParticipant;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $photoSortie = null;
+
     public function __construct()
     {
         $this->idParticipant = new ArrayCollection();
@@ -203,6 +206,18 @@ class Sortie
     public function removeIdParticipant(Participant $idParticipant): self
     {
         $this->idParticipant->removeElement($idParticipant);
+
+        return $this;
+    }
+
+    public function getPhotoSortie(): ?string
+    {
+        return $this->photoSortie;
+    }
+
+    public function setPhotoSortie(?string $photoSortie): self
+    {
+        $this->photoSortie = $photoSortie;
 
         return $this;
     }
