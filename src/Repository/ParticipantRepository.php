@@ -55,7 +55,14 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
 
         $this->save($user, true);
     }
+    public function findByEmail(String $email){
+        $dql= "SELECT 
+       p
+       FROM \App\Entity\Participant p WHERE p.email='".$email."'";
+        $query = $this->getEntityManager()->createQuery($dql);
 
+        return $query->getResult();
+    }
 //    /**
 //     * @return Participant[] Returns an array of Participant objects
 //     */
