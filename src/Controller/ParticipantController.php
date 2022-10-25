@@ -16,10 +16,15 @@ class ParticipantController extends AbstractController
     public function index(ParticipantRepository $repo): Response
     {
         $participants = $repo->findAll();
-        return $this->render('participant/index.html.twig', [
-            'controller_name' => 'ParticipantController',
-            'participants' =>$participants,
-        ]);
+        if(count($participants)>0) {
+            return $this->render('participant/index.html.twig', [
+                'controller_name' => 'ParticipantController',
+                'participants' => $participants,
+            ]);
+        }
+        else{
+            return new \Exception("La base de donnée ne contient pas de participants");
+        }
     }
     #[Route('/{id}', name: 'details')]
     public function detail(ParticipantRepository $repo,int $id): Response
