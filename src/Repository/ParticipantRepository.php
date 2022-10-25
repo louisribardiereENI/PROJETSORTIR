@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Participant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -55,6 +56,24 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
 
         $this->save($user, true);
     }
+    public function setActive(Participant $entity,bool $actif):void{
+        $entity->setActif($actif);
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+    }
+    public function setAdmin(Participant $entity,bool $admin):void{
+        $entity->setAdministrateur($admin);
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+    }
+
+    public function findByEmail(string $email):Participant{
+        return $this->findOneBy(array('email'=>$email));
+    }
+    public function isActiveByMail(string $email):bool{
+        return $this->findByEmail($email)->isActif();
+    }
+
 //    /**
 //     * @return Participant[] Returns an array of Participant objects
 //     */

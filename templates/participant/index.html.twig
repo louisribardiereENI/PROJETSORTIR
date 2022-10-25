@@ -9,8 +9,29 @@
 </style>
 
 <div class="example-wrapper">
-    {% for participant in participants %}
-    {{ participant.nom }}
-    {% endfor %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">nom</th>
+            <th scope="col">prenom</th>
+            <th scope="col">pseudo</th>
+            <th scope="col">email</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for participant in participants %}
+        <tr class="table-primary">
+            <th scope="row">{{ participant.nom }}</th>
+            <td>{{ participant.prenom }}</td>
+            <td>{{ participant.pseudo }}</td>
+            <td>{{ participant.email }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+
 </div>
 {% endblock %}
