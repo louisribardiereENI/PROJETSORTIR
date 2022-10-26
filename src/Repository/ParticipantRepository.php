@@ -6,6 +6,7 @@ use App\Entity\Participant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use phpDocumentor\Reflection\Types\Boolean;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -86,6 +87,26 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
     public function isActiveByMail(string $email):bool{
         return $this->findByEmail($email)->isActif();
     }
+
+    public function setPicture(Participant $entity,FormInterface $form):void{
+        $picture=$form->get('photoParticipant')->getData();
+            if($picture){
+                $picture->move('img/avatar',$entity->getId().'.jpg');
+                $entity->setPhotoParticipant($entity->getId().'jpg');
+            }
+            else{
+                $entity->setPhotoParticipant('default.jpg');
+            }
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+    }
+
+
+
+
+
+
+
 
 //    /**
 //     * @return Participant[] Returns an array of Participant objects

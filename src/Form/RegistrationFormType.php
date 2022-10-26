@@ -4,18 +4,14 @@ namespace App\Form;
 
 use App\Entity\Campus;
 use App\Entity\Participant;
-use App\Repository\CampusRepository;
-use Doctrine\DBAL\Types\BooleanType;
-use Doctrine\DBAL\Types\StringType;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -33,7 +29,13 @@ class RegistrationFormType extends AbstractType
             ->add('actif')
             ->add('pseudo')
             ->add('idCampus',EntityType::class,['class'=>Campus::class,'choice_value'=>'id','choice_label'=>'nom'])
-            ->add('photoParticipant')
+            ->add('photoParticipant',FileType::class,[
+                'label'=>'Photo de profil',
+                'mapped'=>false,
+                'required'=>false,
+                'constraints'=>[new File(['maxSize'=>'10240k','mimeTypes'=>['image/*'],'mimeTypesMessage'=>'Enregistre une photo valide'])]
+
+            ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller

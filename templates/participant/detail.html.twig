@@ -10,5 +10,6 @@
 
     <div class="example-wrapper">
             {{ participant.nom }}
+        <img src="{{ asset('img/avatar/'~participant.id|trans~'.jpg') }}">
     </div>
 {% endblock %}
