@@ -70,7 +70,7 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
             $this->getEntityManager()->flush();
         }
         else{
-            $entity->setRoles();
+            $entity->setRoles(array(''));
             $this->getEntityManager()->persist($entity);
             $this->getEntityManager()->flush();
         }
@@ -92,7 +92,7 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
         $picture=$form->get('photoParticipant')->getData();
             if($picture){
                 $picture->move('img/avatar',$entity->getId().'.jpg');
-                $entity->setPhotoParticipant($entity->getId().'jpg');
+                $entity->setPhotoParticipant($entity->getId().'.jpg');
             }
             else{
                 $entity->setPhotoParticipant('default.jpg');

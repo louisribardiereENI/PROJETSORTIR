@@ -31,8 +31,14 @@
                         <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle"
                            data-bs-toggle="dropdown"
                            aria-expanded="false">
-                            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32"
+                            {% if(app.user.photoParticipant!='default.jpg') %}
+
+                            <img src="{{ asset('img/avatar/'~app.user.photoParticipant) }}" alt="mdo" width="32" height="32"
                                  class="rounded-circle">
+                            {% else %}
+                                <img src="{{ asset('img/avatar/default.jpg') }}" alt="mdo" width="32" height="32"
+                                     class="rounded-circle">
+                            {% endif %}
                         </a>
                         <ul class="dropdown-menu text-small shadow">
                             <li><a class="dropdown-item nav-color" href="{{ path('participant_list') }}">
@@ -92,8 +98,14 @@
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
                        aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
-                    </a>
+                        {% if(app.user.photoParticipant!='default.jpg') %}
+
+                            <img src="{{ asset('img/avatar/'~app.user.photoParticipant) }}" alt="mdo" width="32" height="32"
+                                 class="rounded-circle">
+                        {% else %}
+                            <img src="{{ asset('img/avatar/default.jpg') }}" alt="mdo" width="32" height="32"
+                                 class="rounded-circle">
+                        {% endif %}                    </a>
                     <ul class="dropdown-menu text-small">
                         <li><a class="dropdown-item nav-color" href="{{ path('participant_list') }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

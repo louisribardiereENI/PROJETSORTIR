@@ -32,7 +32,7 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            $user->setPhotoParticipant('tempo');
+            $user->setPhotoParticipant('default.jpg');
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
