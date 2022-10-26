@@ -127,6 +127,7 @@
 
             .bg-glass {
                 backdrop-filter: saturate(200%) blur(25px);
+            }
 
             .centrerpc {
                 display: block;
@@ -159,7 +160,12 @@
 
                             <h2>Connexion</h2>
 
-                            <form>
+                            <form method="post">
+
+                                {% if error %}
+                                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                {% endif %}
+
                                 <!-- Identifiant / Email -->
                                 <div class="mb-3">
                                     <label class="form-label" for="inputEmail">Identifiant / Email :</label>
