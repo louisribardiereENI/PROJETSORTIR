@@ -1,214 +1,83 @@
 {% extends 'base.html.twig' %}
 
-{#
-{% block header %}
-    {% include 'module/navbar/navbar.html.twig' %}
-{% endblock %}
-#}
-
-
+{# Titre de la page #}
 {% block title %}Sortir.com | Connexion{% endblock %}
 
+{# CSS de la page #}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/index.css') }}" rel="stylesheet">
+{% endblock %}
+
+{# Body de la page #}
 {% block body %}
-    {#
-    <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
 
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-        {% endif %}
+    <!-- Section -->
+    <section class="overflow-hidden background-login">
 
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="inputEmail">Email</label>
-        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control"
-               autocomplete="email" required autofocus>
-        <label for="inputPassword">Password</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password"
-               required>
-
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me" checked/>
-                Se souvenir de moi
-            </label>
-        </div>
-
-        <button class="btn btn-lg btn-primary" type="submit">
-            Sign in
-        </button>
-    </form>
-
-
-    <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-
-        <h2>Connexion</h2>
-        <div class="mb-4"></div>
-
-        <div class="mb-3">
-            <label class="form-label" for="inputEmail">Identifiant :</label>
-            <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
-                   class="form-control"
-                   autocomplete="email" required autofocus>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label" for="inputPassword">Mot de passe :</label>
-            <input type="password" name="password" id="inputPassword" class="form-control"
-                   autocomplete="current-password"
-                   required>
-        </div>
-
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me" checked/>
-                Se souvenir de moi
-            </label>
-        </div>
-
-        <div class="d-grid gap-2 col-6 mx-auto">
-            <button class="btn btn-primary btn-block mb-4" type="submit">
-                Connexion
-            </button>
-        </div>
-    </form>
-    #}
-
-
-    <!-- Section: Design Block -->
-    <section class="background-radial-gradient overflow-hidden" style="height: 100vh;">
+        <!-- CSS Twig -->
         <style>
-            .background-radial-gradient {
-                background-color: hsl(218, 41%, 15%);
-                background-image: radial-gradient(650px circle at 0% 0%,
-                hsl(218, 41%, 35%) 15%,
-                hsl(218, 41%, 30%) 35%,
-                hsl(218, 41%, 20%) 75%,
-                hsl(218, 41%, 19%) 80%,
-                transparent 100%),
-                radial-gradient(1250px circle at 100% 100%,
-                        hsl(218, 41%, 45%) 15%,
-                        hsl(218, 41%, 30%) 35%,
-                        hsl(218, 41%, 20%) 75%,
-                        hsl(218, 41%, 19%) 80%,
-                        transparent 100%);
+            .background-login {
+                height: 100vh;
+                background: url({{ asset('img/fond/fond2.jpeg') }})
             }
-
-            #radius-shape-1 {
-                height: 220px;
-                width: 220px;
-                top: -60px;
-                left: -130px;
-                background: radial-gradient(#50a8ee, #ad1fff);
-                overflow: hidden;
-            }
-
-            #radius-shape-2 {
-                border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
-                bottom: -60px;
-                right: -110px;
-                width: 300px;
-                height: 300px;
-                background: radial-gradient(#50a8ee, #ad1fff);
-                overflow: hidden;
-            }
-
-            .bg-glass {
-                backdrop-filter: saturate(200%) blur(25px);
-            }
-
-            .centrerpc {
-                display: block;
-                margin-right: auto;
-                margin-left: auto;
-                margin-bottom: 25px
-            }
-
         </style>
-        <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
-            <div class="row gx-lg-5 align-items-center mb-5">
-                <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
-                    <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
-                        <strong>Sortie.com</strong><br/>
-                        <span style="color: hsl(218, 81%, 75%)">Organisateur de sortie</span>
-                    </h1>
-                    <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
-                        La société ENI à développé pour ses stagiaires actifs ainsi que ses anciens stagiaires une plateforme web leur permettant d’organiser des sorties. La plateforme est une plateforme privée dont l’inscription sera gérée par le ou les administrateurs.
-                    </p>
-                </div>
 
-                <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
-                    <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
-                    <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+        <div class="py-5 px-md-5 text-lg-start flex-login">
+            <div class="mb-5 mb-lg-0 position-relative">
+                <div class="card bg-glass">
+                    <div class="card-body px-4 py-5 px-md-5">
 
-                    <div class="card bg-glass">
-                        <div class="card-body px-4 py-5 px-md-5">
+                        <!-- Logo du site web -->
+                        <img src="{{ asset('img/logo/logo-sortircom.png') }}" width="250px" class="center"
+                             alt="logo de sortir.com">
+                        <br>
 
-                            <img src="{{ asset('img/logo/logo-sortircom.png') }}" width="250px" class="centrer" alt="logo">
+                        <!-- Formulaire de methode Post -->
+                        <form method="post">
 
-                            <h2>Connexion</h2>
+                            <!-- Alerte de connexion -->
+                            {% if error %}
+                                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            {% endif %}
 
-                            <form method="post">
+                            <!-- Identifiant / Email -->
+                            <div class="mb-3">
+                                <label class="form-label" for="inputEmail">Identifiant / Email :</label>
+                                <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
+                                       class="form-control"
+                                       autocomplete="email" required autofocus>
+                            </div>
 
-                                {% if error %}
-                                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                                {% endif %}
+                            <!-- Mot de passe -->
+                            <div class="mb-3">
+                                <label class="form-label" for="inputPassword">Mot de passe :</label>
+                                <input type="password" name="password" id="inputPassword" class="form-control"
+                                       autocomplete="current-password"
+                                       required>
+                            </div>
 
-                                <!-- Identifiant / Email -->
-                                <div class="mb-3">
-                                    <label class="form-label" for="inputEmail">Identifiant / Email :</label>
-                                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
-                                           class="form-control"
-                                           autocomplete="email" required autofocus>
-                                </div>
+                            <!-- Token de connexion -->
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                                <!-- Mot de passe -->
-                                <div class="mb-3">
-                                    <label class="form-label" for="inputPassword">Mot de passe :</label>
-                                    <input type="password" name="password" id="inputPassword" class="form-control"
-                                           autocomplete="current-password"
-                                           required>
-                                </div>
+                            <!-- Se souvenir de moi -->
+                            <div class="checkbox mb-3">
+                                <label>
+                                    <input type="checkbox" name="_remember_me"/>
+                                    Se souvenir de moi
+                                </label>
+                            </div>
 
-                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                            <!-- Bouton de connexion -->
+                            <button type="submit" class="btn btn-primary btn-block mb-4 center">
+                                Connexion
+                            </button>
 
-                                <!-- Se souvenir de moi -->
-                                <div class="checkbox mb-3">
-                                    <label>
-                                        <input type="checkbox" name="_remember_me"/>
-                                        Se souvenir de moi
-                                    </label>
-                                </div>
-
-                                <!-- Submit button -->
-                                <button type="submit" class="btn btn-primary btn-block mb-4">
-                                    Connexion
-                                </button>
-                            </form>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Section: Design Block -->
 
 {% endblock %}
-
-{#
-{% block footer %}
-    {% include 'module/footer/footer.html.twig' %}
-{% endblock %}
-#}
