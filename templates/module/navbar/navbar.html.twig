@@ -1,36 +1,126 @@
-<header class="py-3 mb-3 border-bottom">
-    <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
-        <div class="dropdown">
-            <a href="#" class="d-flex align-items-center col-lg-4 mb-2 mb-lg-0 link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="{{ asset('img/logo/logo-sortircom.png') }}" width="200px" alt="logo-sortir.com">
-            </a>
-            <ul class="dropdown-menu text-small shadow">
-                <li><a class="dropdown-item active" href="#" aria-current="page">Overview</a></li>
-                <li><a class="dropdown-item" href="#">Inventory</a></li>
-                <li><a class="dropdown-item" href="#">Customers</a></li>
-                <li><a class="dropdown-item" href="#">Products</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Reports</a></li>
-                <li><a class="dropdown-item" href="#">Analytics</a></li>
-            </ul>
-        </div>
+{# CSS de la page #}
+{% block stylesheets %}
+    <link href="{{ asset('css/index.css') }}" rel="stylesheet">
+{% endblock %}
 
-        <div class="d-flex align-items-center">
-            {% if app.user %}
-            <div class="flex-shrink-0 dropdown">
-                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+
+{# Version Mobile #}
+<div class="mobile">
+    <header class="py-3 border-bottom">
+        <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
+            <div class="dropdown">
+                <a href="#"
+                   class="d-flex align-items-center col-lg-4 mb-2 mb-lg-0 link-dark text-decoration-none dropdown-toggle"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ asset('img/logo/logo-sortircom.png') }}" width="200px" alt="logo-sortir.com">
                 </a>
-                <ul class="dropdown-menu text-small shadow">
-                    <li><a class="dropdown-item" href="#">Gérer son profil</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
-                </ul>
+                <div>
+                    <ul class="dropdown-menu text-small shadow">
+                        <li><a class="dropdown-item" href="#">Accueil</a></li>
+
+                        {% if app.user.roles[0] == "ADMIN" %}
+                        <li><a class="dropdown-item" href="#">Villes</a></li>
+                        <li><a class="dropdown-item" href="#">Campus</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
-            {% endif %}
+            <div class="d-flex align-items-center">
+                {% if app.user %}
+                    <div class="flex-shrink-0 dropdown">
+                        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle"
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32"
+                                 class="rounded-circle">
+                        </a>
+                        <ul class="dropdown-menu text-small shadow">
+                            <li><a class="dropdown-item" href="{{ path('participant_list') }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-person" viewBox="0 0 16 16">
+                                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                                    </svg>
+                                    &nbsp;Gérer son profil
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ path('app_logout') }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                              d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                                        <path fill-rule="evenodd"
+                                              d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                                    </svg>
+                                    &nbsp;Déconnexion
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
         </div>
-    </div>
-</header>
+    </header>
+</div>
 
+{# Version Ordinateur #}
+<div class="desktop">
+    <header class="p-3 border-bottom">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+                    <img src="{{ asset('img/logo/logo-sortircom.png') }}" width="200px" alt="logo-sortir.com">
+                </a>
 
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"></ul>
+
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="#" class="nav-link px-2 link-dark">Accueil</a></li>
+
+                        {% if app.user.roles[0] == "ADMIN" %}
+                        <li><a href="#" class="nav-link px-2 link-dark">Villes</a></li>
+                        <li><a href="#" class="nav-link px-2 link-dark">Campus</a></li>
+                        {% endif %}
+
+                    </ul>
+                </form>
+
+                <div class="dropdown text-end">
+                    <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                    </a>
+                    <ul class="dropdown-menu text-small">
+                        <li><a class="dropdown-item" href="{{ path('participant_list') }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-person" viewBox="0 0 16 16">
+                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                                </svg>
+                                &nbsp;Mon profil
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{{ path('app_logout') }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                                    <path fill-rule="evenodd"
+                                          d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                                </svg>
+                                &nbsp;Se déconnecter
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+</div>
 

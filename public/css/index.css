@@ -23,3 +23,33 @@
         padding-right: 1.5rem !important;
     }
 }
+
+.d-flex {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-content: center !important;
+}
+
+@media only screen and (min-width: 250px) and (max-width: 1020px) {
+    .mobile {
+        display: block !important;
+    }
+
+    .d-block {
+        margin-right: 10px !important;
+    }
+
+    .desktop {
+        display: none !important;
+    }
+}
+
+@media only screen and (min-width: 1020px) and (max-width: 4000px) {
+    .mobile {
+        display: none !important;
+    }
+
+    .desktop {
+        display: block !important;
+    }
+}
