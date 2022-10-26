@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Etat;
+use App\Entity\Lieu;
 use App\Entity\Sortie;
+use App\Entity\Ville;
 use App\Repository\EtatRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -25,8 +27,10 @@ class SortieType extends AbstractType
             ->add('photoSortie')
             ->add('idEtat',  EntityType::class,
                 ['class'=>Etat::class,'choice_value'=>'id','choice_label'=>'libelle'])
-            //->add('idLieu')
-            //->add('idParticipant')
+            //->add('idVille',  EntityType::class,
+            //    ['class'=>Ville::class,'choice_value'=>'id','choice_label'=>'nom'])
+            //->add('idLieu',  EntityType::class,
+            //    ['class'=>Lieu::class,'choice_value'=>'id','choice_label'=>'nom'])
         ;
     }
 
