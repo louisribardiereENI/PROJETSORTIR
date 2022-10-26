@@ -223,11 +223,11 @@ class Sortie
         return $this;
     }
 
-    public function equals(Sortie $sortieUne, Sortie $sortieDeux): ?Boolean
+    public function equals(Sortie $sortieDeux): ?Boolean
     {
-        if ($sortieUne->getId() == $sortieDeux->getId() && $sortieUne->getNom() == $sortieDeux->getNom() && $sortieUne->getDateHeureDebut() == $sortieDeux->getDateHeureDebut()
-        && $sortieUne->getDuree() == $sortieDeux->getDuree() && $sortieUne->getDateLimiteInscription() == $sortieDeux->getDateLimiteInscription() && $sortieUne->getNbInscriptionsMax()
-        == $sortieDeux->getNbInscriptionsMax() && $sortieUne->getInfosSortie() == $sortieDeux->getInfosSortie()) {
+        if ($this->getId() == $sortieDeux->getId() && $this->getNom() == $sortieDeux->getNom() && $this->getDateHeureDebut() == $sortieDeux->getDateHeureDebut()
+        && $this->getDuree() == $sortieDeux->getDuree() && $this->getDateLimiteInscription() == $sortieDeux->getDateLimiteInscription() && $this->getNbInscriptionsMax()
+        == $sortieDeux->getNbInscriptionsMax() && $this->getInfosSortie() == $sortieDeux->getInfosSortie()) {
             return true;
         } else {
             return false;
