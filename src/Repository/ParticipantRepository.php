@@ -61,9 +61,22 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
     }
-    public function setAdmin(Participant $entity,bool $admin):void{
+    public function setAdministration(Participant $entity,bool $admin):void{
         $entity->setAdministrateur($admin);
-        $this->getEntityManager()->persist($entity);
+        if($admin){
+            $entity->setRoles(array('ADMIN'));
+            $this->getEntityManager()->persist($entity);
+            $this->getEntityManager()->flush();
+        }
+        else{
+            $entity->setRoles();
+            $this->getEntityManager()->persist($entity);
+            $this->getEntityManager()->flush();
+        }
+
+    }
+    public function deleteParticipant(Participant $entity):void{
+        $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
     }
 

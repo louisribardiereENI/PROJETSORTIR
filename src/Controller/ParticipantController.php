@@ -11,11 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\MigratingPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use function PHPUnit\Framework\equalTo;
-use function PHPUnit\Framework\throwException;
 
 #[Route('/participants', name: 'participant')]
 
@@ -84,5 +81,59 @@ class ParticipantController extends AbstractController
 
        }
 
+    }
+
+    #[Route('/{id}/administrateur/{admin}', name: 'administrateur')]
+    public function administrateur(ParticipantRepository $repo,int $id,bool $admin): Response
+    {
+        if($this->getUser()) {
+            if($this->getUser()->getRoles()[0]=="ADMIN") {
+                $participant = $repo->find($id);
+                $repo->setAdministration($participant,$admin);
+                return $this->redirectToRoute('participantlist');
+            }
+            else{
+                throw new Exception("Vous devez être administrateur pour réaliser cette action !");
+            }
+        }
+        else{
+            throw new Exception("Vous devez être authentifié pour réaliser cette action !");
+        }
+    }
+
+    #[Route('/{id}/activation/{active}', name: 'activation')]
+    public function activation(ParticipantRepository $repo,int $id,bool $active): Response
+    {
+        if($this->getUser()) {
+            if($this->getUser()->getRoles()[0]=="ADMIN") {
+                $participant = $repo->find($id);
+                $participant->setActif($active);
+                $repo->save($participant,true);
+                return $this->redirectToRoute('participantlist');
+            }
+            else{
+                throw new Exception("Vous devez être administrateur pour réaliser cette action !");
+            }
+        }
+        else{
+            throw new Exception("Vous devez être authentifié pour réaliser cette action !");
+        }
+    }
+    #[Route('/{id}/supprimer', name: 'supprimer')]
+    public function supprimer(ParticipantRepository $repo,int $id): Response
+    {
+        if($this->getUser()) {
+            if($this->getUser()->getRoles()[0]=="ADMIN") {
+                $participant = $repo->find($id);
+                $repo->deleteParticipant($participant);
+                return $this->redirectToRoute('participantlist');
+            }
+            else{
+                throw new Exception("Vous devez être administrateur pour réaliser cette action !");
+            }
+        }
+        else{
+            throw new Exception("Vous devez être authentifié pour réaliser cette action !");
+        }
     }
 }
