@@ -1,3 +1,4 @@
+{#
 {% extends 'base.html.twig' %}
 
 {% block title %}Reset your password{% endblock %}
@@ -9,4 +10,69 @@
         {{ form_row(resetForm.plainPassword) }}
         <button class="btn btn-primary">Reset password</button>
     {{ form_end(resetForm) }}
+{% endblock %}
+
+#}
+
+
+{% extends 'base.html.twig' %}
+
+{# Titre de la page #}
+{% block title %}Sortir.com | Connexion{% endblock %}
+
+{# CSS de la page #}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/index.css') }}" rel="stylesheet">
+{% endblock %}
+
+{# Body de la page #}
+{% block body %}
+
+    <!-- Section -->
+    <section class="overflow-hidden background-login">
+
+        <!-- CSS Twig -->
+        <style>
+            .background-login {
+                height: 100vh;
+                background: url({{ asset('img/fond/fond2.jpeg') }})
+            }
+        </style>
+
+        <div class="py-5 px-md-5 text-lg-start flex-login">
+            <div class="mb-5 mb-lg-0 position-relative">
+                <div class="card bg-glass">
+                    <div class="card-body px-4 px-md-5">
+
+                        <!-- Logo du site web -->
+                        <img src="{{ asset('img/logo/logo-sortircom.png') }}" width="250px" class="center"
+                             alt="logo de sortir.com">
+
+                        <!-- Formulaire de methode Post -->
+                        <form method="post">
+
+                            <!-- Nom de la page -->
+                            <h4 class="center">Modifier votre mot de passe</h4>
+                            {{ form_start(resetForm) }}
+
+                            <div class="mb-3">
+                            {{ form_row(resetForm.plainPassword.first) }}
+                            </div>
+
+                            <div class="mb-3">
+                            {{ form_row(resetForm.plainPassword.second) }}
+                            </div>
+
+                            <br />
+                            <button class="btn btn-primary btn-block mb-4 center">Modifier le mot de passe</button>
+                            {{ form_end(resetForm) }}
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 {% endblock %}

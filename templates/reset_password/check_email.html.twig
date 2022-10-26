@@ -1,3 +1,4 @@
+{#
 {% extends 'base.html.twig' %}
 
 {% block title %}Password Reset Email Sent{% endblock %}
@@ -8,4 +9,56 @@
         This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
     </p>
     <p>If you don't receive an email please check your spam folder or <a href="{{ path('app_forgot_password_request') }}">try again</a>.</p>
+{% endblock %}
+#}
+
+{% extends 'base.html.twig' %}
+
+{# Titre de la page #}
+{% block title %}Sortir.com | Mot de passe oublié{% endblock %}
+
+{# CSS de la page #}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/index.css') }}" rel="stylesheet">
+{% endblock %}
+
+{# Body de la page #}
+{% block body %}
+
+    <!-- Section -->
+    <section class="overflow-hidden background-login">
+
+        <!-- CSS Twig -->
+        <style>
+            .background-login {
+                height: 100vh;
+                background: url({{ asset('img/fond/fond2.jpeg') }})
+            }
+        </style>
+
+        <div class="py-5 px-md-5 text-lg-start flex-login">
+            <div class="mb-5 mb-lg-0 position-relative">
+                <div class="card bg-glass">
+                    <div class="card-body px-4 px-md-5">
+
+                        <!-- Logo du site web -->
+                        <img src="{{ asset('img/logo/logo-sortircom.png') }}" width="250px" class="center"
+                             alt="logo de sortir.com">
+
+                        <!-- Nom de la page -->
+                        <h4 class="center">Mot de passe oublié</h4>
+
+                        <p>
+                            Si un compte correspondant à votre adresse e-mail existe, un e-mail vient d'être envoyé contenant un lien que vous pouvez utiliser pour réinitialiser votre mot de passe.
+                            Ce lien expirera dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+                        </p>
+                        <p>Si vous ne recevez pas d'e-mail, veuillez vérifier votre dossier spam ou <a href="{{ path('app_forgot_password_request') }}">réessayer</a>.</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 {% endblock %}

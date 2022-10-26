@@ -1,3 +1,4 @@
+{#
 {% extends 'base.html.twig' %}
 
 {% block title %}Reset your password{% endblock %}
@@ -19,4 +20,69 @@
 
         <button class="btn btn-primary">Send password reset email</button>
     {{ form_end(requestForm) }}
+{% endblock %}
+
+#}
+
+{% extends 'base.html.twig' %}
+
+{# Titre de la page #}
+{% block title %}Sortir.com | Mot de passe oublié{% endblock %}
+
+{# CSS de la page #}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/index.css') }}" rel="stylesheet">
+{% endblock %}
+
+{# Body de la page #}
+{% block body %}
+
+    <!-- Section -->
+    <section class="overflow-hidden background-login">
+
+        <!-- CSS Twig -->
+        <style>
+            .background-login {
+                height: 100vh;
+                background: url({{ asset('img/fond/fond2.jpeg') }})
+            }
+        </style>
+
+        <div class="py-5 px-md-5 text-lg-start flex-login">
+            <div class="mb-5 mb-lg-0 position-relative">
+                <div class="card bg-glass">
+                    <div class="card-body px-4 px-md-5">
+
+                        <!-- Logo du site web -->
+                        <img src="{{ asset('img/logo/logo-sortircom.png') }}" width="250px" class="center"
+                             alt="logo de sortir.com">
+
+                            <!-- Nom de la page -->
+                            <h4 class="center">Mot de passe oublié</h4>
+
+                        {% for flash_error in app.flashes('reset_password_error') %}
+                            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                        {% endfor %}
+
+                        {{ form_start(requestForm) }}
+                        {{ form_row(requestForm.email) }}
+
+                        <br />
+
+                        <button class="btn btn-primary btn-block mb-4 center">
+                            Envoyer la demande
+                        </button>
+                        {{ form_end(requestForm) }}
+
+                        <div class="mb-3 center">
+                            <a href="{{ path('app_login') }}" class="center">Vous connaissez votre mot de passe ?</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 {% endblock %}
