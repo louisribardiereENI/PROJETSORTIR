@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/sorties', name: 'sortie')]
+#[Route('/sorties', name: 'sortie_')]
 class SortieController extends AbstractController
 {
     private $serializer;
@@ -58,24 +58,22 @@ class SortieController extends AbstractController
                 $newVille = new Ville();
                 $newVille->setNom($city);
                 $newVille->setCodePostal($postal);
-                $repoVille->save($newVille);
-                var_dump($newVille);
+                $repoVille->save($newVille, true);
                 $ville = $repoVille->findOneBy(array('nom' => $city, 'codePostal' => $postal));
-                var_dump($ville);
             }
 
-            $lieu = $repoLieu->findOneBy(array('nom' => $nomLieu, 'rue' => $address, 'id_ville_id' => $ville->getId()));
+            $lieu = $repoLieu->findOneBy(array('nom' => $nomLieu, 'rue' => $address, 'idVille' => $ville->getId()));
             if ($lieu != null) {
                 $sortie->setIdLieu($lieu);
             } else {
                 $newLieu = new Lieu();
                 $newLieu->setNom($nomLieu);
-                $newLieu->setRue($nomLieu);
+                $newLieu->setRue($address);
                 $newLieu->setLatitude($latitude);
                 $newLieu->setLongitude($longitude);
                 $newLieu->setIdVille($ville);
-                $repoLieu->save($newLieu);
-                $lieu = $repoLieu->findOneBy(array('nom' => $city, 'rue' => $postal, 'id_ville_id' => $ville->getId()));
+                $repoLieu->save($newLieu, true);
+                $lieu = $repoLieu->findOneBy(array('nom' => $city, 'rue' => $postal, 'idVille' => $ville->getId()));
                 $sortie->setIdLieu($lieu);
                 $sortie->getIdLieu()->setIdVille($ville);
             }
@@ -96,8 +94,8 @@ class SortieController extends AbstractController
             $sortie->setInfosSortie($infoSortie);
             $sortie->setPhotoSortie($photoSortie);
 
-            $repo->save($sortie);
-            return $this->redirectToRoute('afficher', array('id' => $sortie->getId()));
+            $repo->save($sortie, true);
+            return $this->redirectToRoute('sortie_list', array('id' => $sortie->getId()));
         } else {
             return $this->render('sortie/create.html.twig', [
                 'controller_name' => 'SortieController',
