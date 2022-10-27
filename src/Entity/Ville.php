@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\UniqueConstraint(name: "constraintVille", columns: ["nom", "code_postal"])]
 #[ORM\Entity(repositoryClass: VilleRepository::class)]
 class Ville
 {

@@ -13,6 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Ville|null findOneBy(array $criteria, array $orderBy = null)
  * @method Ville[]    findAll()
  * @method Ville[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
  */
 class VilleRepository extends ServiceEntityRepository
 {
