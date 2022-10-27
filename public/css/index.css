@@ -165,3 +165,11 @@
 .display-block {
     display: block !important;
 }
+
+/* Centrer */
+.centrer {
+    display: block;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    text-align: center;
+}

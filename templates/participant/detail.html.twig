@@ -1,18 +1,161 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ParticipantController!{% endblock %}
+{% block title %}Courir.com | Mon profil{% endblock %}
 {% block header %}
     {% include 'module/navbar/navbar.html.twig' %}
 {% endblock %}
 {% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; display: block;}
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
 
-    <div class="example-wrapper">
-        <img src="{{ asset('img/avatar/'~participant.photoParticipant) }}" alt="mdo" width="256" height="256"
-             class="rounded-circle">
-        <h3>{{ participant.nom }} {{ participant.prenom }}</h3>
-    </div>
+    <section>
+       <br />
+        <div class="row">
+            <div class="col">
+
+            </div>
+            <div class="col-10">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card mb-4 border-color-first-color border-radius-20">
+                            <div class="card-body text-center">
+                                <img src="{{ asset('img/avatar/'~participant.photoParticipant) }}" alt="avatar"
+                                     class="rounded-circle img-fluid" style="width: 150px;">
+                                <h5 class="my-3">{{ participant.nom }} {{ participant.prenom }}</h5>
+                                {# <p>{% if participant.roles[0] == 'ADMIN' %}Administrateur{% else %}Utilisateur{% endif %}</p>  #}
+
+                                <div class="d-flex justify-content-center mb-2">
+                                    <button type="button" onclick="window.location.href = '{{ path('participant_edit', {'id':app.user.id}) }}';" class="btn btn-primary primary-button centrer">Modifier mon profil</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card mb-4 border-color-first-color border-radius-20">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Pseudo</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">{{ participant.pseudo }}</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Prénom et nom</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">{{ participant.prenom }} {{ participant.nom }}</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Email</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">{{ participant.email}}</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Téléphone</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">{{ participant.telephone }}</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Campus</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">{{ participant.getIdCampus.nom }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {#
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-4 mb-md-0">
+                                    <div class="card-body">
+                                        <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status
+                                        </p>
+                                        <p class="mb-1" style="font-size: .77rem;">Web Design</p>
+                                        <div class="progress rounded" style="height: 5px;">
+                                            <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80"
+                                                 aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Website Markup</p>
+                                        <div class="progress rounded" style="height: 5px;">
+                                            <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72"
+                                                 aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
+                                        <div class="progress rounded" style="height: 5px;">
+                                            <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89"
+                                                 aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
+                                        <div class="progress rounded" style="height: 5px;">
+                                            <div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55"
+                                                 aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
+                                        <div class="progress rounded mb-2" style="height: 5px;">
+                                            <div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66"
+                                                 aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-4 mb-md-0">
+                                    <div class="card-body">
+                                        <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status
+                                        </p>
+                                        <p class="mb-1" style="font-size: .77rem;">Web Design</p>
+                                        <div class="progress rounded" style="height: 5px;">
+                                            <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80"
+                                                 aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Website Markup</p>
+                                        <div class="progress rounded" style="height: 5px;">
+                                            <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72"
+                                                 aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
+                                        <div class="progress rounded" style="height: 5px;">
+                                            <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89"
+                                                 aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
+                                        <div class="progress rounded" style="height: 5px;">
+                                            <div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55"
+                                                 aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
+                                        <div class="progress rounded mb-2" style="height: 5px;">
+                                            <div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66"
+                                                 aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        #}
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+
+            </div>
+
+        </div>
+    </section>
+
 {% endblock %}

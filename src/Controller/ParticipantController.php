@@ -28,7 +28,7 @@ class ParticipantController extends AbstractController
         ]);
 
     }
-    #[Route('/{id}/view', name: 'details')]
+    #[Route('/{id}/voir', name: 'details')]
     public function detail(ParticipantRepository $repo,int $id): Response
     {
         $participant = $repo->find($id);
@@ -37,7 +37,7 @@ class ParticipantController extends AbstractController
             'participant' =>$participant,
         ]);
     }
-    #[Route('/{id}/edit', name: 'edit')]
+    #[Route('/{id}/modifier', name: 'edit')]
     public function edit(Request $request,ParticipantRepository $repo,int $id,UserPasswordHasherInterface $userPasswordHasher): ?Response
     {
         $participant = $repo->find($id);
