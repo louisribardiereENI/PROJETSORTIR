@@ -41,61 +41,6 @@ class SortieController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $sortie = $this->submit($request, $repoUser, $repoVille, $repoLieu, $sortie, $form);
-//            $user = $repoUser->findByEmail($this->getUser()->getUserIdentifier());
-//            $sortie->setIdOrganisateur($user);
-//            $sortie->setIdSiteOrganisateur($user->getIdCampus());
-//            $idEtat = $form->get('idEtat')->getData();
-//            $sortie->setIdEtat($idEtat);
-//
-//            $address = $request->request->get('address');
-//            $city = $request->request->get('city');
-//            $postal = $request->request->get('postal');
-//
-//            $latitude = $request->request->get('lat');
-//            $longitude = $request->request->get('lng');
-//
-//            $nomLieu = $form->get('nomLieu')->getData();
-//            $ville = $repoVille->findOneBy(array('nom' => $city, 'codePostal' => $postal));
-//            if ($ville == null) {
-//                $newVille = new Ville();
-//                $newVille->setNom($city);
-//                $newVille->setCodePostal($postal);
-//                $repoVille->save($newVille, true);
-//                $ville = $repoVille->findOneBy(array('nom' => $city, 'codePostal' => $postal));
-//            }
-//
-//            $lieu = $repoLieu->findOneBy(array('nom' => $nomLieu, 'rue' => $address, 'idVille' => $ville->getId()));
-//            if ($lieu != null) {
-//                $sortie->setIdLieu($lieu);
-//            } else {
-//                $newLieu = new Lieu();
-//                $newLieu->setNom($nomLieu);
-//                $newLieu->setRue($address);
-//                $newLieu->setLatitude($latitude);
-//                $newLieu->setLongitude($longitude);
-//                $newLieu->setIdVille($ville);
-//                $repoLieu->save($newLieu, true);
-//                $lieu = $repoLieu->findOneBy(array('nom' => $city, 'rue' => $postal, 'idVille' => $ville->getId()));
-//                $sortie->setIdLieu($lieu);
-//                $sortie->getIdLieu()->setIdVille($ville);
-//            }
-//
-//            $nom = $form->get('nom')->getData();
-//            $dateHeureDebut = $form->get('dateHeureDebut')->getData();
-//            $duree = $form->get('duree')->getData();
-//            $dateLimiteInscription = $form->get('dateLimiteInscription')->getData();
-//            $nbrInscriptionMax = $form->get('nbInscriptionsMax')->getData();
-//            $infoSortie = $form->get('infosSortie')->getData();
-//            $photoSortie = $form->get('photoSortie')->getData();
-//
-//            $sortie->setNom($nom);
-//            $sortie->setDateHeureDebut($dateHeureDebut);
-//            $sortie->setDuree($duree);
-//            $sortie->setDateLimiteInscription($dateLimiteInscription);
-//            $sortie->setNbInscriptionsMax($nbrInscriptionMax);
-//            $sortie->setInfosSortie($infoSortie);
-//            $sortie->setPhotoSortie($photoSortie);
-
             $repo->save($sortie, true);
             return $this->redirectToRoute('sortie_list', array('id' => $sortie->getId()));
         } else {
