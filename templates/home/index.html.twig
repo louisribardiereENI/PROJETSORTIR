@@ -13,8 +13,9 @@
         </div>
         <div class="col-10">
             <div class="row">
-                <div class="col-4" style="margin: auto !important;">
-                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" href="#collapseExample"
+                <div class="col-4 margin-auto">
+                    <button class="btn btn-primary primary-button" type="button" data-bs-toggle="collapse"
+                            href="#collapseExample"
                             role="button" aria-expanded="false" aria-controls="collapseExample">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-funnel"
@@ -24,11 +25,10 @@
                     </button>
                 </div>
                 <div class="col-4">
-                    <h5 class="center nav-color" style="margin-top: 25px;"><strong>Les sorties</strong></h5>
+                    <h4 class="center nav-color margin-top-25"><strong>LES SORTIES</strong></h4>
                 </div>
-                <div class="col-4" style="margin: auto !important;">
-                    <button class="btn btn-primary" style="margin-left: auto; position: relative; display: block;"
-                            type="button">
+                <div class="col-4 margin-auto" >
+                    <button class="btn btn-primary primary-button margin-left-auto position-relative display-block" type="button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-plus-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -48,17 +48,19 @@
 
         <div class="col-10">
             <div class="collapse" id="collapseExample">
-                <div class="card">
-                    {{ form_start(form) }}
+                <div class="card border-color-first-color border-radius-20">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-8">
-
                                 <div class="row g-2">
                                     <div class="col-md">
                                         <div class="form-floating mb-3">
-                                            {{ form_widget(form.idCampus) }}
-
+                                            <select class="form-select" id="floatingSelectGrid">
+                                                <option selected>Nantes</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
                                             <label for="floatingSelectGrid">Campus :</label>
                                         </div>
                                     </div>
@@ -74,14 +76,14 @@
                                     <div class="col-md">
                                         <div class="input-group mb-3">
                                             <span class="input-group-text">Entre</span>
-
-                                            <input type="date" class="form-control" placeholder="{{"now"|date("Y-m-d","Europe/Paris") }}" value="{{"now"|date("Y-m-d","Europe/Paris") }}"  aria-label="">
+                                            <input type="date" class="form-control" placeholder=""
+                                                   value="{{ "now"|date("d/m/Y") }}" aria-label="">
                                         </div>
                                     </div>
                                     <div class="col-md">
                                         <div class="input-group mb-3">
                                             <span class="input-group-text">Et</span>
-                                            <input type="date" class="form-control" placeholder="" value="{{"now"|date_modify("+7 day")|date("Y-m-d","Europe/Paris") }}" aria-label="">
+                                            <input type="date" class="form-control" placeholder="" aria-label="">
                                         </div>
                                     </div>
                                 </div>
@@ -126,33 +128,35 @@
                                 </div>
                             </div>
                         </div>
-
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-primary" type="button">Rechercher</button>
-                            </div>
-
-
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary primary-button" type="button">Rechercher</button>
+                        </div>
                     </div>
-                    {{ form_end(form) }}
                 </div>
             </div>
-
             <br/>
-
             <div class="row row-cols-1 row-cols-md-4 g-4">
-               {% for sortie in sorties %}
                 <div class="col">
-                    <div class="card">
-                        <img src="{{ asset('img/fond/fond.jpg') }}" class="card-img-top" alt="...">
+                    <div class="card border-color-first-color border-radius-21">
+                        <img src="{{ asset('img/fond/fond.jpg') }}" class="card-img-top border-radius-20 border-color-first-color" alt="...">
+                        <div class="card-body-accueil">
+                            <div class="margin-10">
+                                <p class="center nav-color margin-bottom-10"><strong>Le bar goldenbeer</strong></p>
+                                <div class="row">
+                                    <div  class="col">
+                                        <p class="center margin-bottom-0"><span class="badge text-bg-primary background-color-first-color">Ouvert</span></p>
+                                    </div>
+                                    <div  class="col">
+                                        <p class="center nav-color margin-bottom-0">Places : 7/8</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-               {% endfor %}
             </div>
         </div>
         <div class="col"></div>
     </div>
-
-
-
 
 {% endblock %}

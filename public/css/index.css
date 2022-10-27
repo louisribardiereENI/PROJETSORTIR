@@ -57,3 +57,111 @@
 .nav-color {
     color: #24497b !important;
 }
+
+.primary-button {
+    background-color: #24497b !important;
+    border-color: #24497b !important;
+}
+
+.card-body-accueil {
+    position: absolute;
+    background: white;
+    width: 100%;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    z-index: 100;
+    display: block;
+    bottom: 0px;
+    opacity: 0.94
+}
+
+
+/* Margin */
+.margin-auto {
+    margin: auto !important;
+}
+.margin-10 {
+    margin: 10px !important;
+}
+.margin-top-auto{
+    margin-top: auto !important;
+}
+.margin-bottom-auto{
+    margin-bottom: auto !important;
+}
+.margin-left-auto{
+    margin-left: auto !important;
+}
+.margin-right-auto{
+    margin-right: auto !important;
+}
+.margin-top-25 {
+    margin-top: 25px !important;
+}
+.margin-top-10 {
+    margin-top: 10px !important;
+}
+.margin-top-0 {
+    margin-top: 0px !important;
+}
+.margin-bottom-25 {
+    margin-bottom: 25px !important;
+}
+.margin-bottom-10 {
+    margin-bottom: 10px !important;
+}
+.margin-bottom-0 {
+    margin-bottom: 0px !important;
+}
+.margin-left-25 {
+    margin-left: 25px !important;
+}
+.margin-left-10 {
+    margin-left: 10px !important;
+}
+.margin-left-0 {
+    margin-left: 0px !important;
+}
+.margin-right-25 {
+    margin-right: 25px !important;
+}
+.margin-right-10 {
+    margin-right: 10px !important;
+}
+.margin-right-0 {
+    margin-right: 0px !important;
+}
+
+
+
+
+/* Border Radius*/
+.border-radius-20 {
+    border-radius: 20px !important;
+}
+
+.border-radius-21 {
+    border-radius: 21px !important;
+}
+
+/* Border Color */
+.border-color-first-color {
+    border-color: #24497b !important;
+}
+
+/* Background Color */
+.background-color-first-color {
+    background-color: #24497b !important;
+}
+
+/* Position relative */
+.position-relative {
+    position: relative !important;
+}
+
+/* Display bloc */
+.display-block {
+    display: block !important;
+}
