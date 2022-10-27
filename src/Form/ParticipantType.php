@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class ParticipantType extends AbstractType
 {
@@ -20,7 +21,13 @@ class ParticipantType extends AbstractType
             ->add('pseudo')
             ->add('mdp',TextType::class,array("mapped"=>false,))
             ->add('mdp2',TextType::class,array("mapped"=>false,))
-            ->add('photoParticipant',FileType::class)
+            ->add('photoParticipant',FileType::class,[
+                'label'=>'Photo de profil',
+                'mapped'=>false,
+                'required'=>false,
+                'constraints'=>[new File(['maxSize'=>'10240k','mimeTypes'=>['image/*'],'mimeTypesMessage'=>'Enregistre une photo valide'])]
+
+            ])
             ->add('submit',SubmitType::class)
         ;
     }

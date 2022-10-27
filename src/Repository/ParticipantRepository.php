@@ -59,26 +59,22 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
     }
     public function setActive(Participant $entity,bool $actif):void{
         $entity->setActif($actif);
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
+        $this->save($entity,true);
     }
     public function setAdministration(Participant $entity,bool $admin):void{
         $entity->setAdministrateur($admin);
         if($admin){
             $entity->setRoles(array('ADMIN'));
-            $this->getEntityManager()->persist($entity);
-            $this->getEntityManager()->flush();
+            $this->save($entity,true);
         }
         else{
             $entity->setRoles(array(''));
-            $this->getEntityManager()->persist($entity);
-            $this->getEntityManager()->flush();
+            $this->save($entity,true);
         }
 
     }
     public function deleteParticipant(Participant $entity):void{
-        $this->getEntityManager()->remove($entity);
-        $this->getEntityManager()->flush();
+        $this->remove($entity);
     }
 
     public function findByEmail(string $email):Participant{
@@ -97,8 +93,7 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
             else{
                 $entity->setPhotoParticipant('default.jpg');
             }
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
+        $this->save($entity,true);
     }
 
 

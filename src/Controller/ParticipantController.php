@@ -38,9 +38,9 @@ class ParticipantController extends AbstractController
         ]);
     }
     #[Route('/{id}/edit', name: 'edit')]
-    public function edit(Request $request,ManagerRegistry $repo,int $id,UserPasswordHasherInterface $userPasswordHasher): ?Response
+    public function edit(Request $request,ParticipantRepository $repo,int $id,UserPasswordHasherInterface $userPasswordHasher): ?Response
     {
-        $participant = $repo->getManager()->find(Participant::class,$id);
+        $participant = $repo->find($id);
        if(($this->getUser()->getUserIdentifier()==$participant->getEmail())||$this->getUser()->getRoles()[0]=="ADMIN") {
            $form = $this->createForm(ParticipantType::class, $participant);
            $form->handleRequest($request);
@@ -65,10 +65,9 @@ class ParticipantController extends AbstractController
                $participant->setPrenom($participant->getPrenom());
                $participant->setTelephone($participant->getTelephone());
                $participant->setPseudo($participant->getPseudo());
-               $participant->setPhotoParticipant($participant->getPhotoParticipant());
-               $repo->getManager()->persist($participant);
-               $repo->getManager()->flush();
-               return $this->redirectToRoute('participantdetails', array('id' => $participant->getId()));
+               $repo->setPicture($participant,$form);
+               $repo->save($participant);
+               return $this->redirectToRoute('participant_details', array('id' => $participant->getId()));
            } else {
                return $this->render('participant/edit.html.twig', [
                    'controller_name' => 'ParticipantController',
@@ -90,7 +89,7 @@ class ParticipantController extends AbstractController
             if($this->getUser()->getRoles()[0]=="ADMIN") {
                 $participant = $repo->find($id);
                 $repo->setAdministration($participant,$admin);
-                return $this->redirectToRoute('participantlist');
+                return $this->redirectToRoute('participant_list');
             }
             else{
                 throw new Exception("Vous devez être administrateur pour réaliser cette action !");
@@ -109,7 +108,7 @@ class ParticipantController extends AbstractController
                 $participant = $repo->find($id);
                 $participant->setActif($active);
                 $repo->save($participant,true);
-                return $this->redirectToRoute('participantlist');
+                return $this->redirectToRoute('participant_list');
             }
             else{
                 throw new Exception("Vous devez être administrateur pour réaliser cette action !");
@@ -126,7 +125,7 @@ class ParticipantController extends AbstractController
             if($this->getUser()->getRoles()[0]=="ADMIN") {
                 $participant = $repo->find($id);
                 $repo->deleteParticipant($participant);
-                return $this->redirectToRoute('participantlist');
+                return $this->redirectToRoute('participant_list');
             }
             else{
                 throw new Exception("Vous devez être administrateur pour réaliser cette action !");
