@@ -2,9 +2,13 @@
 
 namespace App\Repository;
 
+use App\Entity\Campus;
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @extends ServiceEntityRepository<Sortie>
@@ -39,6 +43,41 @@ class SortieRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByArgs(?Participant $user,?Campus $campus,?Date $datedebut,?Date $datefin,?string $nom,bool $condition1,bool $condition2,bool $condition3,bool $condition4): array
+    {
+      $query = $this->createQueryBuilder('s');
+      if(isset($user)&& ($condition2||$condition3)){
+          if($condition2){
+              $query->innerJoin('sortieParticipant','sp','s.id=sp.sortieId');
+                $query->where('sp.participantId='.$user->getId());
+                $condition3=false;
+            }
+            if($condition3){
+                $query->innerJoin('sortieParticipant','sp','s.id=sp.sortieId');
+                $query->where('sp.participantId!='.$user->getId());
+            }
+      }
+      if(isset($campus)){
+          $query->where('s.idCampus ='.$campus->getId());
+
+      }
+        if(isset($datedebut)||isset($datefin)){
+            $query->where('s.dateHeureDebut BETWEEN '.$datedebut.' AND '.$datefin);
+      }
+        if(isset($nom)&&$nom!=""){
+            $query->where('s.nom LIKE "%'.$nom.'"');
+        }
+        if( $condition1){
+            $query->where('idOrganisateur='.$user->getId());
+        }
+        $actual=new \DateTime();
+        $actual->format('Y-m-d h:s:z');
+        if($condition4) {
+            $query->where('s.dateHeureDebut <' . $actual);
+        }
+        throw new Exception($nom);
+       // return $query->getQuery()->execute();
+    }
 //    /**
 //     * @return Sortie[] Returns an array of Sortie objects
 //     */

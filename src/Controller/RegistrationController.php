@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class RegistrationController extends AbstractController
 {
     #[Route('/nouvel-utilisateur', name: 'app_register')]
-    public function register(ParticipantRepository $repo,Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, AppCustomAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
+    public function register(ParticipantRepository $repo,Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, AppCustomAuthenticator $authenticator): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -36,9 +36,12 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+
             $user->setPhotoParticipant('default.jpg');
-            $entityManager->persist($user);
-            $entityManager->flush();
+            if($user->isAdministrateur()){
+                $repo->setAdministration($user,true);
+            }
+            $repo->save($user,true);
             // do anything else you need here, like send an email
             $repo->setPicture($user,$form);
             return $this->redirectToRoute('participant_list');

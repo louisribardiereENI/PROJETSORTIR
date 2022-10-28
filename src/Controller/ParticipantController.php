@@ -79,7 +79,6 @@ class ParticipantController extends AbstractController
                $participant->setTelephone($participant->getTelephone());
                $participant->setPseudo($participant->getPseudo());
                $repo->setPicture($participant,$form);
-               $repo->save($participant);
                return $this->redirectToRoute('participant_details', array('id' => $participant->getId()));
            } else {
                return $this->render('participant/edit.html.twig', [
