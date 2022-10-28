@@ -1,17 +1,208 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+    {% block title %}Sortir.com | Nouvel Utilisatateur{% endblock %}
+    {% block header %}
+        {% include 'module/navbar/navbar.html.twig' %}
+    {% endblock %}
+    {% block body %}
+        <section>
+            <div class="row">
+                <div class="col">
+                </div>
+                <div class="col-10">
+                    <div class="row">
+                        <div class="col-4 margin-auto">
+                        </div>
+                        <div class="col-4">
+                            <h4 class="center nav-color margin-top-25"><strong>NOUVEL UTILISATEUR</strong></h4>
+                        </div>
+                        <div class="col-4 margin-auto">
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                </div>
+                <div class="col-10">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="card mb-4 border-color-first-color border-radius-20">
+                                <div class="card-body text-center">
+                                    <img src="{{ asset('img/avatar/'~app.user.photoParticipant) }}" alt="avatar"
+                                         class="rounded-circle img-fluid" style="width: 150px;">
+                                    <h5 class="my-3">{{ app.user.nom }} {{ app.user.prenom }}</h5>
+                                    {# <p>{% if participant.roles[0] == 'ADMIN' %}Administrateur{% else %}Utilisateur{% endif %}</p>  #}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="card mb-4 border-color-first-color border-radius-20">
+                                <div class="card-body">
+                                    {{ form_start(registrationForm) }}
 
-{% block body %}
-    <h1>Register</h1>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="inputEmail4" class="form-label">Email :</label>
+                                                {{ form_widget(registrationForm.email) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="inputPassword4" class="form-label">Mot de passe :</label>
+                                                {{ form_widget(registrationForm.plainPassword) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="inputEmail4" class="form-label">Nom :</label>
+                                                {{ form_widget(registrationForm.nom) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="inputPassword4" class="form-label">Prénom :</label>
+                                                {{ form_widget(registrationForm.prenom) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="inputEmail4" class="form-label">Téléphone :</label>
+                                                {{ form_widget(registrationForm.telephone) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="inputPassword4" class="form-label">Campus :</label>
+                                                {{ form_widget(registrationForm.idCampus) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="inputPassword4" class="form-label">Pseudo :</label>
+                                                {{ form_widget(registrationForm.pseudo) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="inputPassword4" class="form-label">Photo de profil :</label>
+                                                {{ form_widget(registrationForm.photoParticipant) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <div class="form-check form-switch">
+                                                    {{ form_widget(registrationForm.administrateur) }}
+                                                    <label for="inputPassword4"
+                                                           class="form-check-label">Administrateur</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <div class="form-check form-switch">
+                                                    {{ form_widget(registrationForm.actif) }}
+                                                    <label for="inputPassword4" class="form-check-label">Actif</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <div class="form-check form-switch">
+                                                    {{ form_widget(registrationForm.agreeTerms) }}
+                                                    <label for="inputPassword4" class="form-check-label">Conditions
+                                                        d'utilisations</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="centrer">
+                                            <div class="btn-group" role="group">
+                                                <button type="button"
+                                                        onclick="window.location.href = '{{ path('participant_list') }}';"
+                                                        class="btn btn-secondary">Annuler
+                                                </button>
+                                            </div>
+                                            <div class="btn-group" role="group">
+                                                <button class="btn btn-primary primary-button" type="submit">Valider</button>
+                                            </div>
+                                        </div>
+                                        {{ form_end(registrationForm) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+        </section>
+        {#
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col" class="centrer-texte">Photo</th>
+                <th scope="col" class="centrer-texte">Identité</th>
+                {% if (app.user.roles[0]=='ADMIN') %}
+                    <th scope="col" class="centrer-texte">Administrateur</th>
+                    <th scope="col" class="centrer-texte">État</th>
+                    <th scope="col" class="centrer-texte">Supprimer</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for participant in participants %}
+                <tr>
+                    <th scope="row" class="centrer">
+                        <img src="{{ asset('img/avatar/'~participant.photoParticipant) }}"
+                             alt="mdo" width="32" height="32"
+                             class="rounded-circle">
+                    </th>
+                    <td class="centrer-texte">{{ participant.nom }} {{ participant.prenom }}</td>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+                    {% if (app.user.roles[0]=='ADMIN') %}
+                        {% if(participant.id!=app.user.id) %}
+                            <td class="centrer-texte">
+                                {% if(participant.isAdministrateur) %}
+                                    <a href="{{ path('participant_administrateur',{'id':participant.id,'admin':0}) }}">Retirer
+                                        l'administration</a>
+                                {% else %}
+                                    <a href="{{ path('participant_administrateur',{'id':participant.id,'admin':1}) }}">Ajouter
+                                        à l'administration</a>
+                                {% endif %}
+                            </td>
+                            <td class="centrer-texte">
+                                {% if(participant.isActif) %}
+                                    <a href="{{ path('participant_activation',{'id':participant.id,'active':0}) }}">Désactiver
+                                        le compte</a>
+                                {% else %}
+                                    <a href="{{ path('participant_activation',{'id':participant.id,'active':1}) }}">Activer
+                                        le compte</a>
+                                {% endif %}
+                            </td>
+                            <td class="centrer-texte">
+                                <a href="{{ path('participant_supprimer',{'id':participant.id}) }}">Supprimer
+                                    le compte</a>
+                            </td>
+                        {% endif %}
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        #}
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
-{% endblock %}
+        {#
+        {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.plainPassword, {
+                label: 'Password'
+            }) }}
+            {{ form_row(registrationForm.agreeTerms) }}
+
+            <button type="submit" class="btn">Register</button>
+        {{ form_end(registrationForm) }}
+        #}
+    {% endblock %}

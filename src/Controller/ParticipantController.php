@@ -21,6 +21,10 @@ class ParticipantController extends AbstractController
     #[Route('/', name: 'list')]
     public function index(ParticipantRepository $repo): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $participants = $repo->findAll();
         return $this->render('participant/index.html.twig', [
             'controller_name' => 'ParticipantController',
@@ -31,6 +35,10 @@ class ParticipantController extends AbstractController
     #[Route('/{id}/voir', name: 'details')]
     public function detail(ParticipantRepository $repo,int $id): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $participant = $repo->find($id);
         return $this->render('participant/detail.html.twig', [
             'controller_name' => 'ParticipantController',
@@ -40,6 +48,9 @@ class ParticipantController extends AbstractController
     #[Route('/{id}/modifier', name: 'edit')]
     public function edit(Request $request,ParticipantRepository $repo,int $id,UserPasswordHasherInterface $userPasswordHasher): ?Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
 
         $participant = $repo->find($id);
 
@@ -88,6 +99,10 @@ class ParticipantController extends AbstractController
     #[Route('/{id}/administrateur/{admin}', name: 'administrateur')]
     public function administrateur(ParticipantRepository $repo,int $id,bool $admin): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         if($this->getUser()) {
             if($this->getUser()->getRoles()[0]=="ADMIN") {
                 $participant = $repo->find($id);
@@ -106,6 +121,10 @@ class ParticipantController extends AbstractController
     #[Route('/{id}/activation/{active}', name: 'activation')]
     public function activation(ParticipantRepository $repo,int $id,bool $active): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         if($this->getUser()) {
             if($this->getUser()->getRoles()[0]=="ADMIN") {
                 $participant = $repo->find($id);
@@ -124,6 +143,10 @@ class ParticipantController extends AbstractController
     #[Route('/{id}/supprimer', name: 'supprimer')]
     public function supprimer(ParticipantRepository $repo,int $id): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         if($this->getUser()) {
             if($this->getUser()->getRoles()[0]=="ADMIN") {
                 $participant = $repo->find($id);

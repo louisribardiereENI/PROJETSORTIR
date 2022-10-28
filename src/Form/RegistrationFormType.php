@@ -40,41 +40,63 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Prénom',
             ])
             ->add('telephone', TextType::class, [
-
+                'attr' => ['class' => 'form-control'],
+                'label_attr' => ['class' => 'label-form'],
+                'label' => 'Téléphone'
             ])
-            ->add('administrateur')
-            ->add('actif')
-            ->add('pseudo')
-            ->add('idCampus',EntityType::class,['class'=>Campus::class,'choice_value'=>'id','choice_label'=>'nom'])
+            ->add('administrateur', CheckboxType::class, [
+                'attr' => ['class' => 'form-check-input'],
+                'label_attr' => ['class' => 'form-check-label'],
+                'label' => 'Administrateur',
+            ])
+            ->add('actif', CheckboxType::class, [
+                'attr' => ['class' => 'form-check-input'],
+                'label_attr' => ['class' => 'form-check-label'],
+                'label' => 'Activation du compte'
+            ])
+            ->add('pseudo', TextType::class, [
+                'attr' => ['class' => 'form-control'],
+                'label_attr' => ['class' => 'label-form'],
+                'label' => 'Pseudo'
+            ])
+            ->add('idCampus',EntityType::class,[
+                'class'=>Campus::class,'choice_value'=>'id','choice_label'=>'nom',
+                'label' => 'Campus',
+                'attr' => ['class' => 'form-control'],
+            ])
             ->add('photoParticipant',FileType::class,[
                 'label'=>'Photo de profil',
                 'mapped'=>false,
                 'required'=>false,
+                'attr' => ['class' => 'form-control'],
                 'constraints'=>[new File(['maxSize'=>'10240k','mimeTypes'=>['image/*'],'mimeTypesMessage'=>'Enregistre une photo valide'])]
 
             ])
             ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
+
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
+                'attr' => ['autocomplete' => 'new-password','class' => 'form-control'],
+                'label' => 'Mot de passe',
+                'label_attr' => ['class' => 'label-form'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Veuillez renseigner un mot de passe',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
+                        'minMessage' => 'Votre mot de passe ne doit pas dépasser la limite de  {{ limit }} caractères',
                         'max' => 4096,
                     ]),
                 ],
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
+                'attr' => ['class' => 'form-check-input'],
+                'label_attr' => ['class' => 'form-check-label'],
+                'label' => "Conditions d'utilisations",
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'You should agree to our terms.',
+                        'message' => "Veuillez accepter les termes d'utilisation.",
                     ]),
                 ],
             ])

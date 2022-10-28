@@ -26,6 +26,10 @@ class SortieController extends AbstractController
     #[Route('/', name: 'list')]
     public function index(SortieRepository $repo): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $sorties = $repo->findAll();
         return $this->render('sortie/index.html.twig', [
             'controller_name' => 'SortieController',
@@ -36,6 +40,10 @@ class SortieController extends AbstractController
     #[Route('/creer', name: 'create')]
     public function create(Request $request, SortieRepository $repo, ParticipantRepository $repoUser, VilleRepository $repoVille, LieuRepository $repoLieu): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $sortie = new Sortie();
         $form = $this->createForm(SortieType::class, $sortie);
         $form->handleRequest($request);
@@ -52,6 +60,7 @@ class SortieController extends AbstractController
     }
 
     private function submit(Request $request, ParticipantRepository $repoUser, VilleRepository $repoVille, LieuRepository $repoLieu, Sortie $sortie, Form $form): Sortie {
+
         $user = $repoUser->findByEmail($this->getUser()->getUserIdentifier());
         $sortie->setIdOrganisateur($user);
         $sortie->setIdSiteOrganisateur($user->getIdCampus());
@@ -112,6 +121,9 @@ class SortieController extends AbstractController
     #[Route('/{id}/modifier', name: 'modifier')]
     public function modifier(Request $request, SortieRepository $repo, ParticipantRepository $repoUser, VilleRepository $repoVille, LieuRepository $repoLieu, int $id): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
         $sortie = $repo->findOneBy(array('id' => $id));
         $form = $this->createForm(SortieType::class, $sortie);
         $form->get("nomLieu")->setData($sortie->getIdLieu()->getNom());
@@ -132,6 +144,9 @@ class SortieController extends AbstractController
     #[Route('/{id}/voir', name: 'details')]
     public function detail(SortieRepository $repo,int $id): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
         $sortie = $repo->find($id);
         return $this->render('sortie/afficher.html.twig', [
             'controller_name' => 'SortieController',
