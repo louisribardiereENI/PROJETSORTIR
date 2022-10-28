@@ -42,7 +42,7 @@ class SortieController extends AbstractController
         if ($form->isSubmitted()) {
             $sortie = $this->submit($request, $repoUser, $repoVille, $repoLieu, $sortie, $form);
             $repo->save($sortie, true);
-            return $this->redirectToRoute('sortie_list', array('id' => $sortie->getId()));
+            return $this->redirectToRoute('sortie_details', array('id' => $sortie->getId()));
         } else {
             return $this->render('sortie/create.html.twig', [
                 'controller_name' => 'SortieController',
@@ -119,7 +119,7 @@ class SortieController extends AbstractController
         if ($form->isSubmitted()) {
             $sortie = $this->submit($request, $repoUser, $repoVille, $repoLieu, $sortie, $form);
             $repo->save($sortie, true);
-            return $this->redirectToRoute('sortie_list', array('id' => $sortie->getId()));
+            return $this->redirectToRoute('sortie_details', array('id' => $sortie->getId()));
         } else {
             return $this->render('sortie/modifier.html.twig', [
                 'controller_name' => 'SortieController',
@@ -127,5 +127,15 @@ class SortieController extends AbstractController
                 'sortie'=>$sortie,
             ]);
         }
+    }
+
+    #[Route('/{id}/voir', name: 'details')]
+    public function detail(SortieRepository $repo,int $id): Response
+    {
+        $sortie = $repo->find($id);
+        return $this->render('sortie/afficher.html.twig', [
+            'controller_name' => 'SortieController',
+            'sortie' =>$sortie,
+        ]);
     }
 }
