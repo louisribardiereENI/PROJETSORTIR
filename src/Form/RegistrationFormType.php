@@ -48,6 +48,7 @@ class RegistrationFormType extends AbstractType
                 'attr' => ['class' => 'form-check-input'],
                 'label_attr' => ['class' => 'form-check-label'],
                 'label' => 'Administrateur',
+                'required' => 'false',
             ])
             ->add('actif', CheckboxType::class, [
                 'attr' => ['class' => 'form-check-input'],
