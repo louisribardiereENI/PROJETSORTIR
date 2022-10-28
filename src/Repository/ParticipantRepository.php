@@ -74,7 +74,7 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
 
     }
     public function deleteParticipant(Participant $entity):void{
-        $this->remove($entity);
+        $this->remove($entity,true);
     }
 
     public function findByEmail(string $email):Participant{

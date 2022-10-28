@@ -1,70 +1,221 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ParticipantController!{% endblock %}
+{% block title %}Sortir.com | Gérer Utilisatateur{% endblock %}
 {% block header %}
     {% include 'module/navbar/navbar.html.twig' %}
 {% endblock %}
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <table class="table">
-        <thead>
+    <section>
+        <div class="row">
+            <div class="col">
+            </div>
+            <div class="col-10">
+                <div class="row">
+                    <div class="col-4 margin-auto">
+                    </div>
+                    <div class="col-4">
+                        <h4 class="center nav-color margin-top-25"><strong>GÉRER LES UTILISATEURS</strong></h4>
+                    </div>
+                    <div class="col-4 margin-auto">
+                        <button class="btn btn-primary primary-button margin-left-auto position-relative display-block"
+                                type="button" onclick="window.location.href = '{{ path('app_register') }}'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                            &nbsp;Créer
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+            </div>
+            <div class="col-10">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card mb-4 border-color-first-color border-radius-20">
+                            <div class="card-body text-center">
+                                <img src="{{ asset('img/avatar/'~app.user.photoParticipant) }}" alt="avatar"
+                                     class="rounded-circle img-fluid" style="width: 150px;">
+                                <h5 class="my-3">{{ app.user.nom }} {{ app.user.prenom }}</h5>
+                                {# <p>{% if participant.roles[0] == 'ADMIN' %}Administrateur{% else %}Utilisateur{% endif %}</p>  #}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card mb-4 border-color-first-color border-radius-20">
+                            <div class="card-body">
+
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" class="centrer-texte">Photo</th>
+                                        <th scope="col" class="centrer-texte">Identité</th>
+                                        {% if (app.user.roles[0]=='ADMIN') %}
+                                            <th scope="col" class="centrer-texte">Administrateur</th>
+                                            <th scope="col" class="centrer-texte">État</th>
+                                            <th scope="col" class="centrer-texte">Supprimer</th>
+                                        {% endif %}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for participant in participants %}
+                                        <tr>
+                                            <td class="centrer-texte">
+                                                <img src="{{ asset('img/avatar/'~participant.photoParticipant) }}"
+                                                     alt="mdo" width="32" height="32"
+                                                     class="rounded-circle">
+                                            </td>
+                                            <td class="centrer-texte">{{ participant.nom }} {{ participant.prenom }}</td>
+
+                                            {% if (app.user.roles[0]=='ADMIN') %}
+                                                <td class="centrer-texte">
+
+                                                    {% if(participant.isAdministrateur) %}
+
+                                                        {% if(participant.id==app.user.id) %}
+                                                            <button class="btn btn-danger btn-sm"
+                                                                    onclick="window.location.href = '{{ path('participant_administrateur',{'id':participant.id,'admin':0}) }}'"
+                                                                    disabled="disabled">Administrateur
+                                                            </button>
+                                                        {% else %}
+                                                            <button class="btn btn-danger btn-sm"
+                                                                    onclick="window.location.href = '{{ path('participant_administrateur',{'id':participant.id,'admin':0}) }}'">Administrateur
+                                                            </button>
+                                                        {% endif %}
+
+                                                    {% else %}
+                                                        <button class="btn btn-primary primary-button btn-sm"
+                                                                onclick="window.location.href = '{{ path('participant_administrateur',{'id':participant.id,'admin':1}) }}'">Utilisateur
+                                                        </button>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="centrer-texte">
+                                                    {% if(participant.isActif) %}
+
+                                                        {% if(participant.id==app.user.id) %}
+
+                                                            <button class="btn btn-success btn-sm"
+                                                                    onclick="window.location.href = '{{ path('participant_activation',{'id':participant.id,'active':0}) }}'" disabled>
+                                                            Activer
+                                                            </button>
+
+                                                        {% else %}
+                                                            <button class="btn btn-success btn-sm"
+                                                                    onclick="window.location.href = '{{ path('participant_activation',{'id':participant.id,'active':0}) }}'">
+                                                            Activer
+                                                            </button>
+
+                                                            {% endif %}
+                                                    {% else %}
+
+                                                        <button class="btn btn-danger btn-sm"
+                                                                onclick="window.location.href = '{{ path('participant_activation',{'id':participant.id,'active':1}) }}'">
+                                                        Désactiver
+                                                        </button>
+
+                                                    {% endif %}
+                                                </td>
+
+                                                <td class="centrer-texte">
+
+                                                    {% if(participant.id==app.user.id) %}
+
+
+                                                    <button class="btn btn-danger btn-sm"
+                                                            onclick="window.location.href = '{{ path('participant_supprimer',{'id':participant.id}) }}'" disabled>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                                        </svg>
+                                                    </button>
+
+                                                    {% else %}
+
+                                                        <button class="btn btn-danger btn-sm"
+                                                                onclick="window.location.href = '{{ path('participant_supprimer',{'id':participant.id}) }}'">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                                            </svg>
+                                                        </button>
+
+                                                    {% endif %}
+                                                </td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+    </section>
+
+{% endblock %}
+
+
+{#
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col" class="centrer-texte">Photo</th>
+        <th scope="col" class="centrer-texte">Identité</th>
+        {% if (app.user.roles[0]=='ADMIN') %}
+            <th scope="col" class="centrer-texte">Administrateur</th>
+            <th scope="col" class="centrer-texte">État</th>
+            <th scope="col" class="centrer-texte">Supprimer</th>
+        {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for participant in participants %}
         <tr>
-            <th scope="col">photo</th>
-            <th scope="col">nom</th>
-            <th scope="col">prenom</th>
-            <th scope="col">pseudo</th>
-            <th scope="col">email</th>
-            {% if (app.user.roles[0]=='ADMIN') %}
-            <th scope="col">Administrateur</th>
-            <th scope="col">Etat</th>
-            <th scope="col">Supprimer</th>
-            {% endif %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for participant in participants %}
-        <tr class="table-primary">
-            <td><img src="{{ asset('img/avatar/'~participant.photoParticipant) }}" alt="mdo" width="32" height="32"
-                                           class="rounded-circle"></td>
-            <th scope="row">{{ participant.nom }}</th>
-            <td>{{ participant.prenom }}</td>
-            <td>{{ participant.pseudo }}</td>
-            <td>{{ participant.email }}</td>
+            <th scope="row" class="centrer">
+                <img src="{{ asset('img/avatar/'~participant.photoParticipant) }}"
+                     alt="mdo" width="32" height="32"
+                     class="rounded-circle">
+            </th>
+            <td class="centrer-texte">{{ participant.nom }} {{ participant.prenom }}</td>
 
             {% if (app.user.roles[0]=='ADMIN') %}
                 {% if(participant.id!=app.user.id) %}
-                <td>
-                {% if(participant.isAdministrateur) %}
-                    <a href="{{ path('participant_administrateur',{'id':participant.id,'admin':0})}}">Retirer l'administration</a>
-                {% else %}
-                    <a href="{{ path('participant_administrateur',{'id':participant.id,'admin':1})}}">Ajouter à l'administration</a>
+                    <td class="centrer-texte">
+                        {% if(participant.isAdministrateur) %}
+                            <a href="{{ path('participant_administrateur',{'id':participant.id,'admin':0}) }}">Retirer
+                                l'administration</a>
+                        {% else %}
+                            <a href="{{ path('participant_administrateur',{'id':participant.id,'admin':1}) }}">Ajouter
+                                à l'administration</a>
+                        {% endif %}
+                    </td>
+                    <td class="centrer-texte">
+                        {% if(participant.isActif) %}
+                            <a href="{{ path('participant_activation',{'id':participant.id,'active':0}) }}">Désactiver
+                                le compte</a>
+                        {% else %}
+                            <a href="{{ path('participant_activation',{'id':participant.id,'active':1}) }}">Activer
+                                le compte</a>
+                        {% endif %}
+                    </td>
+                    <td class="centrer-texte">
+                        <a href="{{ path('participant_supprimer',{'id':participant.id}) }}">Supprimer
+                            le compte</a>
+                    </td>
                 {% endif %}
-            </td>
-                <td>
-                    {% if(participant.isActif) %}
-                        <a href="{{ path('participant_activation',{'id':participant.id,'active':0})}}">Désactiver le compte</a>
-                    {% else %}
-                        <a href="{{ path('participant_activation',{'id':participant.id,'active':1})}}">Activer le compte</a>
-                    {% endif %}
-                </td>
-                <td>
-                        <a href="{{ path('participant_supprimer',{'id':participant.id})}}">Supprimer le compte</a>
-                </td>
             {% endif %}
-            {% endif %}
-
         </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-
-
-
-</div>
-{% endblock %}
+    {% endfor %}
+    </tbody>
+</table>
+#}

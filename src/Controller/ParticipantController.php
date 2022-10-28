@@ -40,7 +40,9 @@ class ParticipantController extends AbstractController
     #[Route('/{id}/modifier', name: 'edit')]
     public function edit(Request $request,ParticipantRepository $repo,int $id,UserPasswordHasherInterface $userPasswordHasher): ?Response
     {
+
         $participant = $repo->find($id);
+
        if(($this->getUser()->getUserIdentifier()==$participant->getEmail())||$this->getUser()->getRoles()[0]=="ADMIN") {
            $form = $this->createForm(ParticipantType::class, $participant);
            $form->handleRequest($request);
@@ -72,6 +74,7 @@ class ParticipantController extends AbstractController
                return $this->render('participant/edit.html.twig', [
                    'controller_name' => 'ParticipantController',
                    'form' => $form->createView(),
+                   'participant' => $participant,
                ]);
            }
        }

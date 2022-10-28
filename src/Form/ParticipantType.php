@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Participant;
+use SebastianBergmann\CodeCoverage\Report\Text;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -15,20 +16,37 @@ class ParticipantType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom')
-            ->add('prenom')
-            ->add('telephone')
-            ->add('pseudo')
-            ->add('mdp',TextType::class,array("mapped"=>false,))
-            ->add('mdp2',TextType::class,array("mapped"=>false,))
+            ->add('nom', TextType::class, [
+                'attr' => ['class' => 'form-control'],
+            ])
+            ->add('prenom', TextType::class, [
+                'attr' => ['class' => 'form-control'],
+            ])
+            ->add('telephone', TextType::class, [
+                'attr' => ['class' => 'form-control'],
+            ])
+            ->add('pseudo', TextType::class, [
+                'attr' => ['class' => 'form-control'],
+            ])
+            ->add('mdp',TextType::class,
+                array("mapped"=>false,
+                    'attr' => ['class' => 'form-control'],
+                    ))
+            ->add('mdp2',TextType::class,
+                array("mapped"=>false,
+                    'attr' => ['class' => 'form-control'],
+                    ))
             ->add('photoParticipant',FileType::class,[
-                'label'=>'Photo de profil',
                 'mapped'=>false,
                 'required'=>false,
-                'constraints'=>[new File(['maxSize'=>'10240k','mimeTypes'=>['image/*'],'mimeTypesMessage'=>'Enregistre une photo valide'])]
+                'constraints'=>[new File(['maxSize'=>'10240k','mimeTypes'=>['image/*'],'mimeTypesMessage'=>'Enregistre une photo valide'])],
+                'attr' => ['class' => 'form-control'],
 
             ])
-            ->add('submit',SubmitType::class)
+            ->add('submit',SubmitType::class, [
+                'attr' => ['class' => 'btn btn-primary primary-button centrer'],
+                'label' => 'Valider',
+                ])
         ;
     }
 
