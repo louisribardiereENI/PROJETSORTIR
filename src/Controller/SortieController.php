@@ -48,7 +48,7 @@ class SortieController extends AbstractController
         $form = $this->createForm(SortieType::class, $sortie);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            $sortie = $this->submit($request, $repoUser, $repoVille, $repoLieu, $sortie, $form);
+            $sortie = $this->submit($request, $repo, $repoUser, $repoVille, $repoLieu, $sortie, $form, false);
             $repo->save($sortie, true);
             return $this->redirectToRoute('sortie_details', array('id' => $sortie->getId()));
         } else {
@@ -59,7 +59,7 @@ class SortieController extends AbstractController
         }
     }
 
-    private function submit(Request $request, ParticipantRepository $repoUser, VilleRepository $repoVille, LieuRepository $repoLieu, Sortie $sortie, Form $form): Sortie {
+    private function submit(Request $request, SortieRepository $repo, ParticipantRepository $repoUser, VilleRepository $repoVille, LieuRepository $repoLieu, Sortie $sortie, Form $form, bool $isEdit): Sortie {
 
         $user = $repoUser->findByEmail($this->getUser()->getUserIdentifier());
         $sortie->setIdOrganisateur($user);
@@ -114,7 +114,15 @@ class SortieController extends AbstractController
         $sortie->setDateLimiteInscription($dateLimiteInscription);
         $sortie->setNbInscriptionsMax($nbrInscriptionMax);
         $sortie->setInfosSortie($infoSortie);
-        $sortie->setPhotoSortie($photoSortie);
+        if ( !$isEdit) {
+            $sortie->setPhotoSortie('default.jpg');
+        }
+        $repo->save($sortie, true);
+        if($photoSortie) {
+            $photoSortie->move('img/sorties', $sortie->getId() . '.jpg');
+            $sortie->setPhotoSortie($sortie->getId().'.jpg');
+        }
+        $repo->save($sortie, true);
         return $sortie;
     }
 
@@ -129,7 +137,7 @@ class SortieController extends AbstractController
         $form->get("nomLieu")->setData($sortie->getIdLieu()->getNom());
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            $sortie = $this->submit($request, $repoUser, $repoVille, $repoLieu, $sortie, $form);
+            $sortie = $this->submit($request, $repo, $repoUser, $repoVille, $repoLieu, $sortie, $form, true);
             $repo->save($sortie, true);
             return $this->redirectToRoute('sortie_details', array('id' => $sortie->getId()));
         } else {
