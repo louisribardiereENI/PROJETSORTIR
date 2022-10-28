@@ -114,6 +114,7 @@ class SortieController extends AbstractController
     {
         $sortie = $repo->findOneBy(array('id' => $id));
         $form = $this->createForm(SortieType::class, $sortie);
+        $form->get("nomLieu")->setData($sortie->getIdLieu()->getNom());
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $sortie = $this->submit($request, $repoUser, $repoVille, $repoLieu, $sortie, $form);
@@ -123,6 +124,7 @@ class SortieController extends AbstractController
             return $this->render('sortie/modifier.html.twig', [
                 'controller_name' => 'SortieController',
                 'form' => $form->createView(),
+                'sortie'=>$sortie,
             ]);
         }
     }

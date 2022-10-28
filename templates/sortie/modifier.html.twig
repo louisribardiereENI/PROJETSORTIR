@@ -4,32 +4,44 @@
 
 {% block body %}
     <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+            font: 18px/1.5 sans-serif;
+        }
+
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
     </style>
 
-    <div class="example-wrapper">
-        {{ form_start(form) }}
-        {{ form_rest(form) }}
-        <input type="text" placeholder="Entrez une adresse" id="adresse"/>
-        <input type="hidden" id="address" name="address"/>
-
-        <input type="hidden" id="city" name="city"/>
-        <input type="hidden" id="postal" name="postal"/>
-        <input type="hidden" id="lat" name="lat"/>
-        <input type="hidden" id="lng" name="lng"/>
-        {{ form_end(form) }}
-        <div id="carte1" style="height: 800px; width: 800px">
-        </div>
-    </div>
-
-    {% block stylesheets %} <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-                                  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-                                  crossorigin=""/>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+              integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+              crossorigin=""/>
         <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.css"
               integrity="sha512-v5YmWLm8KqAAmg5808pETiccEohtt8rPVMGQ1jA6jqkWVydV5Cuz3nJ9fQ7ittSxvuqsvI9RSGfVoKPaAJZ/AQ=="
               crossorigin="">
     {% endblock %}
+
+    <div class="example-wrapper">
+        {{ form_start(form) }}
+        {{ form_rest(form) }}
+        <input type="text" placeholder="Entrez une adresse" id="adresse"
+               value="{{ sortie.IdLieu.Rue ~ " " ~ sortie.IdLieu.IdVille.CodePostal ~ " " ~ sortie.IdLieu.IdVille.Nom() }}"/>
+
+        <input type="hidden" id="address" name="address"/>
+
+        <input type="hidden" id="city" name="city"/>
+        <input type="hidden" id="postal" name="postal"/>
+        <input type="hidden" id="lat" name="lat" value="{{ sortie.IdLieu.latitude }}"/>
+        <input type="hidden" id="lng" name="lng" value="{{ sortie.IdLieu.longitude }}"/>
+        <div id="carte1" style="height: 800px; width: 800px">
+        </div>
+        {{ form_end(form) }}
+    </div>
     {% block javascripts %}
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
                 integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
@@ -45,21 +57,45 @@
 
 
         <script type="text/javascript">
-            var adresse=document.getElementById("adresse");
-            var centerview=[46.71109,1.7191036];
+            window.onload = function () {
+                var latitude = document.getElementById("lat").value;
+                var longitude = document.getElementById("lng").value;
+                var latlong = L.latLng(latitude, longitude);
+                var marker = new L.Marker([latitude, longitude]);
+                var geocodeService = L.esri.Geocoding.geocodeService();
+                geocodeService.reverse().latlng(latlong).run(function (error, result) {
+                    marker.addTo(mymap).bindPopup(result.address.Match_addr).openPopup();
+                    if (error) {
+                        return;
+                    }
+                    markersss = marker;
+                    document.getElementById("address").value = result.address.Address;
+                    document.getElementById("city").value = result.address.City;
+                    document.getElementById("postal").value = result.address.Postal;
+                    document.getElementById("lat").value = result.latlng.lat;
+                    document.getElementById("lng").value = result.latlng.lng;
+                });
+            };
+
+            var markersss;
+
+
+            var adresse = document.getElementById("adresse");
+            var centerview = [46.71109, 1.7191036];
             var mymap = L.map('carte1').setView([centerview[0], centerview[1]], 6);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mymap);
             var layerGroup = L.layerGroup().addTo(mymap);
             var geocodeService = L.esri.Geocoding.geocodeService();
-            adresse.addEventListener('input',e=>{
-                var query="http://api-adresse.data.gouv.fr/search/?q="+adresse.value;
-                fetch(query,{method: 'get'})
-                    .then(r=>r.json())
-                    .then(r=>{
+            adresse.addEventListener('input', e => {
+                mymap.removeLayer(markersss);
+                var query = "http://api-adresse.data.gouv.fr/search/?q=" + adresse.value;
+                fetch(query, {method: 'get'})
+                    .then(r => r.json())
+                    .then(r => {
                         layerGroup.clearLayers();
                         r.features.forEach(element => {
-                            var coords=element.geometry.coordinates;
-                            L.marker([coords[1],coords[0]]).addTo(layerGroup).on('click', function (e) {
+                            var coords = element.geometry.coordinates;
+                            L.marker([coords[1], coords[0]]).addTo(layerGroup).on('click', function (e) {
                                 geocodeService.reverse().latlng(this.getLatLng()).run(function (error, result) {
                                     if (error) {
                                         return;
@@ -69,9 +105,6 @@
                                     document.getElementById("postal").value = result.address.Postal;
                                     document.getElementById("lat").value = result.latlng.lat;
                                     document.getElementById("lng").value = result.latlng.lng;
-                                    console.log(result.address.Address);
-                                    console.log(result.address.City);
-                                    console.log(result.address.Postal);
                                     L.marker(result.latlng).addTo(mymap).bindPopup(result.address.Match_addr).openPopup();
                                 });
                             });
