@@ -186,8 +186,49 @@
                         <div class="card mb-4 border-color-first-color border-radius-20"
                              style="height: 95% !important;">
                             <div class="card-body">
-                                <h3 class="centrer-texte margin-bottom-10">Participation</h3>
-                                <button onclick="location.href"
+                                <h3 class="centrer-texte margin-bottom-10">Inscription</h3>
+
+                                {% if sortie.getIdParticipant is not empty %}
+
+                                    {% if sortie.isIdInParticipantsList(app.user.id) %}
+                                        <button class="btn btn-primary primary-button centrer"
+                                                onclick="window.location.href = '{{ path('sortie_inscription',{'id':sortie.id}) }}'">
+                                            Je me désinscrit
+                                        </button>
+                                    {% else %}
+                                        <button name="" class="btn btn-primary primary-button centrer"
+                                                onclick="window.location.href = '{{ path('sortie_inscription',{'id':sortie.id}) }}'">
+                                            Je m'inscrit
+                                        </button>
+                                    {% endif %}
+
+                                    {# {% set break = false %}
+                                    {% for participant in sortie.getIdParticipant if not break %}
+
+                                        {% if app.user.id == participant.id %}
+                                            {% set break = true %}
+                                            <button class="btn btn-primary primary-button centrer"
+                                                    onclick="window.location.href = '{{ path('sortie_inscription',{'id':sortie.id}) }}'">
+                                                Je me désinscrit
+                                            </button>
+                                        {% endif %}
+                                        {% if app.user.id != participant.id  %}
+                                            <button name="" class="btn btn-primary primary-button centrer"
+                                                    onclick="window.location.href = '{{ path('sortie_inscription',{'id':sortie.id}) }}'">
+                                                Je m'inscrit
+                                            </button>
+                                        {% endif %}
+
+                                    {% endfor %}
+                                    #}
+                                {% else %}
+
+                                    <button name="" class="btn btn-primary primary-button centrer"
+                                            onclick="window.location.href = '{{ path('sortie_inscription',{'id':sortie.id}) }}'">
+                                        Je m'inscrit
+                                    </button>
+
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -197,6 +238,18 @@
                              style="height: 95% !important;">
                             <div class="card-body">
                                 <h3 class="centrer-texte margin-bottom-10">Utilisateurs</h3>
+
+                                {% if sortie.getIdParticipant.count == 0 %}
+                                    <p class="centrer-texte">Aucun utilisateur n'est inscrit !</p>
+                                {% else %}
+                                    <div class="row">
+                                        {% for participant in sortie.getIdParticipant %}
+                                            <div class="col-2">
+                                                <p class="centrer-texte">{{ participant.prenom }} {{ participant.nom }}</p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
