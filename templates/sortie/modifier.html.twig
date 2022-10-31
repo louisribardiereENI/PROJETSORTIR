@@ -42,7 +42,7 @@
         </div>
         {{ form_end(form) }}
     </div>
-    {% block javascripts %}
+
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
                 integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
                 crossorigin=""></script>
@@ -78,8 +78,6 @@
             };
 
             var markersss;
-
-
             var adresse = document.getElementById("adresse");
             var centerview = [46.71109, 1.7191036];
             var mymap = L.map('carte1').setView([centerview[0], centerview[1]], 6);
@@ -110,7 +108,9 @@
                             });
                         });
                     })
-            })
+                    .catch((error) => {
+                    });
+            });
         </script>
-    {% endblock %}
+
 {% endblock %}
