@@ -177,3 +177,21 @@
 .centrer-texte {
     text-align: center !important;
 }
+
+.gauche-texte {
+    text-align: left !important;
+}
+
+.droite-texte {
+    text-align: right !important;
+}
+
+.nav-link {
+    color: #24497b !important;
+}
+
+.centrage-vertical {
+    position: relative !important;
+    display: block !important;
+    margin: auto !important;
+}

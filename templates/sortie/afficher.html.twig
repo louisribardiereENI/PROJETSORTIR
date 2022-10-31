@@ -6,65 +6,206 @@
 {% endblock %}
 
 {% block body %}
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.css"
+          integrity="sha512-v5YmWLm8KqAAmg5808pETiccEohtt8rPVMGQ1jA6jqkWVydV5Cuz3nJ9fQ7ittSxvuqsvI9RSGfVoKPaAJZ/AQ=="
+          crossorigin="">
+
     <section>
-        <h4 class="center nav-color margin-top-25"><strong>{{ sortie.nom }}</strong></h4>
+
+        <h4 class="center nav-color margin-top-25"><strong>{{ sortie.nom }}
+                <br>
+                <span class="badge rounded-pill text-bg-success background-color-first-color">{{ sortie.idEtat.libelle }}</span>
+                <span class="badge rounded-pill text-bg-success background-color-first-color">{{ sortie.getIdParticipant.count }}/{{ sortie.nbInscriptionsMax }}</span>
+                <span class="badge rounded-pill text-bg-success background-color-first-color">{{ sortie.duree }} min</span>
+
+            </strong></h4>
         <div class="row">
-            <div class="col">
+            <div class="col-1">
             </div>
             <div class="col-10">
                 <div class="row">
                     <div class="col-lg-4">
-                        <div class="card mb-4 border-color-first-color border-radius-20">
+                        <div class="card mb-4 border-color-first-color border-radius-20"
+                             style="height: 95% !important;">
                             <div class="card-body text-center">
-                                <h2>Organisateur</h2>
-                                <br >
-                                <img src="{{ asset('img/avatar/'~app.user.photoParticipant) }}" alt="avatar"
-                                     class="rounded-circle img-fluid" style="width: 150px;">
-                                <h5 class="my-3">{{ sortie.idOrganisateur.prenom }} {{ sortie.idOrganisateur.nom }}</h5>
-                                <div class="d-flex justify-content-center mb-2 centrer">
+                                <h3 class="margin-bottom-10">Carte</h3>
+                                <input type="hidden" id="lat" name="lat" value="{{ sortie.IdLieu.latitude }}"/>
+                                <input type="hidden" id="lng" name="lng" value="{{ sortie.IdLieu.longitude }}"/>
+                                <div id="carte1" class="img-fluid border-radius-20"
+                                     style="height: 400px; width: 800px; margin-bottom: 10px;"></div>
 
-                                    <button type="button" onclick="window.location.href = '{{ path('participant_details', {'id':sortie.idOrganisateur.id}) }}';" class="btn btn-primary primary-button centrer">Afficher son profil</button>
-                                </div>
+                                <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+                                        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+                                        crossorigin=""></script>
+
+                                <script src="https://unpkg.com/esri-leaflet@2.2.3/dist/esri-leaflet.js"
+                                        integrity="sha512-YZ6b5bXRVwipfqul5krehD9qlbJzc6KOGXYsDjU9HHXW2gK57xmWl2gU6nAegiErAqFXhygKIsWPKbjLPXVb2g=="
+                                        crossorigin=""></script>
+
+                                <script src="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js"
+                                        integrity="sha512-zdT4Pc2tIrc6uoYly2Wp8jh6EPEWaveqqD3sT0lf5yei19BC1WulGuh5CesB0ldBKZieKGD7Qyf/G0jdSe016A=="
+                                        crossorigin=""></script>
+
+
+                                <script type="text/javascript">
+                                    window.onload = function () {
+                                        var latitude = document.getElementById("lat").value;
+                                        var longitude = document.getElementById("lng").value;
+                                        var latlong = L.latLng(latitude, longitude);
+                                        var marker = new L.Marker([latitude, longitude]);
+                                        var geocodeService = L.esri.Geocoding.geocodeService();
+                                        geocodeService.reverse().latlng(latlong).run(function (error, result) {
+                                            marker.addTo(mymap).bindPopup(result.address.Match_addr).openPopup();
+                                            if (error) {
+                                                return;
+                                            }
+                                            markersss = marker;
+                                            document.getElementById("lat").value = result.latlng.lat;
+                                            document.getElementById("lng").value = result.latlng.lng;
+                                        });
+                                    };
+                                    var markersss;
+                                    var adresse = document.getElementById("adresse");
+                                    var centerview = [46.71109, 1.7191036];
+                                    var mymap = L.map('carte1').setView([centerview[0], centerview[1]], 6);
+                                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mymap);
+                                    var layerGroup = L.layerGroup().addTo(mymap);
+                                    var geocodeService = L.esri.Geocoding.geocodeService();
+                                </script>
+
+
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-8">
-                        <div class="card mb-4 border-color-first-color border-radius-20">
-                            <div class="card-body">
-                                <h2 class="centrer-texte">Informations sortie</h2>
+                        <div class="card mb-4 border-color-first-color border-radius-20"
+                             style="height: 95% !important;">
+                            <div class="card-body" style="margin-bottom: 10px;">
+                                <h3 class="centrer-texte margin-bottom-10">Informations sortie</h3>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <div class="mb-2">
+                                            <img src="{{ asset('img/sorties/'~sortie.photoSortie) }}" width="400"
+                                                 class="img-fluid centrer border-radius-20">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <div class="affichage-1">
+                                            <div class="mb-2">
+                                                <label class="form-label">Nom de la sortie</label>
+                                                <input class="form-control" value="{{ sortie.nom }}" disabled>
+                                            </div>
+
+                                            <div class="mb-2">
+                                                <label class="form-label">Description</label>
+                                                <textarea class="form-control" rows="5"
+                                                          disabled>{{ sortie.infosSortie }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-sm-5">
+                                        <div class="mb-2">
+                                            <label class="form-label">Date du début de la sortie</label>
+                                            <input class="form-control" type="datetime-local"
+                                                   value="{{ sortie.dateHeureDebut|date('Y-m-d H:i:s') }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="mb-2">
+                                            <label class="form-label">Date limite d'inscription</label>
+                                            <input class="form-control" type="datetime-local"
+                                                   value="{{ sortie.dateLimiteInscription|date('Y-m-d H:i:s') }}"
+                                                   disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="mb-2">
+                                            <label class="form-label">Durée</label>
+                                            <input class="form-control" value="{{ sortie.duree }} minutes" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-sm-5">
+                                        <div class="">
+                                            <label class="form-label">Site organisateur</label>
+                                            <input class="form-control" type="text"
+                                                   value="{{ sortie.idSiteOrganisateur.nom }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <div class="">
+                                            <label class="form-label">Lieu</label>
+                                            <input class="form-control" type="text"
+                                                   value='{{ sortie.idLieu.nom }} : ({{ sortie.idLieu.rue }} {{ sortie.idLieu.idVille.codePostal }} {{ sortie.idLieu.idVille.nom }})'
+                                                   disabled>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
-            <div class="col">
+            <div class="col-1">
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-1">
+            </div>
+            <div class="col-10">
+                <div class="row">
+
+                    <div class="col-lg-3">
+                        <div class="card mb-4 border-color-first-color border-radius-20"
+                             style="height: 95% !important;">
+                            <div class="card-body">
+                                <h3 class="centrer-texte margin-bottom-10">Organisateur</h3>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <img src="{{ asset('img/avatar/'~sortie.idOrganisateur.photoParticipant) }}"
+                                             width="40px" class="rounded-circle centrer" alt="photo de profil">
+                                    </div>
+                                    <div class="col-8 centrage-vertical">
+                                        <p class="centrage-vertical">{{ sortie.idOrganisateur.nom }} {{ sortie.idOrganisateur.prenom }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="card mb-4 border-color-first-color border-radius-20"
+                             style="height: 95% !important;">
+                            <div class="card-body">
+                                <h3 class="centrer-texte margin-bottom-10">Participation</h3>
+                                <button
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card mb-4 border-color-first-color border-radius-20"
+                             style="height: 95% !important;">
+                            <div class="card-body">
+                                <h3 class="centrer-texte margin-bottom-10">Utilisateurs</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-1">
+            </div>
+        </div>
+
     </section>
-
-
-    <div class="example-wrapper">
-        Nom de la Sortie : {{ sortie.nom }}
-        <br>
-        Date heure début : {{ sortie.dateHeureDebut|date('Y-m-d H:i:s') }}
-        <br>
-        Durée en minutes : {{ sortie.duree }}
-        <br>
-        Date limite d'inscription : {{ sortie.dateLimiteInscription|date('Y-m-d H:i:s') }}
-        <br>
-        Nombre incriptions max : {{ sortie.nbInscriptionsMax }}
-        <br>
-        Informations : {{ sortie.infosSortie }}
-        <br>
-        Photo de la sortie : {{ sortie.photoSortie }}
-        <br>
-        Etat : {{ sortie.idEtat.libelle }}
-        <br>
-        Organisateur : {{ sortie.idOrganisateur.nom }}
-        {{ sortie.idOrganisateur.prenom }}
-        <br>
-        Site organisateur : {{ sortie.idSiteOrganisateur.nom }}
-        <br>
-        Lieu : {{ sortie.idLieu.nom }} ( {{ sortie.idLieu.rue }} {{ sortie.idLieu.idVille.codePostal }} {{ sortie.idLieu.idVille.nom }} )
-    </div>
 {% endblock %}
