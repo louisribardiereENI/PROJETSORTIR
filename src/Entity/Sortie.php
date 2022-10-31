@@ -196,8 +196,10 @@ class Sortie
     }
 
     public function isIdInParticipantsList(int $id): bool {
-        if ($this->idParticipant->containsKey($id)) {
-            return true;
+        foreach ($this->idParticipant as $participant) {
+            if ($participant->getId() == $id) {
+                return true;
+            }
         }
         return false;
     }
