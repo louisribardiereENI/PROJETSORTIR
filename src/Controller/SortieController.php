@@ -167,7 +167,7 @@ class SortieController extends AbstractController
     }
 
     #[Route('/{id}/inscription', name: 'inscription')]
-    public function inscription(SortieRepository $repo, ParticipantRepository $repoUser, int $id): Response
+    public function inscription(SortieRepository $repo, int $id): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -193,6 +193,10 @@ class SortieController extends AbstractController
         $participant = $repoUser->findOneBy(array('email' => $this->getUser()->getUserIdentifier()));
         if ($participant->getId() != $sortie->getIdOrganisateur()->getId() && !$participant->isAdministrateur()) {
             return $this->redirectToRoute('sortie_details', array('id' => $sortie->getId()));
+        }
+        $participantList = $sortie->getIdParticipant();
+        foreach ($participantList as $participantALaSortie) {
+            $sortie->removeIdParticipant($participantALaSortie);
         }
         $etat = $repoEtat->findOneBy(array('libelle' => 'Annulée'));
         $sortie->setIdEtat($etat);
