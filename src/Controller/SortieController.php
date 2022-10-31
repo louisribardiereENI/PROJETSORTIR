@@ -133,6 +133,10 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         $sortie = $repo->findOneBy(array('id' => $id));
+        $participant = $repoUser->findOneBy(array('email' => $this->getUser()->getUserIdentifier()));
+        if ($participant->getId() != $sortie->getIdOrganisateur() && !$participant->isAdministrateur()) {
+            return $this->redirectToRoute('sortie_details', array('id' => $sortie->getId()));
+        }
         $form = $this->createForm(SortieType::class, $sortie);
         $form->get("nomLieu")->setData($sortie->getIdLieu()->getNom());
         $form->handleRequest($request);
@@ -163,7 +167,7 @@ class SortieController extends AbstractController
     }
 
     #[Route('/{id}/inscription', name: 'inscription')]
-    public function inscription(SortieRepository $repo, int $id): Response
+    public function inscription(SortieRepository $repo, ParticipantRepository $repoUser, int $id): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -177,5 +181,22 @@ class SortieController extends AbstractController
         }
         $repo->save($sortie, true);
         return $this->redirectToRoute('sortie_details', array('id' => $sortie->getId()));
+    }
+
+    #[Route('/{id}/annuler', name: 'annuler')]
+    public function annuler(SortieRepository $repo, ParticipantRepository $repoUser, EtatRepository $repoEtat, int $id): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+        $sortie = $repo->findOneBy(array('id' => $id));
+        $participant = $repoUser->findOneBy(array('email' => $this->getUser()->getUserIdentifier()));
+        if ($participant->getId() != $sortie->getIdOrganisateur()->getId() && !$participant->isAdministrateur()) {
+            return $this->redirectToRoute('sortie_details', array('id' => $sortie->getId()));
+        }
+        $etat = $repoEtat->findOneBy(array('libelle' => 'Annulée'));
+        $sortie->setIdEtat($etat);
+        $repo->save($sortie, true);
+        return $this->redirectToRoute('app_home');
     }
 }
