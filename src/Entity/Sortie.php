@@ -195,6 +195,13 @@ class Sortie
         return $this->idParticipant;
     }
 
+    public function isIdInParticipantsList(int $id): bool {
+        if ($this->idParticipant->containsKey($id)) {
+            return true;
+        }
+        return false;
+    }
+
     public function addIdParticipant(Participant $idParticipant): self
     {
         if (!$this->idParticipant->contains($idParticipant)) {
