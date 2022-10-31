@@ -161,4 +161,21 @@ class SortieController extends AbstractController
             'sortie' =>$sortie,
         ]);
     }
+
+    #[Route('/{id}/inscription', name: 'inscription')]
+    public function inscription(SortieRepository $repo, int $id): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+        $sortie = $repo->findOneBy(array('id' => $id));
+        $participant = $sortie->getIdParticipant();
+        if (!$participant->contains($this->getUser())) {
+            $sortie->addIdParticipant($this->getUser());
+        } else {
+            $sortie->removeIdParticipant($this->getUser());
+        }
+        $repo->save($sortie, true);
+        return $this->redirectToRoute('sortie_details', array('id' => $sortie->getId()));
+    }
 }
