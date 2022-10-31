@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{bootstrap-datepicker, jquery-ajaxy}" />
+    <file url="PROJECT" libraries="{bootstrap-datepicker, bootstrap-datetimepicker, datatables, esri-leaflet, esri-leaflet-geocoder, jquery-3.5.1, jquery-ajaxy, jquery.dataTables, leaflet, moment.js, popper.js, tempus-dominus}" />
   </component>
 </project>

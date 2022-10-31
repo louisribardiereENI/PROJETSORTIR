@@ -28,7 +28,7 @@
                     <h4 class="center nav-color margin-top-25"><strong>LES SORTIES</strong></h4>
                 </div>
                 <div class="col-4 margin-auto" >
-                    <button class="btn btn-primary primary-button margin-left-auto position-relative display-block" type="button">
+                    <button class="btn btn-primary primary-button margin-left-auto position-relative display-block" onclick="window.location = '{{ path('sortie_create')  }}'" type="button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-plus-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -135,7 +135,7 @@
             <div class="row row-cols-1 row-cols-md-4 g-4">
                 {% for sortie in sorties %}
                 <div class="col">
-                    <div class="card border-color-first-color border-radius-21">
+                    <div class="card border-color-first-color border-radius-21" onclick="window.location.href = '{{ path('sortie_details',{'id':sortie.id}) }}'" href="{{ path('sortie_details',{'id':sortie.id}) }}">
                         <img src="{{ asset('img/fond/fond.jpg') }}" class="card-img-top border-radius-20 border-color-first-color" alt="...">
                         <div class="card-body-accueil">
                             <div class="margin-10">

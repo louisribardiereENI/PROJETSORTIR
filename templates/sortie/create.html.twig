@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SortieController!{% endblock %}
+{% block title %}Sortir.com | Gérer Utilisatateur{% endblock %}
+
+{% block header %}
+    {% include 'module/navbar/navbar.html.twig' %}
+{% endblock %}
 
 {% block body %}
     <style>
@@ -8,10 +12,24 @@
         .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
     </style>
 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin=""/>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/6.2.5/js/tempus-dominus.js"></script>
+
     <div class="example-wrapper">
         {{ form_start(form) }}
+
+            {{ form_widget(form.dateHeureDebut) }}
+
         {{ form_rest(form) }}
-        <input type="text" placeholder="Entrez une adresse" id="adresse"/>
+
+
+
+
+        <label class="form-label">Adresse :</label>
+        <input type="text" placeholder="Entrez une adresse" id="adresse" class="form-control"/>
         <input type="hidden" id="address" name="address"/>
 
         <input type="hidden" id="city" name="city"/>
@@ -23,15 +41,7 @@
         </div>
     </div>
 
-{% block stylesheets %} <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-                                  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-                                  crossorigin=""/>
-    <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.css"
-          integrity="sha512-v5YmWLm8KqAAmg5808pETiccEohtt8rPVMGQ1jA6jqkWVydV5Cuz3nJ9fQ7ittSxvuqsvI9RSGfVoKPaAJZ/AQ=="
-          crossorigin="">
-{% endblock %}
-    {% block javascripts %}
-         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
                 integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
                 crossorigin=""></script>
 
@@ -79,5 +89,4 @@
                     })
             })
         </script>
-    {% endblock %}
 {% endblock %}
