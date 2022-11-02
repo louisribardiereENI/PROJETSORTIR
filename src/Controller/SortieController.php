@@ -38,7 +38,7 @@ class SortieController extends AbstractController
     }
 
     #[Route('/creer', name: 'create')]
-    public function create(Request $request, SortieRepository $repo, ParticipantRepository $repoUser, VilleRepository $repoVille, LieuRepository $repoLieu): Response
+    public function create(Request $request, SortieRepository $repo, ParticipantRepository $repoUser, VilleRepository $repoVille, LieuRepository $repoLieu, EtatRepository $repoEtat): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -48,7 +48,7 @@ class SortieController extends AbstractController
         $form = $this->createForm(SortieType::class, $sortie);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            $sortie = $this->submit($request, $repo, $repoUser, $repoVille, $repoLieu, $sortie, $form, false);
+            $sortie = $this->submit($request, $repo, $repoUser, $repoVille, $repoLieu, $repoEtat, $sortie, $form, false);
             $repo->save($sortie, true);
             return $this->redirectToRoute('sortie_details', array('id' => $sortie->getId()));
         } else {
@@ -59,13 +59,16 @@ class SortieController extends AbstractController
         }
     }
 
-    private function submit(Request $request, SortieRepository $repo, ParticipantRepository $repoUser, VilleRepository $repoVille, LieuRepository $repoLieu, Sortie $sortie, Form $form, bool $isEdit): Sortie {
+    private function submit(Request $request, SortieRepository $repo, ParticipantRepository $repoUser, VilleRepository $repoVille, LieuRepository $repoLieu, EtatRepository $repoEtat, Sortie $sortie, Form $form, bool $isEdit): Sortie {
 
         $user = $repoUser->findByEmail($this->getUser()->getUserIdentifier());
         $sortie->setIdOrganisateur($user);
         $sortie->setIdSiteOrganisateur($user->getIdCampus());
-        $idEtat = $form->get('idEtat')->getData();
-        $sortie->setIdEtat($idEtat);
+
+        if ( !$isEdit) {
+            $idEtat = $repoEtat->findOneBy(array('libelle' => 'Ouverte'));
+            $sortie->setIdEtat($idEtat);
+        }
 
         $address = $request->request->get('address');
         $city = $request->request->get('city');
@@ -127,7 +130,7 @@ class SortieController extends AbstractController
     }
 
     #[Route('/{id}/modifier', name: 'modifier')]
-    public function modifier(Request $request, SortieRepository $repo, ParticipantRepository $repoUser, VilleRepository $repoVille, LieuRepository $repoLieu, int $id): Response
+    public function modifier(Request $request, SortieRepository $repo, ParticipantRepository $repoUser, VilleRepository $repoVille, LieuRepository $repoLieu, EtatRepository $repoEtat, int $id): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -141,7 +144,7 @@ class SortieController extends AbstractController
         $form->get("nomLieu")->setData($sortie->getIdLieu()->getNom());
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            $sortie = $this->submit($request, $repo, $repoUser, $repoVille, $repoLieu, $sortie, $form, true);
+            $sortie = $this->submit($request, $repo, $repoUser, $repoVille, $repoLieu, $repoEtat, $sortie, $form, true);
             $repo->save($sortie, true);
             return $this->redirectToRoute('sortie_details', array('id' => $sortie->getId()));
         } else {
