@@ -179,7 +179,10 @@ class SortieController extends AbstractController
         if ($sortie->getIdEtat()->getLibelle() == "Ouverte") {
             $participant = $sortie->getIdParticipant();
             if (!$participant->contains($this->getUser())) {
-                $sortie->addIdParticipant($this->getUser());
+                $participantList = $sortie->getIdParticipant();
+                if ($participantList->count() < $sortie->getNbInscriptionsMax()) {
+                    $sortie->addIdParticipant($this->getUser());
+                }
             } else {
                 $sortie->removeIdParticipant($this->getUser());
             }
