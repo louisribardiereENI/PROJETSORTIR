@@ -212,6 +212,6 @@ class SortieController extends AbstractController
             $sortie->setIdEtat($etat);
         }
         $repo->save($sortie, true);
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('sortie_details', array('id' => $sortie->getId()));
     }
 }

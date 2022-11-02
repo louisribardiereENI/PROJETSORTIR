@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Campus;
 use App\Form\CampusType;
 use App\Repository\CampusRepository;
+use App\Repository\ParticipantRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,10 +30,14 @@ class CampusController extends AbstractController
 
 
     #[Route('/creer', name: 'create')]
-    public function create(Request $request, CampusRepository $repo): Response
+    public function create(Request $request, ParticipantRepository $repoUser, CampusRepository $repo): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
+        }
+        $participant = $repoUser->findOneBy(array('email' => $this->getUser()->getUserIdentifier()));
+        if (!$participant->isAdministrateur()) {
+            return $this->redirectToRoute('campus_list');
         }
 
         $campus = new Campus();
@@ -50,15 +55,19 @@ class CampusController extends AbstractController
         }
     }
 
-    #[Route('{id}/modifier', name: 'modifier')]
-    public function edit(Request $request, CampusRepository $repo, int $id): Response
+    #[Route('/{id}/modifier', name: 'modifier')]
+    public function edit(Request $request, CampusRepository $repo, ParticipantRepository $repoUser, int $id): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
-
-        $campus = new Campus();
+        $campus = $repo->findOneBy(array('id' => $id));
+        $participant = $repoUser->findOneBy(array('email' => $this->getUser()->getUserIdentifier()));
+        if (!$participant->isAdministrateur()) {
+            return $this->redirectToRoute('campus_list');
+        }
         $form = $this->createForm(CampusType::class, $campus);
+        $form->get("nom")->setData($campus->getNom());
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $campus->setNom($form->get('nom')->getData());
@@ -68,6 +77,7 @@ class CampusController extends AbstractController
             return $this->render('campus/index.html.twig', [
                 'controller_name' => 'CampusController',
                 'form' => $form->createView(),
+                'campus'=>$campus,
             ]);
         }
     }
