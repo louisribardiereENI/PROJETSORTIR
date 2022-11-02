@@ -43,40 +43,60 @@ class SortieRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByArgs(?Participant $user,?Campus $campus,?Date $datedebut,?Date $datefin,?string $nom,bool $condition1,bool $condition2,bool $condition3,bool $condition4): array
+    public function findByArgs(?Participant $user,?Campus $campus,?\DateTime $datedebut,?\DateTime $datefin,?string $nom,bool $condition1,bool $condition2,bool $condition3,bool $condition4)
     {
-      $query = $this->createQueryBuilder('s');
+      $query = "SELECT s FROM \App\Entity\Sortie s ";
+      $compteur=0;
+      $args=[];
       if(isset($user)&& ($condition2||$condition3)){
           if($condition2){
-              $query->innerJoin('sortieParticipant','sp','s.id=sp.sortieId');
-                $query->where('sp.participantId='.$user->getId());
-                $condition3=false;
+              $args[$compteur]="INNER JOIN s.idParticipant sp WHERE sp.id IN(".$user->getId().") ";
+              $compteur++;
+              $condition3=false;
             }
             if($condition3){
-                $query->innerJoin('sortieParticipant','sp','s.id=sp.sortieId');
-                $query->where('sp.participantId!='.$user->getId());
+                $args[$compteur]="INNER JOIN s.idParticipant sp WHERE sp.id NOT IN(".$user->getId().")";
+                $compteur++;
             }
       }
+
       if(isset($campus)){
-          $query->where('s.idCampus ='.$campus->getId());
+          $args[$compteur]="s.idSiteOrganisateur=".$campus->getId()." ";
+          $compteur++;
 
       }
         if(isset($datedebut)||isset($datefin)){
-            $query->where('s.dateHeureDebut BETWEEN '.$datedebut.' AND '.$datefin);
-      }
-        if(isset($nom)&&$nom!=""){
-            $query->where('s.nom LIKE "%'.$nom.'"');
+           $args[$compteur]="s.dateHeureDebut BETWEEN '".$datedebut->format('Y-m-d H:i:s')."' AND '".$datefin->format('Y-m-d H:i:s')."' ";
+           $compteur++;
         }
-        if( $condition1){
-            $query->where('idOrganisateur='.$user->getId());
+        if(isset($nom)&&$nom!=""){
+            $args[$compteur]="s.nom LIKE '%".$nom."%' ";
+            $compteur++;
+        }
+        if($condition1){
+            $args[$compteur]="s.idOrganisateur=".$user->getId()." ";
+            $compteur++;
         }
         $actual=new \DateTime();
-        $actual->format('Y-m-d h:s:z');
+        $actual->format('Y-m-d H:i:s');
         if($condition4) {
-            $query->where('s.dateHeureDebut <' . $actual);
+            $args[$compteur]="s.dateHeureDebut < '".$actual->format('Y-m-d H:i:s')."' ";
+            $compteur++;
         }
-        throw new Exception($nom);
-       // return $query->getQuery()->execute();
+        for($i=0;$i<$compteur;$i++){
+            if($i==0){
+                if(str_starts_with($args[$i],"INNER")){
+                    $query.=$args[$i];
+                }
+                else{
+                    $query.="WHERE ".$args[$i];
+                }
+            }
+            else{
+                $query.="AND ".$args[$i];
+            }
+        }
+        return $this->getEntityManager()->createQuery($query)->getResult();
     }
 //    /**
 //     * @return Sortie[] Returns an array of Sortie objects
