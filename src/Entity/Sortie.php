@@ -60,6 +60,8 @@ class Sortie
     public function __construct()
     {
         $this->idParticipant = new ArrayCollection();
+        $this->dateHeureDebut = new \DateTime("now");
+        $this->dateLimiteInscription = new \DateTime("now");
     }
 
     public function getId(): ?int
