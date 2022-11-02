@@ -162,7 +162,7 @@
                                 <div class="row">
                                     <div class="col-4">
                                         <img src="{{ asset('img/avatar/'~sortie.idOrganisateur.photoParticipant) }}"
-                                             width="40px" class="rounded-circle centrer" alt="photo de profil">
+                                              class="rounded-circle centrer photo-profil-sortie" alt="photo de profil">
                                     </div>
                                     <div class="col-8 centrage-vertical">
                                         <p class="centrage-vertical">{{ sortie.idOrganisateur.nom }} {{ sortie.idOrganisateur.prenom }}</p>
@@ -277,8 +277,7 @@
                                                                 <div class="card-body">
                                                                     <img src="{{ asset('img/avatar/'~participant.photoParticipant) }}"
                                                                          alt="avatar"
-                                                                         class="rounded-circle img-fluid centrer"
-                                                                         style="width: 150px;">
+                                                                         class="rounded-circle img-fluid centrer photo-profil">
                                                                     <br>
                                                                     <div class="row">
                                                                         <div class="col-sm-3">

@@ -42,7 +42,7 @@
                         <div class="card mb-4 border-color-first-color border-radius-20">
                             <div class="card-body text-center">
                                 <img src="{{ asset('img/avatar/'~app.user.photoParticipant) }}" alt="avatar"
-                                     class="rounded-circle img-fluid" style="width: 150px;">
+                                     class="rounded-circle img-fluid photo-profil">
                                 <h5 class="my-3">{{ app.user.nom }} {{ app.user.prenom }}</h5>
                                 {# <p>{% if participant.roles[0] == 'ADMIN' %}Administrateur{% else %}Utilisateur{% endif %}</p>  #}
                             </div>
@@ -69,8 +69,8 @@
                                         <tr>
                                             <td class="centrer-texte">
                                                 <img src="{{ asset('img/avatar/'~participant.photoParticipant) }}"
-                                                     alt="mdo" width="32" height="32"
-                                                     class="rounded-circle">
+                                                     alt="mdo"
+                                                     class="rounded-circle photo-profil-sortie">
                                             </td>
                                             <td class="centrer-texte">{{ participant.nom }} {{ participant.prenom }}</td>
 

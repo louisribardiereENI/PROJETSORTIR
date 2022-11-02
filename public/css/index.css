@@ -214,3 +214,19 @@
     position: relative;
     object-fit: cover;
 }
+
+.photo-profil{
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+}
+.photo-profil-nav{
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+}
+.photo-profil-sortie{
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+}
