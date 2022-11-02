@@ -29,8 +29,8 @@ class SortieType extends AbstractType
             ])
             ->add('dateHeureDebut', DateTimeType::class, array(
                     'widget' => 'single_text',
-                    'model_timezone' => 'Europe/Madrid',
-                    'view_timezone' => 'Europe/Madrid',
+                    'model_timezone' => 'Europe/Paris',
+                    'view_timezone' => 'Europe/Paris',
                     'attr' => array('placeholder' => 'yyyy-mm-dd hh:mi:ss', 'class' => 'form-control'),
                     'label' => 'Date du début de la sortie :',
                     'label_attr' => ['class' => 'form-label'])
@@ -46,8 +46,8 @@ class SortieType extends AbstractType
                 ]])
             ->add('dateLimiteInscription', DateTimeType::class, array(
                 'widget' => 'single_text',
-                'model_timezone' => 'Europe/Madrid',
-                'view_timezone' => 'Europe/Madrid',
+                'model_timezone' => 'Europe/Paris',
+                'view_timezone' => 'Europe/Paris',
                 'attr' => array('placeholder' => 'yyyy-mm-dd hh:mi:ss', 'class' => 'form-control'),
                 'label' => "Date limite d'inscription :",
                 'label_attr' => ['class' => 'form-label',

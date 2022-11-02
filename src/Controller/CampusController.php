@@ -8,6 +8,8 @@ use App\Form\ImportCSVType;
 use App\Repository\CampusRepository;
 use App\Repository\ParticipantRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,6 +17,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/campus', name: 'campus_')]
 class CampusController extends AbstractController
 {
+
+    private $csvParsingOptions = array(
+        'finder_in' => 'app/Resources/',
+        'finder_name' => 'countries.csv',
+        'ignoreFirstLine' => true
+    );
+
     #[Route('/', name: 'list')]
     public function index(Request $request,CampusRepository $repo): Response
     {
@@ -25,13 +34,25 @@ class CampusController extends AbstractController
         $campus = $repo->findAll();
 
         $form=$this->createForm(ImportCSVType::class);
+        $comp=1;
+        foreach ($campus as $camp){
+            $form->add('csv'.$comp,FileType::class);
+            $comp++;
+        }
+
 
         $form->handleRequest($request);
 
         if($form->isSubmitted()&&$form->isValid()){
 
             for($i=1;$i<=count($campus);$i++){
-                $data=$request->get('csv'.$i);
+                $data=$form->get('submitFile')->getData();
+                if ($data != "") {
+                   $handle=fopen($data->getPathName(), "r");
+                   var_dump(fgetcsv($handle));
+                   /* $csv = $this->parseCSV();
+                    var_dump($csv);*/
+                }
             }
         }
         return $this->render('campus/index.html.twig', [
@@ -39,6 +60,31 @@ class CampusController extends AbstractController
             'campuslist' => $campus,
             'form' => $form->createView(),
         ]);
+    }
+
+    private function parseCSV(): array
+    {
+        $ignoreFirstLine = $this->csvParsingOptions['ignoreFirstLine'];
+
+        $finder = new Finder();
+        $finder->files()
+            ->in($this->csvParsingOptions['finder_in'])
+            ->name($this->csvParsingOptions['finder_name'])
+        ;
+        foreach ($finder as $file) { $csv = $file; }
+
+        $rows = array();
+        if (($handle = fopen($csv->getRealPath(), "r")) !== FALSE) {
+            $i = 0;
+            while (($data = fgetcsv($handle, null, ";")) !== FALSE) {
+                $i++;
+                if ($ignoreFirstLine && $i == 1) { continue; }
+                $rows[] = $data;
+            }
+            fclose($handle);
+        }
+
+        return $rows;
     }
 
 
