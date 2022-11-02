@@ -176,13 +176,15 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         $sortie = $repo->findOneBy(array('id' => $id));
-        $participant = $sortie->getIdParticipant();
-        if (!$participant->contains($this->getUser())) {
-            $sortie->addIdParticipant($this->getUser());
-        } else {
-            $sortie->removeIdParticipant($this->getUser());
-        }
+        if ($sortie->getIdEtat()->getLibelle() != "Annulée" || $sortie->getIdEtat()->getLibelle() != "Clôturée" || $sortie->getIdEtat()->getLibelle() != "Activité en cours" || $sortie->getIdEtat()->getLibelle() != "Passée") {
+            $participant = $sortie->getIdParticipant();
+            if (!$participant->contains($this->getUser())) {
+                $sortie->addIdParticipant($this->getUser());
+            } else {
+                $sortie->removeIdParticipant($this->getUser());
+            }
         $repo->save($sortie, true);
+        }
         return $this->redirectToRoute('sortie_details', array('id' => $sortie->getId()));
     }
 

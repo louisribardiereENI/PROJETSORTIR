@@ -28,7 +28,7 @@ class CampusController extends AbstractController
 
 
     #[Route('/creer', name: 'create')]
-    public function create(Request $request): Response
+    public function create(Request $request, CampusRepository $repo): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -38,9 +38,11 @@ class CampusController extends AbstractController
         $form = $this->createForm(CampusType::class, $campus);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
+            $campus->setNom($form->get('nom')->getData());
+            $repo->save($campus, true);
             return $this->redirectToRoute('campus_list');
         } else {
-            return $this->render('campus/create.html.twig', [
+            return $this->render('campus/index.html.twig', [
                 'controller_name' => 'CampusController',
                 'form' => $form->createView(),
             ]);
