@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Campus;
 use App\Form\CampusType;
+use App\Form\ImportCSVType;
 use App\Repository\CampusRepository;
 use App\Repository\ParticipantRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,16 +16,29 @@ use Symfony\Component\Routing\Annotation\Route;
 class CampusController extends AbstractController
 {
     #[Route('/', name: 'list')]
-    public function index(CampusRepository $repo): Response
+    public function index(Request $request,CampusRepository $repo): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
         $campus = $repo->findAll();
+
+        $form=$this->createForm(ImportCSVType::class);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted()&&$form->isValid()){
+
+            for($i=1;$i<=count($campus);$i++){
+                $data=$form->get('csv'.$i)->getData();
+
+            }
+        }
         return $this->render('campus/index.html.twig', [
             'controller_name' => 'CampusController',
             'campuslist' => $campus,
+            'form' => $form->createView(),
         ]);
     }
 
