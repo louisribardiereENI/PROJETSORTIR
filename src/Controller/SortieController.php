@@ -137,7 +137,7 @@ class SortieController extends AbstractController
         }
         $sortie = $repo->findOneBy(array('id' => $id));
         $participant = $repoUser->findOneBy(array('email' => $this->getUser()->getUserIdentifier()));
-        if ($participant->getId() != $sortie->getIdOrganisateur() && !$participant->isAdministrateur()) {
+        if ($participant->getId() != $sortie->getIdOrganisateur()->getId() && !$participant->isAdministrateur()) {
             return $this->redirectToRoute('sortie_details', array('id' => $sortie->getId()));
         }
         $form = $this->createForm(SortieType::class, $sortie);

@@ -68,12 +68,12 @@ class SortieType extends AbstractType
                 'label' => 'Photo de la sortie :',
 
             ])
-            ->add('idEtat',  EntityType::class, [
-                'class'=>Etat::class,'choice_value'=>'id','choice_label'=>'libelle',
-                'attr' => ['class' => 'form-control'],
-                'label_attr' => ['class' => 'label-control'],
-                'label' => 'État de la sortie :',
-            ])
+//            ->add('idEtat',  EntityType::class, [
+//                'class'=>Etat::class,'choice_value'=>'id','choice_label'=>'libelle',
+//                'attr' => ['class' => 'form-control'],
+//                'label_attr' => ['class' => 'label-control'],
+//                'label' => 'État de la sortie :',
+//            ])
             ->add('nomLieu', TextType::class, [
                 'mapped' => false,
                 'attr' => ['class' => 'form-control'],
