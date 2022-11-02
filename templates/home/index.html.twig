@@ -136,7 +136,7 @@
                 {% for sortie in sorties %}
                 <div class="col">
                     <div class="card border-color-first-color border-radius-21" onclick="window.location.href = '{{ path('sortie_details',{'id':sortie.id}) }}'" href="{{ path('sortie_details',{'id':sortie.id}) }}">
-                        <img src="{{ asset('img/fond/fond.jpg') }}" class="card-img-top border-radius-20 border-color-first-color" alt="...">
+                        <img src="{{ asset('img/sorties/'~sortie.photoSortie) }}" class="card-img-top border-radius-20 border-color-first-color image-sortie-principale">
                         <div class="card-body-accueil">
                             <div class="margin-10">
                                 <p class="center nav-color margin-bottom-10"><strong>{{ sortie.nom }}</strong></p>

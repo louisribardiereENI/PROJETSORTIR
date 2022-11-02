@@ -85,7 +85,8 @@
                                          style="margin-top: auto !important;margin-bottom: auto !important;">
                                         <div class="mb-2">
                                             <img src="{{ asset('img/sorties/'~sortie.photoSortie) }}" width="400"
-                                                 class="img-fluid centrer border-radius-20">
+                                                 height="272"
+                                                 class="img-fluid centrer border-radius-20 image-sortie-secondaire">
                                         </div>
                                     </div>
                                     <div class="col-sm-7">
@@ -209,7 +210,7 @@
                              style="height: 95% !important;">
                             <div class="card-body">
                                 <h3 class="centrer-texte margin-bottom-10">Inscription</h3>
-                                {% if sortie.idEtat.libelle != "Annulée" %}
+                                {% if sortie.idEtat.libelle == "Ouverte" %}
                                     {% if sortie.getIdParticipant is not empty %}
                                         {% if sortie.isIdInParticipantsList(app.user.id) %}
                                             <button type="button" class="btn btn-primary primary-button centrer btn-sm"
@@ -230,7 +231,7 @@
                                     {% endif %}
                                 {% else %}
                                     <button name="" class="btn btn-primary primary-button centrer btn-sm" disabled>
-                                        Annulée
+                                        {{ sortie.idEtat.libelle }}
                                     </button>
                                 {% endif %}
                             </div>

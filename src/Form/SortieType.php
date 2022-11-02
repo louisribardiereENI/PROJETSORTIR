@@ -37,7 +37,7 @@ class SortieType extends AbstractType
             )
             ->add('duree', IntegerType::class, [
                 'required' => true,
-                'label' => 'Durée :',
+                'label' => 'Durée (minutes) :',
                 'label_attr' => ['class' => 'form-label'],
                 'constraints' => [new Positive()],
                 'attr' => [
