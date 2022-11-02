@@ -1,46 +1,132 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SortieController!{% endblock %}
+{% block title %}Sortir.com | Créer une Sortie{% endblock %}
+
+{% block header %}
+    {% include 'module/navbar/navbar.html.twig' %}
+{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper {
-            margin: 1em auto;
-            max-width: 800px;
-            width: 95%;
-            font: 18px/1.5 sans-serif;
-        }
 
-        .example-wrapper code {
-            background: #F5F5F5;
-            padding: 2px 6px;
-        }
-    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin=""/>
 
-    {% block stylesheets %}
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-              integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-              crossorigin=""/>
-        <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.css"
-              integrity="sha512-v5YmWLm8KqAAmg5808pETiccEohtt8rPVMGQ1jA6jqkWVydV5Cuz3nJ9fQ7ittSxvuqsvI9RSGfVoKPaAJZ/AQ=="
-              crossorigin="">
-    {% endblock %}
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/6.2.5/js/tempus-dominus.js"></script>
 
-    <div class="example-wrapper">
-        {{ form_start(form) }}
-        {{ form_rest(form) }}
-        <input type="text" placeholder="Entrez une adresse" id="adresse"
-               value="{{ sortie.IdLieu.Rue ~ " " ~ sortie.IdLieu.IdVille.CodePostal ~ " " ~ sortie.IdLieu.IdVille.Nom() }}"/>
+    <h4 class="center nav-color margin-top-25"><strong>MODIFIER UNE SORTIE</strong></h4>
 
-        <input type="hidden" id="address" name="address"/>
-
-        <input type="hidden" id="city" name="city"/>
-        <input type="hidden" id="postal" name="postal"/>
-        <input type="hidden" id="lat" name="lat" value="{{ sortie.IdLieu.latitude }}"/>
-        <input type="hidden" id="lng" name="lng" value="{{ sortie.IdLieu.longitude }}"/>
-        <div id="carte1" style="height: 800px; width: 800px">
+    <div class="row">
+        <div class="col">
         </div>
-        {{ form_end(form) }}
+        <div class="col-10">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card mb-4 border-color-first-color border-radius-20">
+                        <div class="card-body">
+
+                            {{ form_start(form) }}
+                            <h3 class="centrer-texte">Modifier la sortie</h3>
+                            <p class="centrer-texte">Veuillez compléter le formulaire avec les informations correspondant à la sortie</p>
+                            <br />
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="mb-2">
+                                        {{ form_label(form.nom) }}
+                                        {{ form_errors(form.nom) }}
+                                        {{ form_widget(form.nom) }}
+                                    </div>
+
+                                    <div class="mb-2">
+                                        {{ form_label(form.nbInscriptionsMax) }}
+                                        {{ form_errors(form.nbInscriptionsMax) }}
+                                        {{ form_widget(form.nbInscriptionsMax) }}
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="mb-2">
+                                        {{ form_label(form.infosSortie) }}
+                                        {{ form_errors(form.infosSortie) }}
+                                        {{ form_widget(form.infosSortie) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="mb-2">
+                                        {{ form_label(form.dateHeureDebut) }}
+                                        {{ form_errors(form.dateHeureDebut) }}
+                                        {{ form_widget(form.dateHeureDebut) }}
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="mb-2">
+                                        {{ form_label(form.duree) }}
+                                        {{ form_errors(form.duree) }}
+                                        {{ form_widget(form.duree) }}
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="mb-2">
+                                        {{ form_label(form.dateLimiteInscription) }}
+                                        {{ form_errors(form.dateLimiteInscription) }}
+                                        {{ form_widget(form.dateLimiteInscription) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                {{ form_label(form.photoSortie) }}
+                                {{ form_errors(form.photoSortie) }}
+                                {{ form_widget(form.photoSortie) }}
+                            </div>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="mb-2">
+                                        {{ form_label(form.nomLieu) }}
+                                        {{ form_errors(form.nomLieu) }}
+                                        {{ form_widget(form.nomLieu) }}
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <label class="form-label">Adresse :</label>
+                                    <div class="mb-2">
+                                        <input type="text" placeholder="Adresse postale" id="adresse"
+                                               class="form-control"  value="{{ sortie.IdLieu.Rue ~ " " ~ sortie.IdLieu.IdVille.CodePostal ~ " " ~ sortie.IdLieu.IdVille.Nom() }}" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="mb-2 centrer" id="validation" name="validation" style="display: block;">
+                                {{ form_label(form.confirmer) }}
+                                {{ form_widget(form.confirmer, { 'label': 'Modifier la sortie' })  }}
+                            </div>
+
+                            <input type="hidden" id="address" name="address"/>
+
+                            <input type="hidden" id="city" name="city"/>
+                            <input type="hidden" id="postal" name="postal"/>
+                            <input type="hidden" id="lat" name="lat" value="{{ sortie.IdLieu.latitude }}"/>
+                            <input type="hidden" id="lng" name="lng" value="{{ sortie.IdLieu.longitude }}"/>
+
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card mb-4 border-color-first-color border-radius-20">
+                        <div class="card-body">
+                            <h3 class="centrer-texte">La carte</h3>
+                            <p class="centrer-texte">Veuillez sélectionner sur la carte le point correspondant à l'adresse !</p>
+                            <div id="carte1" class="img-fluid border-radius-20" style="height: 500px; width: 800px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+        </div>
     </div>
 
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"

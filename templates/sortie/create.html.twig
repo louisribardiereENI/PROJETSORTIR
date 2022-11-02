@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Sortir.com | Gérer Sortie{% endblock %}
+{% block title %}Sortir.com | Créer une Sortie{% endblock %}
 
 {% block header %}
     {% include 'module/navbar/navbar.html.twig' %}
@@ -27,69 +27,85 @@
                         <div class="card-body">
 
                             {{ form_start(form) }}
-
+                            <h3 class="centrer-texte">Créer la sortie</h3>
+                            <p class="centrer-texte">Veuillez compléter le formulaire avec les informations correspondant à la sortie</p>
+                            <br />
                             <div class="row">
-                                <div class="col-sm"></div>
+                                <div class="col-sm">
+                                    <div class="mb-2">
+                                        {{ form_label(form.nom) }}
+                                        {{ form_errors(form.nom) }}
+                                        {{ form_widget(form.nom) }}
+                                    </div>
 
-
-
+                                    <div class="mb-2">
+                                        {{ form_label(form.nbInscriptionsMax) }}
+                                        {{ form_errors(form.nbInscriptionsMax) }}
+                                        {{ form_widget(form.nbInscriptionsMax) }}
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="mb-2">
+                                        {{ form_label(form.infosSortie) }}
+                                        {{ form_errors(form.infosSortie) }}
+                                        {{ form_widget(form.infosSortie) }}
+                                    </div>
+                                </div>
                             </div>
-
-                            <div class="mb-2">
-                                {{ form_label(form.nom) }}
-                                {{ form_errors(form.nom) }}
-                                {{ form_widget(form.nom) }}
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="mb-2">
+                                        {{ form_label(form.dateHeureDebut) }}
+                                        {{ form_errors(form.dateHeureDebut) }}
+                                        {{ form_widget(form.dateHeureDebut) }}
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="mb-2">
+                                        {{ form_label(form.duree) }}
+                                        {{ form_errors(form.duree) }}
+                                        {{ form_widget(form.duree) }}
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="mb-2">
+                                        {{ form_label(form.dateLimiteInscription) }}
+                                        {{ form_errors(form.dateLimiteInscription) }}
+                                        {{ form_widget(form.dateLimiteInscription) }}
+                                    </div>
+                                </div>
                             </div>
-
-                            <div id="datetimepicker1" class="input-append date">
-                                {{ form_label(form.dateHeureDebut) }}
-                                {{ form_widget(form.dateHeureDebut, {attr: {
-                                    'data-format': "dd/MM/yyyy hh:mm:ss" },
-                                }) }}
-                                <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
-                            </div>
-
-                            <div class="mb-2">
-                                {{ form_label(form.duree) }}
-                                {{ form_errors(form.duree) }}
-                                {{ form_widget(form.duree) }}
-                            </div>
-
-                            <div class="mb-2">
-                                {{ form_label(form.dateLimiteInscription) }}
-                                {{ form_errors(form.dateLimiteInscription) }}
-                                {{ form_widget(form.dateLimiteInscription) }}
-                            </div>
-
-                            <div class="mb-2">
-                                {{ form_label(form.nbInscriptionsMax) }}
-                                {{ form_errors(form.nbInscriptionsMax) }}
-                                {{ form_widget(form.nbInscriptionsMax) }}
-                            </div>
-
-                            <div class="mb-2">
-                                {{ form_label(form.infosSortie) }}
-                                {{ form_errors(form.infosSortie) }}
-                                {{ form_widget(form.infosSortie) }}
-                            </div>
-
                             <div class="mb-2">
                                 {{ form_label(form.photoSortie) }}
                                 {{ form_errors(form.photoSortie) }}
                                 {{ form_widget(form.photoSortie) }}
                             </div>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="mb-2">
+                                        {{ form_label(form.nomLieu) }}
+                                        {{ form_errors(form.nomLieu) }}
+                                        {{ form_widget(form.nomLieu) }}
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <label class="form-label">Adresse :</label>
+                                    <div class="mb-2">
+                                        <input type="text" placeholder="Adresse postale" id="adresse"
+                                               class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="mb-2 centrer" id="validation" name="validation" style="display: none;">
+                                {{ form_label(form.confirmer) }}
+                                {{ form_widget(form.confirmer) }}
+                            </div>
+                            <div class="mb-2 center" id="message" name="message" style="display: block">
+                                <button class="btn btn-primary primary-button" disabled>Veuillez compléter l'ensemble des informations puis cliquer sur le point correspondant à votre adresse sur la carte</button>
 
-                            <div class="mb-2">
-                                {{ form_label(form.nomLieu) }}
-                                {{ form_errors(form.nomLieu) }}
-                                {{ form_widget(form.nomLieu) }}
                             </div>
 
-                            <label class="form-label">Adresse :</label>
-
-                            <div class="mb-2">
-                                <input type="text" placeholder="Entrez une adresse" id="adresse" class="form-control"/>
-                            </div>
                             <input type="hidden" id="address" name="address"/>
 
                             <input type="hidden" id="city" name="city"/>
@@ -97,10 +113,6 @@
                             <input type="hidden" id="lat" name="lat"/>
                             <input type="hidden" id="lng" name="lng"/>
 
-                            <div class="mb-2">
-                                {{ form_label(form.confirmer) }}
-                                {{ form_widget(form.confirmer) }}
-                            </div>
 
                             {{ form_end(form) }}
                         </div>
@@ -109,6 +121,8 @@
                 <div class="col-lg-4">
                     <div class="card mb-4 border-color-first-color border-radius-20">
                         <div class="card-body">
+                            <h3 class="centrer-texte">La carte</h3>
+                            <p class="centrer-texte">Veuillez sélectionner sur la carte le point correspondant à l'adresse !</p>
                             <div id="carte1" class="img-fluid border-radius-20" style="height: 500px; width: 800px">
                             </div>
                         </div>
@@ -161,9 +175,12 @@
                                 console.log(result.address.Address);
                                 console.log(result.address.City);
                                 console.log(result.address.Postal);
+                                document.getElementById("validation").style.cssText += "display : block !important"
+                                document.getElementById("message").style.cssText += "display : none !important"
                                 L.marker(result.latlng).addTo(mymap).bindPopup(result.address.Match_addr).openPopup();
                             });
                         });
+                        document.getElementById("validation").style.cssText += "display : none !important"
                     });
                 })
                 .catch((error) => {

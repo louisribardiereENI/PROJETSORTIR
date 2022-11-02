@@ -70,9 +70,9 @@ class SortieType extends AbstractType
                 ]
             ])
             ->add('infosSortie', TextareaType::class, [
-                'attr' => ['class' => 'form-control'],
+                'attr' => ['class' => 'form-control', 'rows' => 4],
                 'label_attr' => ['class' => 'form-label'],
-                'label' => 'Infos sur le sortie :',
+                'label' => 'Infos sur la sortie :',
             ])
             ->add('photoSortie',FileType::class,[
                 'mapped'=>false,
@@ -97,7 +97,7 @@ class SortieType extends AbstractType
             ])
             ->add('confirmer', SubmitType::class, [
                 'label' => 'Créer la sortie',
-                'attr' => ['class' => 'btn btn-primary'],
+                'attr' => ['class' => 'btn btn-primary primary-button'],
             ])
         ;
     }
