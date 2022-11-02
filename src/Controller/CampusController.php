@@ -39,14 +39,12 @@ class CampusController extends AbstractController
             $form->add('csv'.$comp,FileType::class);
             $comp++;
         }
-
-
         $form->handleRequest($request);
 
         if($form->isSubmitted()&&$form->isValid()){
 
             for($i=1;$i<=count($campus);$i++){
-                $data=$form->get('submitFile')->getData();
+                $data=$form->get('csv'.$i)->getData();
                 if ($data != "") {
                    $handle=fopen($data->getPathName(), "r");
                    var_dump(fgetcsv($handle));
