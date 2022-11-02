@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Campus;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,6 +14,10 @@ class CampusType extends AbstractType
     {
         $builder
             ->add('nom')
+            ->add('confirmer', SubmitType::class, [
+                'label' => 'Confirmer',
+                'attr' => ['class' => 'btn btn-primary'],
+            ])
         ;
     }
 
