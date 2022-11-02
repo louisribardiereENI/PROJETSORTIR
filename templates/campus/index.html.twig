@@ -6,5 +6,25 @@
 {% endblock %}
 
 {% block body %}
-
+    {{ form_start(form) }}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col" class="centrer-texte">Nom du campus</th>
+            <th scope="col" class="centrer-texte">Importer un CSV</th>
+        </tr>
+        </thead>
+        {% set compteur=0 %}
+        <tbody>{% for campus in campuslist %}
+            {% set compteur=compteur+1 %}
+            <tr>
+                <td class="centrer-texte">
+                    {{ campus.nom}}
+                </td>
+                <td class="centrer-texte"><input type="file" name="csv{{ compteur }}" accept=".csv"></td>
+            </tr>{% endfor %}
+        </tbody>
+    </table>
+    {{ form_widget(form.importer) }}
+   {{ form_end(form) }}
 {% endblock %}
