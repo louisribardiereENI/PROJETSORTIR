@@ -19,10 +19,11 @@ class CampusController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
+
         $campus = $repo->findAll();
         return $this->render('campus/index.html.twig', [
             'controller_name' => 'CampusController',
-            'campus' => $campus,
+            'campuslist' => $campus,
         ]);
     }
 
@@ -48,4 +49,5 @@ class CampusController extends AbstractController
             ]);
         }
     }
+
 }
