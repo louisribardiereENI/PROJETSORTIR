@@ -72,14 +72,14 @@
                                     <div class="col-md">
                                         <div class="input-group mb-3">
                                             <span class="input-group-text">Entre</span>
-                                            <input type="date" class="form-control" name="datedebut"placeholder="{{"now"|date("Y-m-d","Europe/Paris") }}"
+                                            <input type="date" class="form-control"  name="datedebut" placeholder="{{"now"|date("Y-m-d","Europe/Paris") }}"
                                                    value="{{"now"|date("Y-m-d","Europe/Paris") }}" aria-label="">
                                         </div>
                                     </div>
                                     <div class="col-md">
                                         <div class="input-group mb-3">
                                             <span class="input-group-text">Et</span>
-                                            <input type="date" class="form-control" name="datefin"placeholder="{{"now"|date_modify("+7 day")|date("Y-m-d","Europe/Paris") }}" value="{{"now"|date_modify("+7 day")|date("Y-m-d","Europe/Paris") }}" aria-label="">
+                                            <input type="date" class="form-control" name="datefin" placeholder="{{"now"|date_modify("+7 day")|date("Y-m-d","Europe/Paris") }}" value="{{"now"|date_modify("+7 day")|date("Y-m-d","Europe/Paris") }}" aria-label="">
                                         </div>
                                     </div>
                                 </div>
@@ -88,8 +88,8 @@
                                 <div class="mb-1">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch"
-                                               id="flexSwitchCheckDefault" name="condition1">
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">Sorties dont je
+                                               id="condition1" name="condition1" value="true">
+                                        <label class="form-check-label" for="condition1">Sorties dont je
                                             suis
                                             l'organisateur/trice</label>
                                     </div>
@@ -97,8 +97,8 @@
                                 <div class="mb-1">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch"
-                                               id="flexSwitchCheckDefault" name="condition2">
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">Sorties auxquelles
+                                               id="condition2" name="condition2" value="true">
+                                        <label class="form-check-label" for="condition2">Sorties auxquelles
                                             je
                                             suis
                                             inscrit/e</label>
@@ -107,8 +107,8 @@
                                 <div class="mb-1">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch"
-                                               id="flexSwitchCheckDefault" name="condition3">
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">Sortie auxquelles
+                                               id="condition3" name="condition3" value="true">
+                                        <label class="form-check-label" for="condition3">Sortie auxquelles
                                             je ne
                                             suis pas inscrit/e</label>
                                     </div>
@@ -117,8 +117,8 @@
 
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch"
-                                               id="flexSwitchCheckDefault" name="condition4">
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">Sorties
+                                               id="condition4" name="condition4" value="true">
+                                        <label class="form-check-label" for="condition4">Sorties
                                             passées</label>
                                     </div>
                                 </div>
