@@ -7,88 +7,167 @@
 {% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
           integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
           crossorigin=""/>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/6.2.5/js/tempus-dominus.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/6.2.5/js/tempus-dominus.js"></script>
 
-    <div class="example-wrapper">
-        {{ form_start(form) }}
+    <h4 class="center nav-color margin-top-25"><strong>CRÉER UNE SORTIE</strong></h4>
 
-            {{ form_widget(form.dateHeureDebut) }}
+    <div class="row">
+        <div class="col">
+        </div>
+        <div class="col-10">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card mb-4 border-color-first-color border-radius-20">
+                        <div class="card-body">
 
-        {{ form_rest(form) }}
+                            {{ form_start(form) }}
+
+                            <div class="row">
+                                <div class="col-sm"></div>
 
 
 
+                            </div>
 
-        <label class="form-label">Adresse :</label>
-        <input type="text" placeholder="Entrez une adresse" id="adresse" class="form-control"/>
-        <input type="hidden" id="address" name="address"/>
+                            <div class="mb-2">
+                                {{ form_label(form.nom) }}
+                                {{ form_errors(form.nom) }}
+                                {{ form_widget(form.nom) }}
+                            </div>
 
-        <input type="hidden" id="city" name="city"/>
-        <input type="hidden" id="postal" name="postal"/>
-        <input type="hidden" id="lat" name="lat"/>
-        <input type="hidden" id="lng" name="lng"/>
-        {{ form_end(form) }}
-        <div id="carte1" style="height: 800px; width: 800px">
+                            <div id="datetimepicker1" class="input-append date">
+                                {{ form_label(form.dateHeureDebut) }}
+                                {{ form_widget(form.dateHeureDebut, {attr: {
+                                    'data-format': "dd/MM/yyyy hh:mm:ss" },
+                                }) }}
+                                <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                            </div>
+
+                            <div class="mb-2">
+                                {{ form_label(form.duree) }}
+                                {{ form_errors(form.duree) }}
+                                {{ form_widget(form.duree) }}
+                            </div>
+
+                            <div class="mb-2">
+                                {{ form_label(form.dateLimiteInscription) }}
+                                {{ form_errors(form.dateLimiteInscription) }}
+                                {{ form_widget(form.dateLimiteInscription) }}
+                            </div>
+
+                            <div class="mb-2">
+                                {{ form_label(form.nbInscriptionsMax) }}
+                                {{ form_errors(form.nbInscriptionsMax) }}
+                                {{ form_widget(form.nbInscriptionsMax) }}
+                            </div>
+
+                            <div class="mb-2">
+                                {{ form_label(form.infosSortie) }}
+                                {{ form_errors(form.infosSortie) }}
+                                {{ form_widget(form.infosSortie) }}
+                            </div>
+
+                            <div class="mb-2">
+                                {{ form_label(form.photoSortie) }}
+                                {{ form_errors(form.photoSortie) }}
+                                {{ form_widget(form.photoSortie) }}
+                            </div>
+
+                            <div class="mb-2">
+                                {{ form_label(form.nomLieu) }}
+                                {{ form_errors(form.nomLieu) }}
+                                {{ form_widget(form.nomLieu) }}
+                            </div>
+
+                            <label class="form-label">Adresse :</label>
+
+                            <div class="mb-2">
+                                <input type="text" placeholder="Entrez une adresse" id="adresse" class="form-control"/>
+                            </div>
+                            <input type="hidden" id="address" name="address"/>
+
+                            <input type="hidden" id="city" name="city"/>
+                            <input type="hidden" id="postal" name="postal"/>
+                            <input type="hidden" id="lat" name="lat"/>
+                            <input type="hidden" id="lng" name="lng"/>
+
+                            <div class="mb-2">
+                                {{ form_label(form.confirmer) }}
+                                {{ form_widget(form.confirmer) }}
+                            </div>
+
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card mb-4 border-color-first-color border-radius-20">
+                        <div class="card-body">
+                            <div id="carte1" class="img-fluid border-radius-20" style="height: 500px; width: 800px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
         </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-                integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-                crossorigin=""></script>
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""></script>
 
-        <script src="https://unpkg.com/esri-leaflet@2.2.3/dist/esri-leaflet.js"
-                integrity="sha512-YZ6b5bXRVwipfqul5krehD9qlbJzc6KOGXYsDjU9HHXW2gK57xmWl2gU6nAegiErAqFXhygKIsWPKbjLPXVb2g=="
-                crossorigin=""></script>
+    <script src="https://unpkg.com/esri-leaflet@2.2.3/dist/esri-leaflet.js"
+            integrity="sha512-YZ6b5bXRVwipfqul5krehD9qlbJzc6KOGXYsDjU9HHXW2gK57xmWl2gU6nAegiErAqFXhygKIsWPKbjLPXVb2g=="
+            crossorigin=""></script>
 
-        <script src="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js"
-                integrity="sha512-zdT4Pc2tIrc6uoYly2Wp8jh6EPEWaveqqD3sT0lf5yei19BC1WulGuh5CesB0ldBKZieKGD7Qyf/G0jdSe016A=="
-                crossorigin=""></script>
+    <script src="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js"
+            integrity="sha512-zdT4Pc2tIrc6uoYly2Wp8jh6EPEWaveqqD3sT0lf5yei19BC1WulGuh5CesB0ldBKZieKGD7Qyf/G0jdSe016A=="
+            crossorigin=""></script>
 
 
-        <script type="text/javascript">
-            var adresse=document.getElementById("adresse");
-            var centerview=[46.71109,1.7191036];
-            var mymap = L.map('carte1').setView([centerview[0], centerview[1]], 6);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mymap);
-            var layerGroup = L.layerGroup().addTo(mymap);
-            var geocodeService = L.esri.Geocoding.geocodeService();
-            adresse.addEventListener('input',e=>{
-                var query="http://api-adresse.data.gouv.fr/search/?q="+adresse.value;
-                fetch(query,{method: 'get'})
-                    .then(r=>r.json())
-                    .then(r=>{
-                        layerGroup.clearLayers();
-                        r.features.forEach(element => {
-                            var coords=element.geometry.coordinates;
-                            L.marker([coords[1],coords[0]]).addTo(layerGroup).on('click', function (e) {
-                                geocodeService.reverse().latlng(this.getLatLng()).run(function (error, result) {
-                                    if (error) {
-                                        return;
-                                    }
-                                    document.getElementById("address").value = result.address.Address;
-                                    document.getElementById("city").value = result.address.City;
-                                    document.getElementById("postal").value = result.address.Postal;
-                                    document.getElementById("lat").value = result.latlng.lat;
-                                    document.getElementById("lng").value = result.latlng.lng;
-                                    console.log(result.address.Address);
-                                    console.log(result.address.City);
-                                    console.log(result.address.Postal);
-                                    L.marker(result.latlng).addTo(mymap).bindPopup(result.address.Match_addr).openPopup();
-                                });
+    <script type="text/javascript">
+        var adresse = document.getElementById("adresse");
+        var centerview = [46.71109, 1.7191036];
+        var mymap = L.map('carte1').setView([centerview[0], centerview[1]], 6);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mymap);
+        var layerGroup = L.layerGroup().addTo(mymap);
+        var geocodeService = L.esri.Geocoding.geocodeService();
+        adresse.addEventListener('input', e => {
+            var query = "http://api-adresse.data.gouv.fr/search/?q=" + adresse.value;
+            fetch(query, {method: 'get'})
+                .then(r => r.json())
+                .then(r => {
+                    layerGroup.clearLayers();
+                    r.features.forEach(element => {
+                        var coords = element.geometry.coordinates;
+                        L.marker([coords[1], coords[0]]).addTo(layerGroup).on('click', function (e) {
+                            geocodeService.reverse().latlng(this.getLatLng()).run(function (error, result) {
+                                if (error) {
+                                    return;
+                                }
+                                document.getElementById("address").value = result.address.Address;
+                                document.getElementById("city").value = result.address.City;
+                                document.getElementById("postal").value = result.address.Postal;
+                                document.getElementById("lat").value = result.latlng.lat;
+                                document.getElementById("lng").value = result.latlng.lng;
+                                console.log(result.address.Address);
+                                console.log(result.address.City);
+                                console.log(result.address.Postal);
+                                L.marker(result.latlng).addTo(mymap).bindPopup(result.address.Match_addr).openPopup();
                             });
                         });
-                    })
-                    .catch((error) => {
                     });
-            })
-        </script>
+                })
+                .catch((error) => {
+                });
+        })
+    </script>
 {% endblock %}

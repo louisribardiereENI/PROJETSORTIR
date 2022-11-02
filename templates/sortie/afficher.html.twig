@@ -41,16 +41,12 @@
                                 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
                                         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
                                         crossorigin=""></script>
-
                                 <script src="https://unpkg.com/esri-leaflet@2.2.3/dist/esri-leaflet.js"
                                         integrity="sha512-YZ6b5bXRVwipfqul5krehD9qlbJzc6KOGXYsDjU9HHXW2gK57xmWl2gU6nAegiErAqFXhygKIsWPKbjLPXVb2g=="
                                         crossorigin=""></script>
-
                                 <script src="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js"
                                         integrity="sha512-zdT4Pc2tIrc6uoYly2Wp8jh6EPEWaveqqD3sT0lf5yei19BC1WulGuh5CesB0ldBKZieKGD7Qyf/G0jdSe016A=="
                                         crossorigin=""></script>
-
-
                                 <script type="text/javascript">
                                     window.onload = function () {
                                         var latitude = document.getElementById("lat").value;
@@ -76,8 +72,6 @@
                                     var layerGroup = L.layerGroup().addTo(mymap);
                                     var geocodeService = L.esri.Geocoding.geocodeService();
                                 </script>
-
-
                             </div>
                         </div>
                     </div>
@@ -127,8 +121,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
                                     </div>
                                 </div>
                                 <div class="row g-3">
@@ -152,18 +144,15 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <div class="col-1">
             </div>
         </div>
-
         <div class="row">
             <div class="col-1">
             </div>
             <div class="col-10">
                 <div class="row">
-
                     <div class="col-lg-3">
                         <div class="card mb-4 border-color-first-color border-radius-20"
                              style="height: 95% !important;">
@@ -175,86 +164,121 @@
                                              width="40px" class="rounded-circle centrer" alt="photo de profil">
                                     </div>
                                     <div class="col-8 centrage-vertical">
-
                                         <p class="centrage-vertical">{{ sortie.idOrganisateur.nom }} {{ sortie.idOrganisateur.prenom }}</p>
                                     </div>
-                                    <div class="mb-2">
-                                        <button class="btn btn-warning btn-sm">Modifier la sortie</button>
-                                    </div>
-                                    <br/>
-                                    <div class="mb-2">
-                                        <button class="btn btn-danger btn-sm" data-bs-target="#exampleModalannuler" data-bs-toggle="modal">Annuler la sortie</button>
-                                    </div>
                                 </div>
+                                {% if app.user.roles[0] == "ADMIN" %}
+                                    {% if sortie.idOrganisateur.id == app.user.id %}
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-sm centrer-texte">
+                                                <div class="mb-2">
+                                                    <button class="btn btn-warning btn-sm"
+                                                            onclick="window.location.href = '{{ path('sortie_modifier',{'id':sortie.id}) }}'">
+                                                        Modifier la sortie
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            {% if sortie.idEtat.libelle == "Ouverte" %}
+                                                <div class="col-sm centrer-texte">
+                                                    <div class="mb-2">
+                                                        <button class="btn btn-danger btn-sm"
+                                                                data-bs-target="#exampleModalannuler"
+                                                                data-bs-toggle="modal">Annuler la sortie
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            {% elseif sortie.idEtat.libelle == "Annulée" %}
+                                                <div class="col-sm centrer-texte">
+                                                    <div class="mb-2">
+                                                        <button class="btn btn-danger btn-sm"
+                                                                data-bs-target="#exampleModalactiver"
+                                                                data-bs-toggle="modal">Activer la sortie
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
                             </div>
                         </div>
                     </div>
-
                     <div class="col-lg-3">
                         <div class="card mb-4 border-color-first-color border-radius-20"
                              style="height: 95% !important;">
                             <div class="card-body">
                                 <h3 class="centrer-texte margin-bottom-10">Inscription</h3>
-
-                                {% if sortie.getIdParticipant is not empty %}
-
-                                    {% if sortie.isIdInParticipantsList(app.user.id) %}
-
-                                        <button type="button" class="btn btn-primary primary-button centrer btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModaldesinscrire">
-                                            Je me désinscrit
-                                        </button>
+                                {% if sortie.idEtat.libelle != "Annulée" %}
+                                    {% if sortie.getIdParticipant is not empty %}
+                                        {% if sortie.isIdInParticipantsList(app.user.id) %}
+                                            <button type="button" class="btn btn-primary primary-button centrer btn-sm"
+                                                    data-bs-toggle="modal" data-bs-target="#exampleModaldesinscrire">
+                                                Je me désinscrit
+                                            </button>
+                                        {% else %}
+                                            <button class="btn btn-primary primary-button centrer btn-sm"
+                                                    onclick="window.location.href = '{{ path('sortie_inscription',{'id':sortie.id}) }}'">
+                                                Je m'inscrit
+                                            </button>
+                                        {% endif %}
                                     {% else %}
-                                        <button class="btn btn-primary primary-button centrer btn-sm"
+                                        <button name="" class="btn btn-primary primary-button centrer btn-sm"
                                                 onclick="window.location.href = '{{ path('sortie_inscription',{'id':sortie.id}) }}'">
                                             Je m'inscrit
                                         </button>
                                     {% endif %}
-
                                 {% else %}
-
-                                    <button name="" class="btn btn-primary primary-button centrer btn-sm"
-                                            onclick="window.location.href = '{{ path('sortie_inscription',{'id':sortie.id}) }}'">
-                                        Je m'inscrit
+                                    <button name="" class="btn btn-primary primary-button centrer btn-sm" disabled>
+                                        Annulée
                                     </button>
-
                                 {% endif %}
                             </div>
                         </div>
                     </div>
-
                     <div class="col-lg-6">
                         <div class="card mb-4 border-color-first-color border-radius-20"
                              style="height: 95% !important;">
                             <div class="card-body">
                                 <h3 class="centrer-texte margin-bottom-10">Utilisateurs</h3>
-
                                 {% if sortie.getIdParticipant.count == 0 %}
-                                    <p class="centrer-texte">Aucun utilisateur n'est inscrit !</p>
+                                    {% if sortie.idEtat.libelle == "Annulée" %}
+                                        <p class="centrer-texte">La sortie est annulée</p>
+                                    {% else %}
+                                        <p class="centrer-texte">Aucun utilisateur n'est inscrit !</p>
+                                    {% endif %}
+
                                 {% else %}
                                     <div class="row">
                                         {% for participant in sortie.getIdParticipant %}
                                             <div class="col-lg-3">
                                                 <div class="mb-2 centrer-texte">
-                                                    <button type="button" class="btn btn-primary primary-button btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal{{ participant.id }}">
+                                                    <button type="button" class="btn btn-primary primary-button btn-sm"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#exampleModal{{ participant.id }}">
                                                         {{ participant.prenom }} {{ participant.nom }}
                                                     </button>
                                                 </div>
                                             </div>
-
                                             <!-- Modal utilisateur -->
-                                            <div class="modal fade" id="exampleModal{{ participant.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="exampleModal{{ participant.id }}" tabindex="-1"
+                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h1 class="modal-title fs-5 centrer-texte" id="exampleModalLabel">{{ participant.prenom }} {{ participant.nom }}</h1>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <h1 class="modal-title fs-5 centrer-texte"
+                                                                id="exampleModalLabel">{{ participant.prenom }} {{ participant.nom }}</h1>
+                                                            <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="card border-color-first-color border-radius-20">
                                                                 <div class="card-body">
-                                                                    <img src="{{ asset('img/avatar/'~participant.photoParticipant) }}" alt="avatar"
-                                                                         class="rounded-circle img-fluid centrer" style="width: 150px;">
-                                                                    <br >
+                                                                    <img src="{{ asset('img/avatar/'~participant.photoParticipant) }}"
+                                                                         alt="avatar"
+                                                                         class="rounded-circle img-fluid centrer"
+                                                                         style="width: 150px;">
+                                                                    <br>
                                                                     <div class="row">
                                                                         <div class="col-sm-3">
                                                                             <p class="mb-0">Pseudo</p>
@@ -278,7 +302,7 @@
                                                                             <p class="mb-0">Email</p>
                                                                         </div>
                                                                         <div class="col-sm-9">
-                                                                            <p class="text-muted mb-0">{{ participant.email}}</p>
+                                                                            <p class="text-muted mb-0">{{ participant.email }}</p>
                                                                         </div>
                                                                     </div>
                                                                     <hr>
@@ -303,7 +327,9 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Fermer
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -320,11 +346,11 @@
             <div class="col-1">
             </div>
         </div>
-
     </section>
 
     <!-- Modal se désinscrire -->
-    <div class="modal fade" id="exampleModaldesinscrire" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModaldesinscrire" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -337,14 +363,18 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                    <button type="button" class="btn btn-danger" onclick="window.location.href = '{{ path('sortie_inscription',{'id':sortie.id}) }}'">Me désinscrire</button>
+                    <button type="button" class="btn btn-danger"
+                            onclick="window.location.href = '{{ path('sortie_inscription',{'id':sortie.id}) }}'">Me
+                        désinscrire
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Modal annuler sortie -->
-    <div class="modal fade" id="exampleModalannuler" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModalannuler" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -357,7 +387,34 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                    <button type="button" class="btn btn-danger" onclick="window.location.href = '{{ path('sortie_annuler',{'id':sortie.id}) }}'">Annuler la sortie</button>
+                    <button type="button" class="btn btn-danger"
+                            onclick="window.location.href = '{{ path('sortie_annuler',{'id':sortie.id}) }}'">Annuler la
+                        sortie
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal activer sortie -->
+    <div class="modal fade" id="exampleModalactiver" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Rouvrir la sortie !</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Voulez-vous rouvrir la sortie suivante :
+                    <strong>{{ sortie.nom }}</strong> ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-danger"
+                            onclick="window.location.href = '{{ path('sortie_annuler',{'id':sortie.id}) }}'">Rouvrir la
+                        sortie
+                    </button>
                 </div>
             </div>
         </div>
