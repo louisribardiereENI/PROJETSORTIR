@@ -11,12 +11,14 @@ use App\Repository\LieuRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Date;
 
 #[Route('/sorties', name: 'sortie_')]
 class SortieController extends AbstractController
@@ -179,7 +181,10 @@ class SortieController extends AbstractController
         if ($sortie->getIdEtat()->getLibelle() == "Ouverte") {
             $participant = $sortie->getIdParticipant();
             if (!$participant->contains($this->getUser())) {
-                $sortie->addIdParticipant($this->getUser());
+                $participantList = $sortie->getIdParticipant();
+                if ($participantList->count() < $sortie->getNbInscriptionsMax() && $sortie->getDateLimiteInscription() > new DateTime("now")) {
+                    $sortie->addIdParticipant($this->getUser());
+                }
             } else {
                 $sortie->removeIdParticipant($this->getUser());
             }

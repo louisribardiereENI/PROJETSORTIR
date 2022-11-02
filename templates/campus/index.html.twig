@@ -6,6 +6,33 @@
 {% endblock %}
 
 {% block body %}
-    {{ form(form) }}
-
+   {% if app.user.roles[0]=="ADMIN" %}
+    {{ form_start(form) }}
+    {% endif %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col" class="centrer-texte">Nom du campus</th>
+            {% if app.user.roles[0]=="ADMIN" %}
+            <th scope="col" class="centrer-texte">Importer un CSV</th>
+            {% endif %}
+        </tr>
+        </thead>
+        {% set compteur=0 %}
+        <tbody>{% for campus in campuslist %}
+            {% set compteur=compteur+1 %}
+            <tr>
+                <td class="centrer-texte">
+                    {{ campus.nom}}
+                </td>
+            {% if app.user.roles[0]=="ADMIN" %}
+                <td class="centrer-texte"><input type="file" name="csv{{ compteur }}" accept=".csv"></td>
+            {% endif %}
+            </tr>{% endfor %}
+        </tbody>
+    </table>
+    {% if app.user.roles[0]=="ADMIN" %}
+    {{ form_widget(form.importer) }}
+   {{ form_end(form) }}
+    {% endif %}
 {% endblock %}
