@@ -36,7 +36,7 @@
                                 <input type="hidden" id="lat" name="lat" value="{{ sortie.IdLieu.latitude }}"/>
                                 <input type="hidden" id="lng" name="lng" value="{{ sortie.IdLieu.longitude }}"/>
                                 <div id="carte1" class="img-fluid border-radius-20"
-                                     style="height: 400px; width: 800px; margin-bottom: 10px;"></div>
+                                     style="height: 355px; width: 800px; margin-bottom: 10px;"></div>
 
                                 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
                                         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
@@ -84,10 +84,11 @@
                     <div class="col-lg-8">
                         <div class="card mb-4 border-color-first-color border-radius-20"
                              style="height: 95% !important;">
-                            <div class="card-body" style="margin-bottom: 10px;">
+                            <div class="card-body">
                                 <h3 class="centrer-texte margin-bottom-10">Informations sortie</h3>
                                 <div class="row">
-                                    <div class="col-sm-5">
+                                    <div class="col-sm-5"
+                                         style="margin-top: auto !important;margin-bottom: auto !important;">
                                         <div class="mb-2">
                                             <img src="{{ asset('img/sorties/'~sortie.photoSortie) }}" width="400"
                                                  class="img-fluid centrer border-radius-20">
@@ -102,44 +103,43 @@
 
                                             <div class="mb-2">
                                                 <label class="form-label">Description</label>
-                                                <textarea class="form-control" rows="5"
+                                                <textarea class="form-control" rows="3"
                                                           disabled>{{ sortie.infosSortie }}</textarea>
                                             </div>
+
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="mb-2">
+                                                        <label class="form-label">Date de début</label>
+                                                        <input class="form-control" type="datetime-local"
+                                                               value="{{ sortie.dateHeureDebut|date('Y-m-d H:i:s') }}"
+                                                               disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="mb-2">
+                                                        <label class="form-label">Date limite d'inscription</label>
+                                                        <input class="form-control"
+                                                               value="{{ sortie.dateLimiteInscription|date('Y-m-d H:i:s') }}"
+                                                               type="datetime-local"
+                                                               disabled>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
+
+
                                     </div>
                                 </div>
                                 <div class="row g-3">
                                     <div class="col-sm-5">
                                         <div class="mb-2">
-                                            <label class="form-label">Date du début de la sortie</label>
-                                            <input class="form-control" type="datetime-local"
-                                                   value="{{ sortie.dateHeureDebut|date('Y-m-d H:i:s') }}" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <div class="mb-2">
-                                            <label class="form-label">Date limite d'inscription</label>
-                                            <input class="form-control" type="datetime-local"
-                                                   value="{{ sortie.dateLimiteInscription|date('Y-m-d H:i:s') }}"
-                                                   disabled>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <div class="mb-2">
-                                            <label class="form-label">Durée</label>
-                                            <input class="form-control" value="{{ sortie.duree }} minutes" disabled>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-sm-5">
-                                        <div class="">
                                             <label class="form-label">Site organisateur</label>
                                             <input class="form-control" type="text"
                                                    value="{{ sortie.idSiteOrganisateur.nom }}" disabled>
                                         </div>
                                     </div>
-                                    <div class="col-sm-7">
+                                    <div class="col-sm-7" style="margin-bottom: 20px">
                                         <div class="">
                                             <label class="form-label">Lieu</label>
                                             <input class="form-control" type="text"
@@ -175,7 +175,15 @@
                                              width="40px" class="rounded-circle centrer" alt="photo de profil">
                                     </div>
                                     <div class="col-8 centrage-vertical">
+
                                         <p class="centrage-vertical">{{ sortie.idOrganisateur.nom }} {{ sortie.idOrganisateur.prenom }}</p>
+                                    </div>
+                                    <div class="mb-2">
+                                        <button class="btn btn-warning btn-sm">Modifier la sortie</button>
+                                    </div>
+                                    <br/>
+                                    <div class="mb-2">
+                                        <button class="btn btn-danger btn-sm" data-bs-target="#exampleModalannuler" data-bs-toggle="modal">Annuler la sortie</button>
                                     </div>
                                 </div>
                             </div>
@@ -191,39 +199,20 @@
                                 {% if sortie.getIdParticipant is not empty %}
 
                                     {% if sortie.isIdInParticipantsList(app.user.id) %}
-                                        <button class="btn btn-primary primary-button centrer"
-                                                onclick="window.location.href = '{{ path('sortie_inscription',{'id':sortie.id}) }}'">
+
+                                        <button type="button" class="btn btn-primary primary-button centrer btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModaldesinscrire">
                                             Je me désinscrit
                                         </button>
                                     {% else %}
-                                        <button class="btn btn-primary primary-button centrer"
+                                        <button class="btn btn-primary primary-button centrer btn-sm"
                                                 onclick="window.location.href = '{{ path('sortie_inscription',{'id':sortie.id}) }}'">
                                             Je m'inscrit
                                         </button>
                                     {% endif %}
 
-                                    {# {% set break = false %}
-                                    {% for participant in sortie.getIdParticipant if not break %}
-
-                                        {% if app.user.id == participant.id %}
-                                            {% set break = true %}
-                                            <button class="btn btn-primary primary-button centrer"
-                                                    onclick="window.location.href = '{{ path('sortie_inscription',{'id':sortie.id}) }}'">
-                                                Je me désinscrit
-                                            </button>
-                                        {% endif %}
-                                        {% if app.user.id != participant.id  %}
-                                            <button name="" class="btn btn-primary primary-button centrer"
-                                                    onclick="window.location.href = '{{ path('sortie_inscription',{'id':sortie.id}) }}'">
-                                                Je m'inscrit
-                                            </button>
-                                        {% endif %}
-
-                                    {% endfor %}
-                                    #}
                                 {% else %}
 
-                                    <button name="" class="btn btn-primary primary-button centrer"
+                                    <button name="" class="btn btn-primary primary-button centrer btn-sm"
                                             onclick="window.location.href = '{{ path('sortie_inscription',{'id':sortie.id}) }}'">
                                         Je m'inscrit
                                     </button>
@@ -244,8 +233,80 @@
                                 {% else %}
                                     <div class="row">
                                         {% for participant in sortie.getIdParticipant %}
-                                            <div class="col-2">
-                                                <p class="centrer-texte">{{ participant.prenom }} {{ participant.nom }}</p>
+                                            <div class="col-lg-3">
+                                                <div class="mb-2 centrer-texte">
+                                                    <button type="button" class="btn btn-primary primary-button btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal{{ participant.id }}">
+                                                        {{ participant.prenom }} {{ participant.nom }}
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <!-- Modal utilisateur -->
+                                            <div class="modal fade" id="exampleModal{{ participant.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5 centrer-texte" id="exampleModalLabel">{{ participant.prenom }} {{ participant.nom }}</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="card border-color-first-color border-radius-20">
+                                                                <div class="card-body">
+                                                                    <img src="{{ asset('img/avatar/'~participant.photoParticipant) }}" alt="avatar"
+                                                                         class="rounded-circle img-fluid centrer" style="width: 150px;">
+                                                                    <br >
+                                                                    <div class="row">
+                                                                        <div class="col-sm-3">
+                                                                            <p class="mb-0">Pseudo</p>
+                                                                        </div>
+                                                                        <div class="col-sm-9">
+                                                                            <p class="text-muted mb-0">{{ participant.pseudo }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-3">
+                                                                            <p class="mb-0">Prénom et nom</p>
+                                                                        </div>
+                                                                        <div class="col-sm-9">
+                                                                            <p class="text-muted mb-0">{{ participant.prenom }} {{ participant.nom }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-3">
+                                                                            <p class="mb-0">Email</p>
+                                                                        </div>
+                                                                        <div class="col-sm-9">
+                                                                            <p class="text-muted mb-0">{{ participant.email}}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-3">
+                                                                            <p class="mb-0">Téléphone</p>
+                                                                        </div>
+                                                                        <div class="col-sm-9">
+                                                                            <p class="text-muted mb-0">{{ participant.telephone }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-3">
+                                                                            <p class="mb-0">Campus</p>
+                                                                        </div>
+                                                                        <div class="col-sm-9">
+                                                                            <p class="text-muted mb-0">{{ participant.getIdCampus.nom }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         {% endfor %}
                                     </div>
@@ -261,4 +322,44 @@
         </div>
 
     </section>
+
+    <!-- Modal se désinscrire -->
+    <div class="modal fade" id="exampleModaldesinscrire" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Je me désinscrit !</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Voulez-vous vous désinscrire de la sortie suivante :
+                    <strong>{{ sortie.nom }}</strong> ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-danger" onclick="window.location.href = '{{ path('sortie_inscription',{'id':sortie.id}) }}'">Me désinscrire</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal annuler sortie -->
+    <div class="modal fade" id="exampleModalannuler" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">J'annule la sortie !</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Voulez-vous annuler la sortie suivante :
+                    <strong>{{ sortie.nom }}</strong> ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-danger" onclick="window.location.href = '{{ path('sortie_annuler',{'id':sortie.id}) }}'">Annuler la sortie</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
