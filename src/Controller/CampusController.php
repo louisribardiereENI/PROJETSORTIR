@@ -50,4 +50,26 @@ class CampusController extends AbstractController
         }
     }
 
+    #[Route('{id}/modifier', name: 'modifier')]
+    public function edit(Request $request, CampusRepository $repo, int $id): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $campus = new Campus();
+        $form = $this->createForm(CampusType::class, $campus);
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $campus->setNom($form->get('nom')->getData());
+            $repo->save($campus, true);
+            return $this->redirectToRoute('campus_list');
+        } else {
+            return $this->render('campus/index.html.twig', [
+                'controller_name' => 'CampusController',
+                'form' => $form->createView(),
+            ]);
+        }
+    }
+
 }
