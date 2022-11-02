@@ -31,8 +31,7 @@ class CampusController extends AbstractController
         if($form->isSubmitted()&&$form->isValid()){
 
             for($i=1;$i<=count($campus);$i++){
-                $data=$form->get('csv'.$i)->getData();
-
+                $data=$request->get('csv'.$i);
             }
         }
         return $this->render('campus/index.html.twig', [
