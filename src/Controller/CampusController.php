@@ -40,8 +40,8 @@ class CampusController extends AbstractController
         if ($form->isSubmitted()) {
             return $this->redirectToRoute('campus_list');
         } else {
-            return $this->render('sortie/create.html.twig', [
-                'controller_name' => 'SortieController',
+            return $this->render('campus/create.html.twig', [
+                'controller_name' => 'CampusController',
                 'form' => $form->createView(),
             ]);
         }
