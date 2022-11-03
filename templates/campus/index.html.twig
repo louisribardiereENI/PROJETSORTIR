@@ -42,13 +42,15 @@
                                     </td>
                                     {% if app.user.roles[0]=="ADMIN" %}
                                         <td class="centrer-texte">{{ form_widget(attribute(form1,'csv'~compteur)) }}</td>
-{#                                            <input class="form-control" type="file"#}
-{#                                                                         name="csv{{ compteur }}"#}
-{#                                                                         accept=".csv">#}
+                                        {#                                            <input class="form-control" type="file" #}
+                                        {#                                                                         name="csv{{ compteur }}" #}
+                                        {#                                                                         accept=".csv"> #}
 
 
                                         <td class="centrer-texte">
-                                            <button role="button" class="btn btn-warning" type="button" onclick="window.location.href = '{{ path('campus_edit', {'id': campus.id }) }}'";>
+                                            <button role="button" class="btn btn-warning" type="button"
+                                                    onclick="window.location.href = '{{ path('campus_edit', {'id': campus.id }) }}'"
+                                                    ;>
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                      fill="currentColor" class="bi bi-pencil-square"
                                                      viewBox="0 0 16 16">
@@ -58,7 +60,8 @@
                                                 </svg>
                                             </button>
                                             &nbsp;
-                                            <button role="button" class="btn btn-danger" type="button" data-bs-toggle="modal"
+                                            <button role="button" class="btn btn-danger" type="button"
+                                                    data-bs-toggle="modal"
                                                     data-bs-target="#campusdelete{{ campus.id }}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                      fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -148,20 +151,18 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                {% if errors!="Ajout échoué pour les participants : " %}
-                <div class="col-lg-4">
-                    <div class="card mb-4 border-color-first-color border-radius-20">
-                        <div class="card-body">
-                            <h3 class="centrer-texte">Les erreurs</h3>
-                            <br>
-                            <div class="mb-4">
-                                <textarea class="form-control">{{ errors }}</textarea>
+                    {% if errors!="Ajout échoué pour les participants : " %}
+                        <div class="card mb-4 border-color-first-color border-radius-20">
+                            <div class="card-body">
+                                <h3 class="centrer-texte">Les erreurs</h3>
+                                <br>
+                                <div class="mb-4">
+                                    <textarea class="form-control" rows="15" disabled>{{ errors }}</textarea>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    {% endif %}
                 </div>
-                {% endif %}
             </div>
         </div>
         <div class="col">
