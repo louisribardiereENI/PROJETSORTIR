@@ -31,9 +31,9 @@ class SortieType extends AbstractType
                     'widget' => 'single_text',
                     'model_timezone' => 'Europe/Paris',
                     'view_timezone' => 'Europe/Paris',
-                    'attr' => array('placeholder' => 'yyyy-mm-dd hh:mi:ss', 'class' => 'form-control'),
+                    'attr' => array('placeholder' => 'yyyy-mm-dd hh:mi', 'class' => 'form-control'),
                     'label' => 'Date du début de la sortie :',
-                    'label_attr' => ['class' => 'form-label'])
+                    'label_attr' => ['class' => 'form-label']),
             )
             ->add('duree', IntegerType::class, [
                 'required' => true,
@@ -48,7 +48,7 @@ class SortieType extends AbstractType
                 'widget' => 'single_text',
                 'model_timezone' => 'Europe/Paris',
                 'view_timezone' => 'Europe/Paris',
-                'attr' => array('placeholder' => 'yyyy-mm-dd hh:mi:ss', 'class' => 'form-control'),
+                'attr' => array('placeholder' => 'yyyy-mm-dd hh:mi', 'class' => 'form-control'),
                 'label' => "Date limite d'inscription :",
                 'label_attr' => ['class' => 'form-label',
                 ]))

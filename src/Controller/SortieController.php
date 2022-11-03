@@ -29,6 +29,8 @@ class SortieController extends AbstractController
     #[Route('/', name: 'list')]
     public function index(SortieRepository $repo): Response
     {
+        date_default_timezone_set('Europe/Paris');
+
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
@@ -42,6 +44,8 @@ class SortieController extends AbstractController
     #[Route('/creer', name: 'create')]
     public function create(Request $request, SortieRepository $repo, ParticipantRepository $repoUser, VilleRepository $repoVille, LieuRepository $repoLieu, EtatRepository $repoEtat): Response
     {
+        date_default_timezone_set('Europe/Paris');
+
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
@@ -62,6 +66,8 @@ class SortieController extends AbstractController
     }
 
     private function submit(Request $request, SortieRepository $repo, ParticipantRepository $repoUser, VilleRepository $repoVille, LieuRepository $repoLieu, EtatRepository $repoEtat, Sortie $sortie, Form $form, bool $isEdit): Sortie {
+
+        date_default_timezone_set('Europe/Paris');
 
         $user = $repoUser->findByEmail($this->getUser()->getUserIdentifier());
         $sortie->setIdOrganisateur($user);
@@ -134,6 +140,8 @@ class SortieController extends AbstractController
     #[Route('/{id}/modifier', name: 'modifier')]
     public function modifier(Request $request, SortieRepository $repo, ParticipantRepository $repoUser, VilleRepository $repoVille, LieuRepository $repoLieu, EtatRepository $repoEtat, int $id): Response
     {
+        date_default_timezone_set('Europe/Paris');
+
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
@@ -167,6 +175,8 @@ class SortieController extends AbstractController
     #[Route('/{id}/voir', name: 'details')]
     public function detail(SortieRepository $repo,int $id): Response
     {
+        date_default_timezone_set('Europe/Paris');
+
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
@@ -187,6 +197,8 @@ class SortieController extends AbstractController
     #[Route('/{id}/inscription', name: 'inscription')]
     public function inscription(SortieRepository $repo, int $id): Response
     {
+        date_default_timezone_set('Europe/Paris');
+
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
@@ -210,6 +222,8 @@ class SortieController extends AbstractController
     #[Route('/{id}/annuler', name: 'annuler')]
     public function annuler(SortieRepository $repo, ParticipantRepository $repoUser, EtatRepository $repoEtat, int $id): Response
     {
+        date_default_timezone_set('Europe/Paris');
+
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
