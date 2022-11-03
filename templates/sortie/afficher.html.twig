@@ -160,14 +160,14 @@
                             <div class="card-body">
                                 <h3 class="centrer-texte margin-bottom-10">Organisateur</h3>
                                 <div class="row">
-                                    <div class="col-4">
-                                        <img src="{{ asset('img/avatar/'~sortie.idOrganisateur.photoParticipant) }}"
-                                             class="rounded-circle centrer photo-profil-sortie" alt="photo de profil">
+                                    <div class="col"></div>
+                                    <div class="col-12">
+                                        <button class="btn btn-primary primary-button btn-sm centrage-vertical" data-bs-toggle="modal" data-bs-target="#exampleModalorganisateur"><img src="{{ asset('img/avatar/'~sortie.idOrganisateur.photoParticipant) }}" class="rounded-circle centrer photo-profil-sortie" alt="photo de profil">{{ sortie.idOrganisateur.nom }} {{ sortie.idOrganisateur.prenom }}</button>
                                     </div>
-                                    <div class="col-8 centrage-vertical">
-                                        <p class="centrage-vertical">{{ sortie.idOrganisateur.nom }} {{ sortie.idOrganisateur.prenom }}</p>
-                                    </div>
+                                    <div class="col"></div>
                                 </div>
+
+
                                 {% if app.user.roles[0] == "ADMIN" %}
                                     {% if sortie.idOrganisateur.id == app.user.id %}
                                         <br>
@@ -237,6 +237,7 @@
                                         <button name="" class="btn btn-primary primary-button centrer btn-sm" disabled>
                                             {{ sortie.idEtat.libelle }}
                                         </button>
+                                        <br />
                                         {% if sortie.idEtat.libelle == "Clôturée" %}
                                             <button type="button"
                                                     class="btn btn-primary primary-button centrer btn-sm"
@@ -244,6 +245,8 @@
                                                     data-bs-target="#exampleModaldesinscrire">
                                                 Je me désinscrit
                                             </button>
+                                        {% else %}
+
                                         {% endif %}
                                     {% endif %}
                                 {% else %}
@@ -271,9 +274,9 @@
                                         {% for participant in sortie.getIdParticipant %}
                                             <div class="col-lg-3">
                                                 <div class="mb-2 centrer-texte">
-                                                    <button type="button" class="btn btn-primary primary-button btn-sm"
+                                                    <button type="button" class="btn btn-primary primary-button btn-sm" style="width: 100%"
                                                             data-bs-toggle="modal"
-                                                            data-bs-target="#exampleModal{{ participant.id }}">
+                                                            data-bs-target="#exampleModal{{ participant.id }}"><img src="{{ asset('img/avatar/'~sortie.idOrganisateur.photoParticipant) }}" class="rounded-circle centrer photo-profil-sortie" alt="photo de profil">
                                                         {{ participant.prenom }}<br /> {{ participant.nom }}
                                                     </button>
                                                 </div>
@@ -407,6 +410,80 @@
                     <button type="button" class="btn btn-danger"
                             onclick="window.location.href = '{{ path('sortie_annuler',{'id':sortie.id}) }}'">Annuler la
                         sortie
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal organisateur -->
+    <div class="modal fade" id="exampleModalorganisateur" tabindex="-1"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 centrer-texte"
+                        id="exampleModalLabel">{{ sortie.idOrganisateur.prenom }} {{ sortie.idOrganisateur.nom }}</h1>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card border-color-first-color border-radius-20">
+                        <div class="card-body">
+                            <img src="{{ asset('img/avatar/'~sortie.idOrganisateur.photoParticipant) }}"
+                                 alt="avatar"
+                                 class="rounded-circle img-fluid centrer photo-profil">
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Pseudo</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{ sortie.idOrganisateur.pseudo }}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Prénom et nom</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{ sortie.idOrganisateur.prenom }} {{ sortie.idOrganisateur.nom }}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Email</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{ sortie.idOrganisateur.email }}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Téléphone</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{ sortie.idOrganisateur.telephone }}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Campus</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{ sortie.idOrganisateur.getIdCampus.nom }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Fermer
                     </button>
                 </div>
             </div>
