@@ -12,6 +12,7 @@ use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
 use DateTime;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Form;
@@ -165,9 +166,16 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         $sortie = $repo->find($id);
+
+        if ($sortie->getDateLimiteInscription() > new DateTime("now")) {
+            $inscription = true;
+        } else {
+            $inscription = false;
+        }
+
         return $this->render('sortie/afficher.html.twig', [
             'controller_name' => 'SortieController',
-            'sortie' =>$sortie,
+            'sortie' =>$sortie, 'inscription' => $inscription
         ]);
     }
 
@@ -190,6 +198,7 @@ class SortieController extends AbstractController
             }
         $repo->save($sortie, true);
         }
+
         return $this->redirectToRoute('sortie_details', array('id' => $sortie->getId()));
     }
 
