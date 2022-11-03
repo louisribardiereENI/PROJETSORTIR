@@ -45,6 +45,10 @@ class HomeController extends AbstractController
             $datesortie->setTimestamp($dateHeureDebut->getTimestamp());
             $datesortie->modify('+'.$sortie->getDuree().' minutes');
 
+            if ($sortie->getNbInscriptionsMax() > count($sortie->getIdParticipant())) {
+                $libelle = "Ouverte";
+            }
+
             if ($sortie->getNbInscriptionsMax() == count($sortie->getIdParticipant()) || $sortie->getDateLimiteInscription() < $actual) {
                 $libelle = "Clôturée";
             }

@@ -203,7 +203,7 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         $sortie = $repo->findOneBy(array('id' => $id));
-        if ($sortie->getIdEtat()->getLibelle() == "Ouverte") {
+//        if ($sortie->getIdEtat()->getLibelle() == "Ouverte") {
             $participant = $sortie->getIdParticipant();
             if (!$participant->contains($this->getUser())) {
                 $participantList = $sortie->getIdParticipant();
@@ -214,7 +214,7 @@ class SortieController extends AbstractController
                 $sortie->removeIdParticipant($this->getUser());
             }
         $repo->save($sortie, true);
-        }
+//        }
 
         return $this->redirectToRoute('sortie_details', array('id' => $sortie->getId()));
     }
