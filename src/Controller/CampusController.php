@@ -54,7 +54,7 @@ class CampusController extends AbstractController
                             $participant = new Participant();
                             $participant->setIdCampus($camp);
                             $participant->setEmail($data[0]);
-                            if ($data[5] == 1) {
+                            if (filter_var($data[5], FILTER_VALIDATE_BOOLEAN)) {
                                 $participant->setRoles(array('ADMIN'));
                             } else {
                                 $participant->setRoles(array());
@@ -63,8 +63,8 @@ class CampusController extends AbstractController
                             $participant->setNom($data[2]);
                             $participant->setPrenom($data[3]);
                             $participant->setTelephone($data[4]);
-                            $participant->setAdministrateur($data[5]);
-                            $participant->setActif($data[6]);
+                            $participant->setAdministrateur(filter_var($data[5], FILTER_VALIDATE_BOOLEAN));
+                            $participant->setActif(filter_var($data[6], FILTER_VALIDATE_BOOLEAN));
                             $participant->setPseudo($data[7]);
                             $participant->setPhotoParticipant("/default.jpg");
 
@@ -151,5 +151,3 @@ class CampusController extends AbstractController
     }
 
 }
-
-
