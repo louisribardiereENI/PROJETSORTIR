@@ -162,60 +162,10 @@
         </div>
     </section>
 
+    <div style="margin-bottom: 50px"></div>
+
 {% endblock %}
 
-
-{#
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col" class="centrer-texte">Photo</th>
-        <th scope="col" class="centrer-texte">Identité</th>
-        {% if (app.user.roles[0]=='ADMIN') %}
-            <th scope="col" class="centrer-texte">Administrateur</th>
-            <th scope="col" class="centrer-texte">État</th>
-            <th scope="col" class="centrer-texte">Supprimer</th>
-        {% endif %}
-    </tr>
-    </thead>
-    <tbody>
-    {% for participant in participants %}
-        <tr>
-            <th scope="row" class="centrer">
-                <img src="{{ asset('img/avatar/'~participant.photoParticipant) }}"
-                     alt="mdo" width="32" height="32"
-                     class="rounded-circle">
-            </th>
-            <td class="centrer-texte">{{ participant.nom }} {{ participant.prenom }}</td>
-
-            {% if (app.user.roles[0]=='ADMIN') %}
-                {% if(participant.id!=app.user.id) %}
-                    <td class="centrer-texte">
-                        {% if(participant.isAdministrateur) %}
-                            <a href="{{ path('participant_administrateur',{'id':participant.id,'admin':0}) }}">Retirer
-                                l'administration</a>
-                        {% else %}
-                            <a href="{{ path('participant_administrateur',{'id':participant.id,'admin':1}) }}">Ajouter
-                                à l'administration</a>
-                        {% endif %}
-                    </td>
-                    <td class="centrer-texte">
-                        {% if(participant.isActif) %}
-                            <a href="{{ path('participant_activation',{'id':participant.id,'active':0}) }}">Désactiver
-                                le compte</a>
-                        {% else %}
-                            <a href="{{ path('participant_activation',{'id':participant.id,'active':1}) }}">Activer
-                                le compte</a>
-                        {% endif %}
-                    </td>
-                    <td class="centrer-texte">
-                        <a href="{{ path('participant_supprimer',{'id':participant.id}) }}">Supprimer
-                            le compte</a>
-                    </td>
-                {% endif %}
-            {% endif %}
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
-#}
+{% block footer %}
+    {% include 'module/footer/footer.html.twig' %}
+{% endblock %}
