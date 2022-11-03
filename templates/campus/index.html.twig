@@ -41,7 +41,7 @@
                                         {{ campus.nom }}
                                     </td>
                                     {% if app.user.roles[0]=="ADMIN" %}
-                                        <td class="centrer-texte">{{ form_widget(attribute(form1,'csv'~compteur)) }}</td>
+                                        <td class="centrer-texte">{{ form_widget(attribute(form1,'csv'~compteur), {'attr': {'class': 'form-control'}}) }}</td>
                                         {#                                            <input class="form-control" type="file" #}
                                         {#                                                                         name="csv{{ compteur }}" #}
                                         {#                                                                         accept=".csv"> #}
