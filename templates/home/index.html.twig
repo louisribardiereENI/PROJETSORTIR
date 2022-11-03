@@ -145,7 +145,10 @@
                                         <p class="center margin-bottom-0"><span class="badge text-bg-primary background-color-first-color">{{ sortie.idEtat.libelle }}</span></p>
                                     </div>
                                     <div  class="col">
-                                        <p class="center nav-color margin-bottom-0">Places : {{ sortie.getIdParticipant.count}}/{{ sortie.nbInscriptionsMax }}</p>
+                                        <p class="center margin-bottom-0"><span class="badge text-bg-primary background-color-first-color">{{ sortie.dateHeureDebut|date('d M y') }}<br>{{ sortie.dateHeureDebut|date('H:m') }}</span></p>
+                                    </div>
+                                    <div  class="col">
+                                        <p class="center nav-color margin-bottom-0"><span class="badge text-bg-primary background-color-first-color">Places : {{ sortie.getIdParticipant.count}}/{{ sortie.nbInscriptionsMax }}</span></p>
                                     </div>
                                 </div>
                             </div>
