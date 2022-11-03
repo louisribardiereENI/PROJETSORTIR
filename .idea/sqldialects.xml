@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$USER_HOME$/Downloads/database/campus.sql" dialect="SQLite" />
+    <file url="file://$USER_HOME$/Downloads/database/etat.sql" dialect="SQLite" />
+    <file url="file://$USER_HOME$/Downloads/database/lieu.sql" dialect="SQLite" />
+    <file url="file://$USER_HOME$/Downloads/database/participant.sql" dialect="SQLite" />
+    <file url="file://$USER_HOME$/Downloads/database/sortie.sql" dialect="SQLite" />
+    <file url="file://$USER_HOME$/Downloads/database/sortie_participant.sql" dialect="SQLite" />
+    <file url="file://$USER_HOME$/Downloads/database/ville.sql" dialect="SQLite" />
+  </component>
+</project>
