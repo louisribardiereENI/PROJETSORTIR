@@ -47,6 +47,7 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="inputEmail4" class="form-label">Email :</label>
+                                                {{ form_errors(registrationForm.email) }}
                                                 {{ form_widget(registrationForm.email) }}
                                             </div>
                                         </div>
@@ -83,6 +84,7 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="inputPassword4" class="form-label">Pseudo :</label>
+                                                {{ form_errors(registrationForm.pseudo) }}
                                                 {{ form_widget(registrationForm.pseudo) }}
                                             </div>
                                         </div>
