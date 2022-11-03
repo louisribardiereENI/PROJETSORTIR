@@ -54,7 +54,7 @@ class CampusController extends AbstractController
                             $participant = new Participant();
                             $participant->setIdCampus($camp);
                             $participant->setEmail($data[0]);
-                            if ((bool)$data[5]) {
+                            if ($data[5] == 1) {
                                 $participant->setRoles(array('ADMIN'));
                             } else {
                                 $participant->setRoles(array());
