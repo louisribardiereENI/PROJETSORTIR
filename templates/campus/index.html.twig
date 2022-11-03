@@ -41,9 +41,11 @@
                                         {{ campus.nom }}
                                     </td>
                                     {% if app.user.roles[0]=="ADMIN" %}
-                                        <td class="centrer-texte"><input class="form-control" type="file"
-                                                                         name="csv{{ compteur }}"
-                                                                         accept=".csv"></td>
+                                        <td class="centrer-texte">{{ form_widget(attribute(form1,'csv'~compteur)) }}</td>
+{#                                            <input class="form-control" type="file"#}
+{#                                                                         name="csv{{ compteur }}"#}
+{#                                                                         accept=".csv">#}
+
 
                                         <td class="centrer-texte">
                                             <button role="button" class="btn btn-warning" type="button" onclick="window.location.href = '{{ path('campus_edit', {'id': campus.id }) }}'";>

@@ -3,20 +3,23 @@
 namespace App\Controller;
 
 use App\Entity\Campus;
+use App\Entity\Participant;
 use App\Form\CampusType;
 use App\Form\ImportCSVType;
 use App\Repository\CampusRepository;
 use App\Repository\ParticipantRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/campus', name: 'campus_')]
 class CampusController extends AbstractController
 {
     #[Route('/', name: 'list')]
-    public function index(Request $request, CampusRepository $repo, ParticipantRepository $repoUser): Response
+    public function index(Request $request, CampusRepository $repo, UserPasswordHasherInterface $userPasswordHasher, ParticipantRepository $repoUser): Response
     {
         //Redirection
         if (!$this->getUser()) {
@@ -25,17 +28,70 @@ class CampusController extends AbstractController
 
         //Afficher un campus
         $campus = $repo->findAll();
-        $form1 = $this->createForm(ImportCSVType::class);
-        $form1->handleRequest($request);
-        if ($form1->isSubmitted() && $form1->isValid()) {
 
-            for ($i = 1; $i <= count($campus); $i++) {
-                $data = $request->get('csv' . $i);
-            }
+        $form1 = $this->createForm(ImportCSVType::class);
+        $comp = 1;
+        foreach ($campus as $camp) {
+            $form1->add('csv' . $comp, FileType::class, ['required' => false]);
+            $comp++;
         }
-        $participant = $repoUser->findOneBy(array('email' => $this->getUser()->getUserIdentifier()));
-        if (!$participant->isAdministrateur()) {
-            return $this->redirectToRoute('campus_list');
+        $form1->handleRequest($request);
+
+        if ($form1->isSubmitted() && $form1->isValid()) {
+            $compteur = 1;
+            $errorGlobal = "Ajout échoué de pour les participants : ";
+            foreach ($campus as $camp) {
+                $data = $form1->get('csv' . $compteur)->getData();
+                if ($data != null) {
+                    if (($handle = fopen($data->getPathname(), "r")) !== false) {
+                        $flag = 1;
+                        while (($data = fgetcsv($handle, 0, ";")) !== false) {
+                            $error = "";
+                            $flag++;
+                            if ($flag == 2) {
+                                continue;
+                            }
+                            $participant = new Participant();
+                            $participant->setIdCampus($camp);
+                            $participant->setEmail($data[0]);
+                            if ((bool)$data[5]) {
+                                $participant->setRoles(array('ADMIN'));
+                            } else {
+                                $participant->setRoles(array());
+                            }
+                            $participant->setPassword($userPasswordHasher->hashPassword($participant, $data[1]));
+                            $participant->setNom($data[2]);
+                            $participant->setPrenom($data[3]);
+                            $participant->setTelephone($data[4]);
+                            $participant->setAdministrateur($data[5]);
+                            $participant->setActif($data[6]);
+                            $participant->setPseudo($data[7]);
+                            $participant->setPhotoParticipant("/default.jpg");
+
+                            $listParticipants = $repoUser->findAll();
+                            foreach ($listParticipants as $unParticipant) {
+                                if ($unParticipant->getEmail() == $participant->getEmail()) {
+                                    $error .= "\nEmail " . $participant->getEmail() . " déjà existant ! (ligne " . $flag . " du campus " . $compteur . ")";
+                                }
+                                if ($unParticipant->getPseudo() == $participant->getPseudo()) {
+                                    $error .= "\nPseudo " . $participant->getPseudo() . " déjà existant ! (ligne " . $flag . " du campus " . $compteur . ")";
+                                }
+                            }
+                            if ($error == "") {
+                                $repoUser->save($participant, true);
+                            } else {
+                                $errorGlobal .= $error;
+                            }
+
+                        }
+                        fclose($handle);
+                    }
+                }
+                $compteur++;
+            }
+            if ($errorGlobal != "Ajout échoué de pour les participants : ") {
+                var_dump($errorGlobal);
+            }
         }
 
         //Créer un campus
