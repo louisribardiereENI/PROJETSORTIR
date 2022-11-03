@@ -25,6 +25,12 @@ class ParticipantController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        $administrateur = $this->getUser()->getRoles() == ['ADMIN','ROLE_USER'];
+        if ($administrateur != true)
+        {
+            return $this->redirectToRoute('app_home');
+        }
+
         $participants = $repo->findAll();
         return $this->render('participant/index.html.twig', [
             'controller_name' => 'ParticipantController',
@@ -50,6 +56,12 @@ class ParticipantController extends AbstractController
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
+        }
+
+        $administrateur = $this->getUser()->getRoles() == ['ADMIN','ROLE_USER'];
+        if ($administrateur != true)
+        {
+            return $this->redirectToRoute('app_home');
         }
 
         $participant = $repo->find($id);
@@ -102,6 +114,12 @@ class ParticipantController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        $administrateur = $this->getUser()->getRoles() == ['ADMIN','ROLE_USER'];
+        if ($administrateur != true)
+        {
+            return $this->redirectToRoute('app_home');
+        }
+
         if($this->getUser()) {
             if($this->getUser()->getRoles()[0]=="ADMIN") {
                 $participant = $repo->find($id);
@@ -124,6 +142,12 @@ class ParticipantController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        $administrateur = $this->getUser()->getRoles() == ['ADMIN','ROLE_USER'];
+        if ($administrateur != true)
+        {
+            return $this->redirectToRoute('app_home');
+        }
+
         if($this->getUser()) {
             if($this->getUser()->getRoles()[0]=="ADMIN") {
                 $participant = $repo->find($id);
@@ -144,6 +168,12 @@ class ParticipantController extends AbstractController
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
+        }
+
+        $administrateur = $this->getUser()->getRoles() == ['ADMIN','ROLE_USER'];
+        if ($administrateur != true)
+        {
+            return $this->redirectToRoute('app_home');
         }
 
         if($this->getUser()) {

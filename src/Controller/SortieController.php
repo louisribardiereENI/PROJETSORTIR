@@ -32,7 +32,6 @@ class SortieController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
-
         $sorties = $repo->findAll();
         return $this->render('sortie/index.html.twig', [
             'controller_name' => 'SortieController',
@@ -138,6 +137,12 @@ class SortieController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
+
+        $administrateur = $this->getUser()->getRoles() == ['ADMIN','ROLE_USER'];
+        if ($administrateur != true)
+        {
+            return $this->redirectToRoute('sortie_details', array('id' => $id));
+        }
         $sortie = $repo->findOneBy(array('id' => $id));
         $participant = $repoUser->findOneBy(array('email' => $this->getUser()->getUserIdentifier()));
         if ($participant->getId() != $sortie->getIdOrganisateur()->getId() && !$participant->isAdministrateur()) {
@@ -208,6 +213,12 @@ class SortieController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
+        $administrateur = $this->getUser()->getRoles() == ['ADMIN','ROLE_USER'];
+        if ($administrateur != true)
+        {
+            return $this->redirectToRoute('sortie_details', array('id' => $id));
+        }
+
 
         $sortie = $repo->findOneBy(array('id' => $id));
         $participant = $repoUser->findOneBy(array('email' => $this->getUser()->getUserIdentifier()));

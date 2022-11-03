@@ -23,6 +23,11 @@ class HomeController extends AbstractController
     #[Route('/accueil', name: 'home')]
     public function index(SortieRepository $repo,ParticipantRepository $rep,EtatRepository $repEtat,Request $request): Response
     {
+
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
     $sorties=$repo->findAll();
     foreach ($sorties as $sortie){
         $actual=new \DateTime();
@@ -89,25 +94,5 @@ class HomeController extends AbstractController
             'sorties'=>$sorties,
         ]);
     }
-
-
-    /**
-     * @throws TransportExceptionInterface
-     */
-    #[Route('/email', name: 'email')]
-    public function emailtest(MailerInterface $mailer,): Response
-    {
-        $email = (new TemplatedEmail())
-            ->from(new Address('smtp@baptiste-coutant.fr', 'Sortir'))
-            ->to('baptiste.coutant2021@campus-eni.fr')
-            ->subject('Your password reset request')
-            ->htmlTemplate('reset_password/test.html.twig');
-
-        $mailer->send($email);
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
-
 }
 

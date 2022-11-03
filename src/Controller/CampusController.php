@@ -26,6 +26,12 @@ class CampusController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        $administrateur = $this->getUser()->getRoles() == ['ADMIN','ROLE_USER'];
+        if ($administrateur != true)
+        {
+            return $this->redirectToRoute('app_home');
+        }
+
         //Afficher un campus
         $campus = $repo->findAll();
 
@@ -114,6 +120,12 @@ class CampusController extends AbstractController
     #[Route('/{id}/modifier', name: 'edit')]
     public function edit(Request $request, CampusRepository $repo, ParticipantRepository $repoUser, int $id): Response
     {
+        $administrateur = $this->getUser()->getRoles() == ['ADMIN','ROLE_USER'];
+        if ($administrateur != true)
+        {
+            return $this->redirectToRoute('app_home');
+        }
+
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
@@ -143,6 +155,12 @@ class CampusController extends AbstractController
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
+        }
+
+        $administrateur = $this->getUser()->getRoles() == ['ADMIN','ROLE_USER'];
+        if ($administrateur != true)
+        {
+            return $this->redirectToRoute('app_home');
         }
         $campus3 = $repo->findOneBy(array('id' => $id));
         $repo->deleteCampus($campus3);

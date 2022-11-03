@@ -23,6 +23,11 @@ class RegistrationController extends AbstractController
        if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
        }
+        $administrateur = $this->getUser()->getRoles() == ['ADMIN','ROLE_USER'];
+        if ($administrateur != true)
+        {
+            return $this->redirectToRoute('app_home');
+        }
 
         $user = new Participant();
         $form = $this->createForm(RegistrationFormType::class, $user);
