@@ -149,6 +149,19 @@
                         </div>
                     </div>
                 </div>
+                {% if errors!="Ajout échoué pour les participants : " %}
+                <div class="col-lg-4">
+                    <div class="card mb-4 border-color-first-color border-radius-20">
+                        <div class="card-body">
+                            <h3 class="centrer-texte">Les erreurs</h3>
+                            <br>
+                            <div class="mb-4">
+                                <textarea class="form-control">{{ errors }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
         <div class="col">

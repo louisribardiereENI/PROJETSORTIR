@@ -36,10 +36,10 @@ class CampusController extends AbstractController
             $comp++;
         }
         $form1->handleRequest($request);
-
+        $errorGlobal = "Ajout échoué pour les participants : ";
         if ($form1->isSubmitted() && $form1->isValid()) {
             $compteur = 1;
-            $errorGlobal = "Ajout échoué de pour les participants : ";
+
             foreach ($campus as $camp) {
                 $data = $form1->get('csv' . $compteur)->getData();
                 if ($data != null) {
@@ -89,9 +89,7 @@ class CampusController extends AbstractController
                 }
                 $compteur++;
             }
-            if ($errorGlobal != "Ajout échoué de pour les participants : ") {
-                var_dump($errorGlobal);
-            }
+
         }
 
         //Créer un campus
@@ -109,6 +107,7 @@ class CampusController extends AbstractController
             'campuslist' => $campus,
             'form1' => $form1->createView(),
             'form2' => $form2->createView(),
+            'errors'=>$errorGlobal,
         ]);
     }
 
