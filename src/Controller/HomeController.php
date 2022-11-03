@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Campus;
 use App\Form\HomeType;
+use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -14,14 +15,48 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 #[Route('/', name: 'app_')]
 class HomeController extends AbstractController
 {
     #[Route('/accueil', name: 'home')]
-    public function index(SortieRepository $repo,ParticipantRepository $rep,Request $request): Response
+    public function index(SortieRepository $repo,ParticipantRepository $rep,EtatRepository $repEtat,Request $request): Response
     {
     $sorties=$repo->findAll();
+    foreach ($sorties as $sortie){
+        $actual=new \DateTime();
+        $actual->setTimezone(new \DateTimeZone("Europe/Paris"));
+        $libelle=null;
+        if($sortie->getIdEtat()->getLibelle()!="Annulée") {
+
+            //Transfert entre DateTime Symfony vers DateTime PHP
+            $dateHeureDebut=new \DateTime();
+            $dateHeureDebut->setTimestamp($sortie->getDateHeureDebut()->getTimestamp());
+            $dateHeureDebut->modify('-1 hours');
+
+            //Transfert entre DateTime Symfony vers DateTime PHP
+            $datesortie=new \DateTime();
+            $datesortie->setTimestamp($dateHeureDebut->getTimestamp());
+            $datesortie->modify('+'.$sortie->getDuree().' minutes');
+
+            if ($sortie->getNbInscriptionsMax() == count($sortie->getIdParticipant()) || $sortie->getDateLimiteInscription() < $actual) {
+                $libelle = "Clôturée";
+            }
+            if ($datesortie < $actual) {
+                $libelle = "Passée";
+            }
+
+            if($dateHeureDebut->getTimestamp()<=$actual->getTimestamp()&&$actual->getTimestamp()<=$datesortie->getTimestamp()){
+               $libelle="Activité en cours";
+            }
+            if($libelle!=null) {
+                $sortie->setIdEtat($repEtat->findByLibelle($libelle));
+                $repo->save($sortie,true);
+            }
+        }
+
+    }
     $form=$this->createForm(HomeType::class);
     $form->handleRequest($request);
     if($form->isSubmitted()&&$form->isValid()){
