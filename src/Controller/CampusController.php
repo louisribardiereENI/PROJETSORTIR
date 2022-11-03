@@ -8,8 +8,6 @@ use App\Form\ImportCSVType;
 use App\Repository\CampusRepository;
 use App\Repository\ParticipantRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,102 +15,48 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/campus', name: 'campus_')]
 class CampusController extends AbstractController
 {
-
-    private $csvParsingOptions = array(
-        'finder_in' => 'app/Resources/',
-        'finder_name' => 'countries.csv',
-        'ignoreFirstLine' => true
-    );
-
     #[Route('/', name: 'list')]
-    public function index(Request $request,CampusRepository $repo): Response
+    public function index(Request $request, CampusRepository $repo, ParticipantRepository $repoUser): Response
     {
+        //Redirection
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
+        //Afficher un campus
         $campus = $repo->findAll();
+        $form1 = $this->createForm(ImportCSVType::class);
+        $form1->handleRequest($request);
+        if ($form1->isSubmitted() && $form1->isValid()) {
 
-        $form=$this->createForm(ImportCSVType::class);
-        $comp=1;
-        foreach ($campus as $camp){
-            $form->add('csv'.$comp,FileType::class);
-            $comp++;
-        }
-        $form->handleRequest($request);
-
-        if($form->isSubmitted()&&$form->isValid()){
-
-            for($i=1;$i<=count($campus);$i++){
-                $data=$form->get('csv'.$i)->getData();
-                if ($data != "") {
-                   $handle=fopen($data->getPathName(), "r");
-                   var_dump(fgetcsv($handle));
-                   /* $csv = $this->parseCSV();
-                    var_dump($csv);*/
-                }
+            for ($i = 1; $i <= count($campus); $i++) {
+                $data = $request->get('csv' . $i);
             }
-        }
-        return $this->render('campus/index.html.twig', [
-            'controller_name' => 'CampusController',
-            'campuslist' => $campus,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    private function parseCSV(): array
-    {
-        $ignoreFirstLine = $this->csvParsingOptions['ignoreFirstLine'];
-
-        $finder = new Finder();
-        $finder->files()
-            ->in($this->csvParsingOptions['finder_in'])
-            ->name($this->csvParsingOptions['finder_name'])
-        ;
-        foreach ($finder as $file) { $csv = $file; }
-
-        $rows = array();
-        if (($handle = fopen($csv->getRealPath(), "r")) !== FALSE) {
-            $i = 0;
-            while (($data = fgetcsv($handle, null, ";")) !== FALSE) {
-                $i++;
-                if ($ignoreFirstLine && $i == 1) { continue; }
-                $rows[] = $data;
-            }
-            fclose($handle);
-        }
-
-        return $rows;
-    }
-
-
-    #[Route('/creer', name: 'create')]
-    public function create(Request $request, ParticipantRepository $repoUser, CampusRepository $repo): Response
-    {
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('app_login');
         }
         $participant = $repoUser->findOneBy(array('email' => $this->getUser()->getUserIdentifier()));
         if (!$participant->isAdministrateur()) {
             return $this->redirectToRoute('campus_list');
         }
 
-        $campus = new Campus();
-        $form = $this->createForm(CampusType::class, $campus);
-        $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            $campus->setNom($form->get('nom')->getData());
-            $repo->save($campus, true);
+        //Créer un campus
+        $campus2 = new Campus();
+        $form2 = $this->createForm(CampusType::class, $campus2);
+        $form2->handleRequest($request);
+        if ($form2->isSubmitted()) {
+            $campus2->setNom($form2->get('nom')->getData());
+            $repo->save($campus2, true);
             return $this->redirectToRoute('campus_list');
-        } else {
-            return $this->render('campus/index.html.twig', [
-                'controller_name' => 'CampusController',
-                'form' => $form->createView(),
-            ]);
         }
+
+        return $this->render('campus/index.html.twig', [
+            'controller_name' => 'CampusController',
+            'campuslist' => $campus,
+            'form1' => $form1->createView(),
+            'form2' => $form2->createView(),
+        ]);
     }
 
-    #[Route('/{id}/modifier', name: 'modifier')]
+    #[Route('/{id}/modifier', name: 'edit')]
     public function edit(Request $request, CampusRepository $repo, ParticipantRepository $repoUser, int $id): Response
     {
         if (!$this->getUser()) {
@@ -131,12 +75,26 @@ class CampusController extends AbstractController
             $repo->save($campus, true);
             return $this->redirectToRoute('campus_list');
         } else {
-            return $this->render('campus/index.html.twig', [
+            return $this->render('campus/edit.html.twig', [
                 'controller_name' => 'CampusController',
-                'form' => $form->createView(),
-                'campus'=>$campus,
+                'form3' => $form->createView(),
+                'campus' => $campus,
             ]);
         }
     }
 
+    #[Route('/{id}/supprimer', name: 'delete')]
+    public function delete(Request $request, CampusRepository $repo, int $id): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+        $campus3 = $repo->findOneBy(array('id' => $id));
+        $repo->deleteCampus($campus3);
+        return $this->redirectToRoute('campus_list');
+
+    }
+
 }
+
+

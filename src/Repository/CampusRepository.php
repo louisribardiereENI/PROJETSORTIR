@@ -39,6 +39,10 @@ class CampusRepository extends ServiceEntityRepository
         }
     }
 
+    public function deleteCampus(Campus $entity):void{
+        $this->remove($entity,true);
+    }
+
 //    /**
 //     * @return Campus[] Returns an array of Campus objects
 //     */

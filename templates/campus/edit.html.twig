@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sortir.com | Campus{% endblock %}
+{% block header %}
+    {% include 'module/navbar/navbar.html.twig' %}
+{% endblock %}
+
+{% block body %}
+
+    <h4 class="center nav-color margin-top-25"><strong>CAMPUS</strong></h4>
+
+    <div class="row">
+        <div class="col">
+        </div>
+        <div class="col-10">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card mb-4 border-color-first-color border-radius-20">
+                        <div class="card-body">
+                            <h3 class="centrer-texte">Modifier campus</h3>
+                            {{ form_start(form3) }}
+
+                            <div class="mb-2">
+                            {{ form_label(form3.nom) }}
+                            {{ form_errors(form3.nom) }}
+                            {{ form_widget(form3.nom) }}
+                            </div>
+
+                            <div class="mb-2 centrer-texte">
+                                <a role="button" class="btn btn-secondary" href="{{ path('campus_list') }}">Retour</a>
+                            {{ form_widget(form3.confirmer) }}
+                            </div>
+
+                            {{ form_end(form3) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card mb-4 border-color-first-color border-radius-20">
+                        <div class="card-body">
+                            <h3 class="centrer-texte">Campus</h3>
+                            <br>
+                            <p class="centrer-texte">{{ campus.nom }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{#
+#}

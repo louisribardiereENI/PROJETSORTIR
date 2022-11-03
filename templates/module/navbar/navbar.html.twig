@@ -18,8 +18,7 @@
                         <li><a class="dropdown-item nav-color" href="{{ path('app_home') }}"><strong>Accueil</strong></a></li>
 
                         {% if app.user.roles[0] == "ADMIN" %}
-                        <li><a class="dropdown-item nav-color" href="#"><strong>Villes</strong></a></li>
-                            <li><a class="dropdown-item nav-color" href="#"><strong>Campus</strong></a></li>
+                            <li><a class="dropdown-item nav-color" href="{{ path('campus_list') }}"><strong>Campus</strong></a></li>
                         {% endif %}
                     </ul>
                 </div>
@@ -87,8 +86,7 @@
                         <li><a href="{{ path('app_home') }}" class="nav-link px-2 link-dark nav-color"><strong>Accueil</strong></a></li>
 
                         {% if app.user.roles[0] == "ADMIN" %}
-                        <li><a href="#" class="nav-link px-2 link-dark nav-color"><strong>Villes</strong></a></li>
-                        <li><a href="#" class="nav-link px-2 link-dark nav-color"><strong>Campus</strong></a></li>
+                        <li><a href="{{ path('campus_list') }}" class="nav-link px-2 link-dark nav-color"><strong>Campus</strong></a></li>
                         {% endif %}
 
                     </ul>
@@ -98,7 +96,6 @@
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
                        aria-expanded="false">
                         {% if(app.user.photoParticipant!='default.jpg') %}
-
                             <img src="{{ asset('img/avatar/'~app.user.photoParticipant) }}" alt="mdo" width="32" height="32"
                                  class="rounded-circle">
                         {% else %}

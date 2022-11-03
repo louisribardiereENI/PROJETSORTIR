@@ -13,8 +13,8 @@ class ImportCSVType extends AbstractType
     {
         $builder
             ->add('importer', SubmitType::class, [
-                'label' => 'Importer',
-                'attr' => ['class' => 'btn btn-primary'],
+                'label' => 'Importer le fichier CSV',
+                'attr' => ['class' => 'btn btn-primary primary-button'],
             ]);
     }
 
